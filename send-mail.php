@@ -15,27 +15,41 @@ if (empty($name) || empty($email) || empty($message)) {
     exit;
 }
 
-// Check if mail() is available
-if (!function_exists('mail')) {
-    echo json_encode(['error' => 'mail() disabled', 'debug' => 'Function not available']);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(['error' => 'Invalid email']);
     exit;
 }
+
+// Strip newlines to prevent header injection
+$name = str_replace(["\r", "\n", "\t"], '', $name);
+$email = str_replace(["\r", "\n", "\t"], '', $email);
+
+// Use PEAR Mail + Net_SMTP (installed on this server)
+require_once 'Mail.php';
 
 $to = 'contact@shifa.uz';
 $subject = '[SHIFA Contact] Message from ' . substr($name, 0, 60);
 $body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
-$headers = "From: noreply@shifa.uz\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8";
 
-// Capture any error from mail()
-$sent = false;
-$mail_error = '';
-set_error_handler(function($errno, $errstr) use (&$mail_error) {
-    $mail_error = $errstr;
-});
-$sent = mail($to, $subject, $body, $headers);
-restore_error_handler();
+$headers = [
+    'From'         => 'noreply@shifa.uz',
+    'Reply-To'     => $email,
+    'To'           => $to,
+    'Subject'      => $subject,
+    'Content-Type' => 'text/plain; charset=UTF-8',
+    'Date'         => date('r'),
+];
 
-echo json_encode([
-    'success' => $sent,
-    'debug' => $sent ? 'mail accepted' : ($mail_error ?: 'mail returned false')
+$smtp = Mail::factory('smtp', [
+    'host' => 'localhost',
+    'port' => 25,
 ]);
+
+$result = $smtp->send($to, $headers, $body);
+
+if ($result === true) {
+    echo json_encode(['success' => true]);
+} else {
+    http_response_code(500);
+    echo json_encode(['error' => 'Failed to send', 'debug' => $result->getMessage()]);
+}
