@@ -1,9 +1,14 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('log_errors', 1);
-ini_set('error_log', __DIR__ . '/.rate_limits/php_errors.log');
 error_reporting(E_ALL);
+ini_set('display_errors', 0);
 header('Content-Type: application/json');
+
+// Catch all errors and return as JSON (temporary debug — remove after fixing)
+set_error_handler(function($severity, $msg, $file, $line) {
+    throw new ErrorException($msg, 0, $severity, $file, $line);
+});
+
+try {
 
 // Reject oversized payloads early (max ~10KB for a contact form)
 if (isset($_SERVER['CONTENT_LENGTH']) && (int)$_SERVER['CONTENT_LENGTH'] > 10240) {
@@ -49,7 +54,6 @@ if (!is_dir($rate_limit_dir)) {
 $ip = $_SERVER['REMOTE_ADDR'];
 $trusted_proxies = ['127.0.0.1', '::1'];
 if (in_array($ip, $trusted_proxies, true) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-    // Take the leftmost (client) IP from the chain
     $forwarded = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
     $candidate = trim($forwarded[0]);
     if (filter_var($candidate, FILTER_VALIDATE_IP)) {
@@ -65,7 +69,6 @@ $window = 3600; // 1 hour
 $attempts = [];
 if (file_exists($rate_file)) {
     $attempts = json_decode(file_get_contents($rate_file), true) ?: [];
-    // Remove expired entries
     $cutoff_time = time() - $window;
     $attempts = array_filter($attempts, function($ts) use ($cutoff_time) {
         return $ts > $cutoff_time;
@@ -95,7 +98,6 @@ if (rand(1, 50) === 1) {
 // Honeypot — if the hidden field has content, it's a bot
 $honeypot = $_POST['company_url'] ?? '';
 if (!empty($honeypot)) {
-    // Silently accept to not reveal detection
     echo json_encode(['success' => true]);
     exit;
 }
@@ -164,7 +166,6 @@ $body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
 
 $sent = @mail($to, $subject, $body, $headers, '-f noreply@shifa.uz');
 if (!$sent) {
-    // Retry without envelope sender (some hosts block -f)
     $sent = @mail($to, $subject, $body, $headers);
 }
 
@@ -173,4 +174,15 @@ if ($sent) {
 } else {
     http_response_code(500);
     echo json_encode(['error' => 'Failed to send']);
+}
+
+} catch (Throwable $e) {
+    // DEBUG: Return the actual error to the browser (REMOVE after fixing)
+    http_response_code(500);
+    echo json_encode([
+        'error' => 'Server error',
+        'debug' => $e->getMessage(),
+        'file' => basename($e->getFile()),
+        'line' => $e->getLine()
+    ]);
 }
