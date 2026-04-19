@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHIFA – Digitalizing Healthcare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/components/index.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav id="nav">
+  <a class="nav-logo" data-page="product">
+    <img src="assets/images/shifa.png" alt="SHIFA logo" />
+    SHIFA
+  </a>
+
+  <ul class="nav-links">
+    <li><a id="n-product" class="is-active" data-page="product" data-i18n="nav.product">Product</a></li>
+    <li><a id="n-features" data-page="features" data-i18n="nav.features">Features</a></li>
+    <li><a id="n-pricing"  data-page="pricing"  data-i18n="nav.pricing">Pricing</a></li>
+    <li><a id="n-contact"  data-page="contact"  data-i18n="nav.contact">Contact</a></li>
+  </ul>
+
+  <div class="lang-switcher" id="lang-switcher">
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="de">DE</button>
+    <button class="lang-btn" data-lang="uz">UZ</button>
+    <button class="lang-btn" data-lang="ru">RU</button>
+  </div>
+
+  <button class="nav-burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="nav-drawer" id="drawer" aria-hidden="true">
+  <a id="d-product" class="is-active" data-page="product" data-i18n="nav.product">Product</a>
+  <a id="d-features" data-page="features" data-i18n="nav.features">Features</a>
+  <a id="d-pricing"  data-page="pricing"  data-i18n="nav.pricing">Pricing</a>
+  <a id="d-contact"  data-page="contact"  data-i18n="nav.contact">Contact</a>
+  <div class="lang-switcher lang-switcher--drawer">
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="de">DE</button>
+    <button class="lang-btn" data-lang="uz">UZ</button>
+    <button class="lang-btn" data-lang="ru">RU</button>
+  </div>
+</div>
+
+
+<main>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PRODUCT PAGE
+       ══════════════════════════════════════════════════════════ -->
+  <div class="page is-active" id="page-product">
+
+    <!-- Hero -->
+    <section class="hero">
+
+      <div class="countdown" id="countdown">
+        <div class="countdown-unit">
+          <span class="countdown-num" id="days">00</span>
+          <span class="countdown-label" data-i18n="countdown.days">Days</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="hrs">00</span>
+          <span class="countdown-label" data-i18n="countdown.hours">Hours</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="mins">00</span>
+          <span class="countdown-label" data-i18n="countdown.mins">Minutes</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="secs">00</span>
+          <span class="countdown-label" data-i18n="countdown.secs">Seconds</span>
+        </div>
+      </div>
+
+      <div class="hero-split">
+
+        <div class="hero-left">
+          <h1 class="hero-heading-main" data-i18n="hero.heading.main">
+            Take your health<br />into your own hands
+          </h1>
+          <p class="hero-heading-sub" data-i18n="hero.heading">
+            Try our <em>Demo</em> before it's too late!
+          </p>
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
+            Shifa is reshaping care by aligning the needs of patients and clinicians
+            in one trusted, modern space.
+          </p>
+          <div class="hero-btns">
+            <a class="btn" data-page="contact" data-i18n="hero.cta">Get Early Access</a>
+            <a class="btn-outline" data-page="features" data-i18n="hero.features">See Features</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <img class="hero-hand-img" src="assets/images/Phone and hand.png" alt="Shifa app on phone" />
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- About / Ecosystem -->
+    <section class="section-about">
+      <div class="about-wrapper">
+        <div class="about-content">
+          <p class="label anim" data-i18n="about.label">About Shifa</p>
+          <h2 class="heading-lg anim" data-delay="1" data-i18n="about.heading">Evolving the healthcare ecosystem</h2>
+          <p class="body-text anim" data-delay="2" data-i18n="about.body">
+            Shifa is reshaping care by aligning the needs of patients and clinicians
+            in one trusted, modern space. By removing friction from access,
+            documentation, and communication—and elevating context with responsible
+            AI—we help the system work the way it should: faster decisions, clearer
+            care journeys, and a healthier, more resilient healthcare industry.
+          </p>
+          <a class="btn-outline anim" data-delay="3" data-page="features">
+            <span data-i18n="about.readmore">Read More</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Feature: Connect -->
+    <section class="section-feature">
+      <div class="wrap">
+        <div class="two-col">
+          <div class="anim" data-dir="left">
+            <p class="label" data-i18n="connect.label">For Patients &amp; Doctors</p>
+            <h2 class="heading-lg" data-i18n="connect.heading">Built to connect doctors and patients seamlessly.</h2>
+            <p class="body-text" data-i18n="connect.body">
+              Making care faster, clearer, and more secure. Book visits or video
+              calls without the wait, keep your health records safe and accessible,
+              and give clinicians the context they need to treat you with confidence.
+              With Shifa AI supporting every step, care becomes simpler for patients
+              and smarter for doctors.
+            </p>
+          </div>
+          <img src="assets/images/Connect P and D.png" alt="Shifa connect feature" class="two-col-img anim" data-dir="right" data-delay="1" />
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Feature: AI -->
+    <section class="section-feature section-feature--alt">
+      <div class="wrap">
+        <div class="two-col two-col--reverse">
+          <div class="anim" data-dir="right">
+            <p class="label" data-i18n="ai.label">Shifa AI</p>
+            <h2 class="heading-lg" data-i18n="ai.heading">Shifa AI – for smart care</h2>
+            <p class="body-text" data-i18n="ai.body">
+              Shifa AI is your real-time healthcare co&#8209;pilot. For patients, it
+              streamlines bookings, surfaces the right information, and keeps
+              documents organized so decisions are clearer. For doctors, it brings
+              context forward—summarizing history, capturing notes during consults,
+              and generating reports—so care is faster, safer, and more informed.
+            </p>
+            <div class="btn-group">
+              <a class="btn" data-page="features" data-tab="patients" data-i18n="ai.patients">Patients</a>
+              <a class="btn-outline" data-page="features" data-tab="doctors" data-i18n="ai.doctors">Doctors</a>
+            </div>
+          </div>
+          <img src="assets/images/ai-chat.png" alt="Shifa AI chat interface" class="two-col-img anim" data-dir="left" data-delay="1" />
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Feature: Devices -->
+    <section class="section-feature">
+      <div class="wrap">
+        <div class="two-col">
+          <div class="anim" data-dir="left">
+            <p class="label" data-i18n="devices.label">Every Device</p>
+            <h2 class="heading-lg" data-i18n="devices.heading">One platform.<br />Phone, tablet, and web.</h2>
+            <p class="body-text" data-i18n="devices.body">
+              Whether you're a patient checking upcoming appointments on your phone
+              or a doctor managing a full day's schedule on a tablet, Shifa works
+              beautifully across every screen — with the same intuitive experience,
+              same real-time data, and same care at the centre.
+            </p>
+          </div>
+          <img
+            src="assets/images/Devices.png"
+            alt="Shifa app across devices"
+            class="two-col-img--blend anim"
+            data-dir="right" data-delay="1"
+          />
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Infrastructure / Security -->
+    <section class="section-infrastructure">
+      <div class="wrap text-center">
+        <p class="label anim" data-i18n="infra.label">Infrastructure</p>
+        <h2 class="heading-lg anim" data-delay="1" data-i18n="infra.heading">Built on Strong Foundations</h2>
+        <p class="body-text anim" data-delay="2" data-i18n="infra.body">
+          Shifa's modern, secure infrastructure protects health data end&#8209;to&#8209;end with
+          encryption, strict access controls, and continuous monitoring. We follow
+          GDPR principles to keep patients and doctors in control. Safe for patients,
+          dependable for clinicians, and industry&#8209;ready.
+        </p>
+
+        <div class="card-grid">
+          <div class="card anim" data-dir="scale">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <h3 class="heading-sm" data-i18n="infra.card1.heading">End-to-End Encryption</h3>
+            <p class="body-text" data-i18n="infra.card1.body">
+              All health data encrypted in transit and at rest — your information
+              stays private at every step.
+            </p>
+          </div>
+
+          <div class="card anim" data-dir="scale" data-delay="2">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <h3 class="heading-sm" data-i18n="infra.card2.heading">GDPR Compliant</h3>
+            <p class="body-text" data-i18n="infra.card2.body">
+              We follow GDPR principles — transparent, lawful, and always with your
+              consent. Patients and doctors stay in full control.
+            </p>
+          </div>
+
+          <div class="card anim" data-dir="scale" data-delay="4">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+            </div>
+            <h3 class="heading-sm" data-i18n="infra.card3.heading">Continuous Monitoring</h3>
+            <p class="body-text" data-i18n="infra.card3.body">
+              Automated alerting and continuous infrastructure monitoring means
+              anomalies are caught before they affect care.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page-product -->
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       FEATURES PAGE
+       ══════════════════════════════════════════════════════════ -->
+  <div class="page" id="page-features">
+
+    <div class="features-hero">
+      <p class="label" data-i18n="features.label">Features</p>
+      <h1 class="heading-xl" data-i18n="features.heading">
+        Everything you need,<br /><em>nothing you don't.</em>
+      </h1>
+    </div>
+
+    <div class="features-tabs">
+      <div class="wrap">
+        <div class="tab-toggle">
+          <button class="tab-btn is-active" data-tab="patients" data-i18n="features.tab.patients">For Patients</button>
+          <button class="tab-btn" data-tab="doctors" data-i18n="features.tab.doctors">For Doctors</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Patients Panel -->
+    <div class="tab-panel is-active" id="panel-patients">
+      <div class="tab-panel-intro anim">
+        <div class="wrap">
+          <h2 class="heading-lg" data-i18n="patients.intro.heading">
+            Your health, simplified.<br />
+            Book, meet, and carry your data effortlessly.
+          </h2>
+          <p class="body-text" data-i18n="patients.intro.body">
+            No need for waiting, your health comes first. Streamline your doctors,
+            records and bookings with a smart touch.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-row anim" data-dir="left">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="patients.booking.label">Remote Booking</p>
+            <h2 class="heading-lg" data-i18n="patients.booking.heading">Book from anywhere,<br />onsite or video.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="patients.booking.b1">Find doctors or clinics near you and book instantly</p>
+              <p class="bullet" data-i18n="patients.booking.b2">Easily indicate visit-types and your reason for visits</p>
+              <p class="bullet" data-i18n="patients.booking.b3">Receive automated confirmations and calendar integration</p>
+            </div>
+          </div>
+          <img src="assets/images/remote-booking.png" alt="Remote booking screen" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row feature-row--reverse anim" data-dir="right">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="patients.video.label">Video Consultations</p>
+            <h2 class="heading-lg" data-i18n="patients.video.heading">Care at home<br />without the commute.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="patients.video.b1">Secure browser-based video</p>
+              <p class="bullet" data-i18n="patients.video.b2">Identity checks and bandwidth optimization</p>
+              <p class="bullet" data-i18n="patients.video.b3">Private waiting rooms</p>
+            </div>
+          </div>
+          <img src="assets/images/video-consultation.png" alt="Video consultation screen" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row anim" data-dir="left">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="patients.records.label">Digital Health Records</p>
+            <h2 class="heading-lg" data-i18n="patients.records.heading">Your digital history,<br />organized and shareable.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="patients.records.b1">Upload or download documents with ease</p>
+              <p class="bullet" data-i18n="patients.records.b2">All your past and current documents stored together</p>
+              <p class="bullet" data-i18n="patients.records.b3">Easily share and receive documents to/from your personal database</p>
+            </div>
+          </div>
+          <img src="assets/images/health-records.png" alt="Digital health records screen" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row feature-row--reverse anim" data-dir="right">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="patients.chat.label">Chat / Messenger</p>
+            <h2 class="heading-lg" data-i18n="patients.chat.heading">Your AI health assistant<br />at your hands.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="patients.chat.b1">Instantly consult about your health records, appointments and doctor notes</p>
+              <p class="bullet" data-i18n="patients.chat.b2">Assisted booking based on your requests</p>
+              <p class="bullet" data-i18n="patients.chat.b3">Symptom checking with suggested doctors or caretaking</p>
+            </div>
+          </div>
+          <img src="assets/images/ai-chat.png" alt="AI chat assistant screen" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row anim" data-dir="left">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="patients.reminders.label">Smart Reminders</p>
+            <h2 class="heading-lg" data-i18n="patients.reminders.heading">Never miss medications<br />or appointments.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="patients.reminders.b1">Reminders about appointments or follow-ups</p>
+              <p class="bullet" data-i18n="patients.reminders.b2">Get reminded about picking up your medications or when to take them</p>
+            </div>
+          </div>
+          <img src="assets/images/smart-reminders.png" alt="Smart reminders screen" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row feature-row--reverse anim" data-dir="right">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="patients.aireports.label">AI-driven Reports</p>
+            <h2 class="heading-lg" data-i18n="patients.aireports.heading">Get guidance while keeping<br />doctors in control.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="patients.aireports.b1">Support in reading and summarizing complex health reports</p>
+              <p class="bullet" data-i18n="patients.aireports.b2">Assistance in diagnosing certain symptoms</p>
+              <p class="bullet" data-i18n="patients.aireports.b3">Red flag reports for emergency care</p>
+            </div>
+          </div>
+          <img src="assets/images/ai-reports.png" alt="AI-driven reports screen" class="feature-row-img" />
+        </div>
+      </div>
+    </div><!-- /panel-patients -->
+
+
+    <!-- Doctors Panel -->
+    <div class="tab-panel" id="panel-doctors">
+      <div class="tab-panel-intro anim">
+        <div class="wrap">
+          <h2 class="heading-lg" data-i18n="doctors.intro.heading">
+            Care without the chaos.<br />
+            One elegant system that thinks with you.
+          </h2>
+          <p class="body-text" data-i18n="doctors.intro.body">
+            We deliver features that holistically cover your clinic's needs, so you
+            gain more time for your patients without compromise.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-row anim" data-dir="left">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="doctors.patients.label">Patient Management</p>
+            <h2 class="heading-lg" data-i18n="doctors.patients.heading">A clear view of all<br />your patients.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="doctors.patients.b1">Patient files, notes and prescriptions all in one place</p>
+              <p class="bullet" data-i18n="doctors.patients.b2">Appointment timelines for each patient</p>
+              <p class="bullet" data-i18n="doctors.patients.b3">Easily book appointments for any patient during appointments</p>
+            </div>
+          </div>
+          <img src="assets/images/patient-management.png" alt="Patient management screen" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row feature-row--reverse anim" data-dir="right">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="doctors.analytics.label">Analytics</p>
+            <h2 class="heading-lg" data-i18n="doctors.analytics.heading">Understand utilization<br />and your performance.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="doctors.analytics.b1">Daily and weekly KPIs for your clinic</p>
+              <p class="bullet" data-i18n="doctors.analytics.b2">Insights into no-shows for appointments</p>
+              <p class="bullet" data-i18n="doctors.analytics.b3">Export your analytics to CSVs</p>
+            </div>
+          </div>
+          <img src="assets/images/analytics.png" alt="Analytics dashboard" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row anim" data-dir="left">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="doctors.prescription.label">Prescription Drafting</p>
+            <h2 class="heading-lg" data-i18n="doctors.prescription.heading">Drafts you can quickly<br />review and sign.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="doctors.prescription.b1">Prescription drafts that you can quickly review and sign</p>
+              <p class="bullet" data-i18n="doctors.prescription.b2">Generate prescriptions straight from your smart notes</p>
+              <p class="bullet" data-i18n="doctors.prescription.b3">Easily provide e-prescriptions for export</p>
+            </div>
+          </div>
+          <img src="assets/images/prescription.png" alt="Prescription drafting screen" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row feature-row--reverse anim" data-dir="right">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="doctors.video.label">Video Consultations</p>
+            <h2 class="heading-lg" data-i18n="doctors.video.heading">See patients face-to-face,<br />from anywhere.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="doctors.video.b1">High-quality encrypted video sessions</p>
+              <p class="bullet" data-i18n="doctors.video.b2">Private waiting rooms for patients</p>
+              <p class="bullet" data-i18n="doctors.video.b3">Conduct consultations from any device</p>
+            </div>
+          </div>
+          <img src="assets/images/video-consultation.png" alt="Video consultation for doctors" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row anim" data-dir="left">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="doctors.ehr.label">Electronic Health Records</p>
+            <h2 class="heading-lg" data-i18n="doctors.ehr.heading">Keep patient records<br />digitized and shared securely.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="doctors.ehr.b1">Upload medical documents to all your patients</p>
+              <p class="bullet" data-i18n="doctors.ehr.b2">Encrypted document storage</p>
+              <p class="bullet" data-i18n="doctors.ehr.b3">Role-based access and secure sharing</p>
+            </div>
+          </div>
+          <img src="assets/images/ehr.png" alt="Electronic health records screen" class="feature-row-img" />
+        </div>
+      </div>
+
+      <div class="feature-row feature-row--reverse anim" data-dir="right">
+        <div class="feature-row-inner">
+          <div>
+            <p class="label" data-i18n="doctors.calendar.label">Calendar Management</p>
+            <h2 class="heading-lg" data-i18n="doctors.calendar.heading">A clear schedule that supports<br />onsite and remote appointments.</h2>
+            <div class="bullets">
+              <p class="bullet" data-i18n="doctors.calendar.b1">Reserve slots for in-clinic appointment scheduling</p>
+              <p class="bullet" data-i18n="doctors.calendar.b2">Set your schedule to allow for bookings on your time</p>
+              <p class="bullet" data-i18n="doctors.calendar.b3">Easily change bookings in the calendar</p>
+            </div>
+          </div>
+          <img src="assets/images/calendar.png" alt="Calendar management screen" class="feature-row-img" />
+        </div>
+      </div>
+    </div><!-- /panel-doctors -->
+
+  </div><!-- /page-features -->
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       PRICING PAGE
+       ══════════════════════════════════════════════════════════ -->
+  <div class="page" id="page-pricing">
+
+    <div class="page-header">
+      <div class="wrap">
+        <p class="label" data-i18n="pricing.label">Pricing</p>
+        <h1 class="heading-xl" data-i18n="pricing.heading">Pricing for Doctors</h1>
+        <p class="body-text" data-i18n="pricing.body">
+          Clinic-ready features with a platform that scales alongside your growth.
+        </p>
+      </div>
+    </div>
+
+    <section class="section-pricing">
+      <div class="wrap">
+        <div class="pricing-grid">
+
+          <div class="pricing-card anim" data-dir="scale">
+            <p class="pricing-name" data-i18n="pricing.basic.name">Basic</p>
+            <div class="pricing-price">
+              <span class="pricing-currency" data-i18n="pricing.basic.currency">$</span>
+              <span class="pricing-amount" data-i18n="pricing.basic.amount">39</span>
+              <span class="pricing-period" data-i18n="pricing.basic.period">per doctor/month</span>
+            </div>
+            <hr class="pricing-divider" />
+            <ul class="pricing-features">
+              <li data-i18n="pricing.basic.f1">Calendar Management</li>
+              <li data-i18n="pricing.basic.f2">Electronic Health Records</li>
+              <li data-i18n="pricing.basic.f3">Chat</li>
+              <li data-i18n="pricing.basic.f4">Patient Management</li>
+              <li data-i18n="pricing.basic.f5">Analytics</li>
+            </ul>
+            <a class="btn-outline pricing-cta" data-page="contact" data-i18n="pricing.basic.cta">Get Started</a>
+          </div>
+
+          <div class="pricing-card is-featured anim" data-dir="scale" data-delay="2">
+            <div class="pricing-name-row">
+              <p class="pricing-name" data-i18n="pricing.pro.name">Pro</p>
+              <span class="pricing-badge" data-i18n="pricing.pro.badge">Popular</span>
+            </div>
+            <div class="pricing-price">
+              <span class="pricing-currency" data-i18n="pricing.pro.currency">$</span>
+              <span class="pricing-amount" data-i18n="pricing.pro.amount">99</span>
+              <span class="pricing-period" data-i18n="pricing.pro.period">per doctor/month</span>
+            </div>
+            <hr class="pricing-divider" />
+            <ul class="pricing-features">
+              <li data-i18n="pricing.pro.f1">Calendar Management</li>
+              <li data-i18n="pricing.pro.f2">Electronic Health Records</li>
+              <li data-i18n="pricing.pro.f3">Chat</li>
+              <li data-i18n="pricing.pro.f4">Patient Management</li>
+              <li data-i18n="pricing.pro.f5">Analytics</li>
+              <li data-i18n="pricing.pro.f6">Video Consultation</li>
+              <li data-i18n="pricing.pro.f7">AI Powered Note-taking</li>
+              <li data-i18n="pricing.pro.f8">AI Document Classification</li>
+              <li data-i18n="pricing.pro.f9">Shifa AI Triage Bot</li>
+            </ul>
+            <a class="btn pricing-cta" data-page="contact" data-i18n="pricing.pro.cta">Get Started</a>
+          </div>
+
+          <div class="pricing-card anim" data-dir="scale" data-delay="4">
+            <p class="pricing-name" data-i18n="pricing.premium.name">Premium</p>
+            <div class="pricing-price">
+              <span class="pricing-currency" data-i18n="pricing.premium.currency">$</span>
+              <span class="pricing-amount" data-i18n="pricing.premium.amount">159</span>
+              <span class="pricing-period" data-i18n="pricing.premium.period">per doctor/month</span>
+            </div>
+            <hr class="pricing-divider" />
+            <ul class="pricing-features">
+              <li data-i18n="pricing.premium.f1">Calendar Management</li>
+              <li data-i18n="pricing.premium.f2">Electronic Health Records</li>
+              <li data-i18n="pricing.premium.f3">Chat</li>
+              <li data-i18n="pricing.premium.f4">Patient Management</li>
+              <li data-i18n="pricing.premium.f5">Advanced Analytics</li>
+              <li data-i18n="pricing.premium.f6">Video Consultation</li>
+              <li data-i18n="pricing.premium.f7">AI Powered Note-taking</li>
+              <li data-i18n="pricing.premium.f8">AI Document Classification</li>
+              <li data-i18n="pricing.premium.f9">Advanced Shifa AI Triage Bot</li>
+              <li data-i18n="pricing.premium.f10">Differential Diagnosis Assistant</li>
+              <li data-i18n="pricing.premium.f11">Prescription Drafting</li>
+            </ul>
+            <a class="btn-outline pricing-cta" data-page="contact" data-i18n="pricing.premium.cta">Get Started</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page-pricing -->
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       CONTACT PAGE
+       ══════════════════════════════════════════════════════════ -->
+  <div class="page" id="page-contact">
+
+    <div class="page-header">
+      <div class="wrap">
+        <p class="label" data-i18n="contact.label">Get in Touch</p>
+        <h1 class="heading-xl" data-i18n="contact.heading">Contact Us</h1>
+        <p class="body-text" data-i18n="contact.body">
+          Clinic-ready features with a platform that scales alongside your growth.
+        </p>
+      </div>
+    </div>
+
+    <section>
+      <div class="wrap">
+
+        <div class="contact-cards">
+          <div class="contact-card anim" data-dir="scale">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </div>
+            <h3 data-i18n="contact.help.heading">Help and Support</h3>
+            <p data-i18n="contact.help.body">
+              Ask product questions, report problems, or leave feedback.
+              Unsure on how to get started with Shifa?
+            </p>
+            <a class="btn-outline" href="mailto:info@shifa.uz?subject=Help%20and%20Support" data-i18n="contact.help.cta">Contact Us</a>
+          </div>
+
+          <div class="contact-card anim" data-dir="scale" data-delay="2">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+            </div>
+            <h3 data-i18n="contact.demo.heading">Book a Demo</h3>
+            <p data-i18n="contact.demo.body">
+              Try out Shifa or test certain features to find the fit for your
+              doctors or clinic.
+            </p>
+            <a class="btn" href="#" data-scroll-to="contact-form-anchor" data-i18n="contact.demo.cta">Contact Us</a>
+          </div>
+
+        </div>
+
+        <!-- Careers -->
+        <div class="careers-section anim">
+          <div class="careers-header">
+            <div>
+              <p class="label" data-i18n="contact.careers.heading">Careers at Shifa</p>
+              <h2 class="heading-lg" data-i18n="careers.heading">Join us. Shape the future of care.</h2>
+              <p class="body-text" data-i18n="contact.careers.body">
+                We value craft, clarity, and thoughtful innovation. If you care about
+                design quality, privacy, and real&#8209;world impact, you'll fit right in.
+              </p>
+            </div>
+          </div>
+
+          <div class="job-list">
+
+            <div class="job-card">
+              <div class="job-card-left">
+                <span class="job-tag" data-i18n="job1.tag">Engineering</span>
+                <h3 class="job-title" data-i18n="job1.title">Full Stack Software Engineer</h3>
+                <p class="job-meta" data-i18n="job1.meta">Berlin, Germany · Remote-friendly · Full-time</p>
+                <a class="btn job-apply-btn" href="mailto:careers@shifa.health?subject=Full Stack Software Engineer" data-i18n="job1.apply">Apply for this role</a>
+              </div>
+              <div class="job-card-right">
+                <p class="job-desc" data-i18n="job1.desc">
+                  Build and maintain Shifa's core platform — from patient-facing React
+                  interfaces to backend APIs and cloud infrastructure. You'll work across
+                  the full stack, ship features that reach thousands of patients and
+                  clinicians, and help define the engineering culture at an early stage.
+                </p>
+                <div class="job-tags">
+                  <span>React</span>
+                  <span>Node.js</span>
+                  <span>PostgreSQL</span>
+                  <span>AWS</span>
+                  <span>TypeScript</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Offices -->
+        <div class="offices anim">
+          <h2 class="heading-lg offices-heading" data-i18n="contact.offices.heading">Our Offices</h2>
+
+          <div class="offices-combined">
+            <div class="offices-list">
+              <div class="office-item">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="office-country">🇺🇿 Uzbekistan</p>
+                  <p class="office-address">Istiqbol street 30<br />Bulakbashi, Andijan</p>
+                </div>
+              </div>
+
+              <div class="office-item">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="office-country">🇩🇪 Germany</p>
+                  <p class="office-address">Hansastraße 116<br />13088 Berlin</p>
+                </div>
+              </div>
+            </div>
+
+            <div id="offices-map" style="height:320px;"></div>
+          </div>
+        </div>
+
+        <div class="contact-bottom anim" id="contact-form-anchor">
+          <h2 class="heading-lg contact-bottom-heading" data-i18n="contact.form.heading">Let's Chat!</h2>
+          <div class="contact-bottom-inner">
+            <div class="contact-form-section">
+              <form class="contact-form" id="contact-form" novalidate>
+                <div class="form-group">
+                  <label for="contact-name" data-i18n="contact.form.name">Name</label>
+                  <input
+                    type="text"
+                    id="contact-name"
+                    name="name"
+                    placeholder="Your full name"
+                    data-i18n-placeholder="contact.form.name.placeholder"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="contact-email" data-i18n="contact.form.email">Email</label>
+                  <input
+                    type="email"
+                    id="contact-email"
+                    name="email"
+                    placeholder="your@email.com"
+                    data-i18n-placeholder="contact.form.email.placeholder"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="contact-message" data-i18n="contact.form.message">Message</label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    placeholder="How can we help?"
+                    data-i18n-placeholder="contact.form.message.placeholder"
+                    required
+                  ></textarea>
+                </div>
+                <button type="submit" class="form-submit" data-i18n="contact.form.submit">Send Message</button>
+              </form>
+            </div>
+            <div class="contact-team-img-wrap">
+              <img src="assets/images/team.png" alt="The Shifa team" class="team-photo" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /page-contact -->
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       PRIVACY POLICY PAGE
+       ══════════════════════════════════════════════════════════ -->
+  <div class="page" id="page-privacy">
+
+    <section class="privacy-section">
+      <div class="privacy-wrap">
+
+        <h1 class="privacy-title anim" data-i18n="privacy.title">Privacy Policy</h1>
+        <p class="privacy-effective anim" data-delay="1" data-i18n="privacy.effective">Effective Date: April 10, 2026</p>
+        <p class="privacy-lead anim" data-delay="2" data-i18n="privacy.lead">At shifa.uz, we value your privacy and are committed to protecting your personal data. This Privacy Policy explains what information we collect, how we use it, and your rights regarding that data.</p>
+
+        <h2 data-i18n="privacy.s1.heading">1. Information We Collect</h2>
+        <p data-i18n="privacy.s1.intro">We may collect the following types of information:</p>
+        <ul data-i18n="privacy.s1.items">
+          <li>Personal information you provide directly, such as your name, phone number, and email address.</li>
+          <li>Health-related information you choose to submit — for example, through appointment bookings, medical inquiries, or your profile.</li>
+          <li>Technical information collected automatically, including IP address, browser type, device details, pages visited, and usage patterns.</li>
+          <li>Data gathered through cookies and similar technologies (see Section 6).</li>
+        </ul>
+
+        <h2 data-i18n="privacy.s2.heading">2. How We Use Your Information</h2>
+        <p data-i18n="privacy.s2.intro">We use your information to:</p>
+        <ul data-i18n="privacy.s2.items">
+          <li>Provide, maintain, and improve our website and services.</li>
+          <li>Manage appointments, communications, and support requests.</li>
+          <li>Personalise your experience on our platform.</li>
+          <li>Maintain security, detect fraud, and prevent misuse.</li>
+          <li>Comply with applicable legal obligations.</li>
+        </ul>
+
+        <h2 data-i18n="privacy.s3.heading">3. Legal Basis for Processing</h2>
+        <p data-i18n="privacy.s3.intro">Where applicable, we process personal data based on:</p>
+        <ul data-i18n="privacy.s3.items">
+          <li>Your explicit consent.</li>
+          <li>Performance of a contract or a service you have requested.</li>
+          <li>Compliance with legal obligations.</li>
+          <li>Our legitimate interests, such as improving service quality and maintaining security.</li>
+        </ul>
+
+        <h2 data-i18n="privacy.s4.heading">4. Sharing of Information</h2>
+        <p data-i18n="privacy.s4.intro">We do not sell your personal data. We may share your information with:</p>
+        <ul data-i18n="privacy.s4.items">
+          <li>Service providers who help us operate the website and deliver our services.</li>
+          <li>Healthcare professionals or partner organisations when necessary to fulfil a requested service.</li>
+          <li>Authorities or legal bodies when required by applicable law.</li>
+        </ul>
+        <p data-i18n="privacy.s4.outro">All third parties are required to protect your data and use it solely for authorised purposes.</p>
+
+        <h2 data-i18n="privacy.s5.heading">5. Data Security</h2>
+        <p data-i18n="privacy.s5.body">We apply reasonable technical and organisational measures to protect your personal data from unauthorised access, loss, misuse, or disclosure. Please note that no online platform can guarantee absolute security.</p>
+
+        <h2 data-i18n="privacy.s6.heading">6. Cookies</h2>
+        <p data-i18n="privacy.s6.intro">We use cookies and similar technologies on shifa.uz to:</p>
+        <ul data-i18n="privacy.s6.items">
+          <li>Keep the website functioning properly.</li>
+          <li>Remember your preferences.</li>
+          <li>Analyse traffic and improve performance.</li>
+          <li>Support security and fraud prevention.</li>
+        </ul>
+        <p data-i18n="privacy.s6.outro">You can control or disable cookies through your browser settings. Please note that disabling cookies may affect some website functionality. You can also update your cookie preferences at any time using the banner at the bottom of this page.</p>
+
+        <h2 data-i18n="privacy.s7.heading">7. Data Retention</h2>
+        <p data-i18n="privacy.s7.body">We retain personal data only for as long as necessary to fulfil the purposes described in this Privacy Policy, unless a longer period is required by law.</p>
+
+        <h2 data-i18n="privacy.s8.heading">8. Your Rights</h2>
+        <p data-i18n="privacy.s8.intro">Depending on applicable law, you may have the right to:</p>
+        <ul data-i18n="privacy.s8.items">
+          <li>Access your personal data.</li>
+          <li>Correct inaccurate or incomplete data.</li>
+          <li>Request deletion of your data.</li>
+          <li>Restrict or object to processing.</li>
+          <li>Withdraw consent at any time, where processing is based on consent.</li>
+          <li>Request data portability.</li>
+        </ul>
+        <p data-i18n="privacy.s8.outro">To exercise any of these rights, please contact us using the details in Section 12.</p>
+
+        <h2 data-i18n="privacy.s9.heading">9. Children's Privacy</h2>
+        <p data-i18n="privacy.s9.body">Our services are not intended for children unless specifically stated. If you believe a child has provided personal data without appropriate consent, please contact us so we can take prompt action.</p>
+
+        <h2 data-i18n="privacy.s10.heading">10. Third-Party Links</h2>
+        <p data-i18n="privacy.s10.body">Our website may contain links to third-party websites. We are not responsible for their privacy practices and encourage you to review their privacy policies separately.</p>
+
+        <h2 data-i18n="privacy.s11.heading">11. Changes to This Policy</h2>
+        <p data-i18n="privacy.s11.body">We may update this Privacy Policy from time to time. Any updates will be posted on this page with a revised effective date. We encourage you to review this page periodically.</p>
+
+        <h2 data-i18n="privacy.s12.heading">12. Contact Us</h2>
+        <p data-i18n="privacy.s12.intro">If you have questions or requests regarding this Privacy Policy, please reach out:</p>
+        <ul data-i18n="privacy.s12.items">
+          <li>Website: <a href="https://shifa.uz">shifa.uz</a></li>
+          <li>Email: <a href="mailto:info@shifa.uz">info@shifa.uz</a></li>
+        </ul>
+
+      </div>
+    </section>
+
+  </div><!-- /page-privacy -->
+
+</main>
+
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/images/shifa.png" alt="SHIFA logo" />
+      <h3>SHIFA</h3>
+      <p data-i18n="footer.brand.body">
+        Digitalizing healthcare. Our mission is to make healthcare simple, human,
+        and accessible—connecting doctors and patients through secure video
+        consultations, intuitive scheduling, and intelligent AI&#8209;powered notes. From
+        Berlin, we're unifying digital health records, remote booking, and verified
+        reviews into one seamless platform.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 data-i18n="footer.nav.heading">Navigation</h4>
+      <ul>
+        <li><a data-page="product" data-i18n="nav.product">Product</a></li>
+        <li><a data-page="features" data-i18n="nav.features">Features</a></li>
+        <li><a data-page="pricing" data-i18n="nav.pricing">Pricing</a></li>
+        <li><a data-page="contact" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4 data-i18n="footer.legal.heading">Legal</h4>
+      <ul>
+        <li><a data-page="privacy" data-i18n="footer.legal.privacy">Privacy Policy</a></li>
+        <li><a href="#" data-i18n="footer.legal.terms">Terms of Service</a></li>
+        <li><a href="#" data-i18n="footer.legal.gdpr">GDPR</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2025 SHIFA. All rights reserved.</span>
+    <span data-i18n="footer.made">Made in Berlin 🇩🇪</span>
+  </div>
+</footer>
+
+
+<!-- ── Cookie Banner ── -->
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent" aria-live="polite">
+  <div class="cookie-banner-inner">
+    <div class="cookie-banner-text">
+      <p class="cookie-banner-title">We value your privacy</p>
+      <p class="cookie-banner-body">We use cookies to make shifa.uz work properly, improve performance, and understand how visitors use our site. You can accept all cookies or reject non-essential ones.</p>
+      <a class="cookie-banner-link" data-page="privacy">Read more in our Privacy Policy.</a>
+    </div>
+    <div class="cookie-banner-actions">
+      <button class="cookie-btn cookie-btn--reject" id="cookie-reject">Reject Non-Essential</button>
+      <button class="cookie-btn cookie-btn--accept" id="cookie-accept">Accept All</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/translations.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>

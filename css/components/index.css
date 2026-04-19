@@ -1,0 +1,7 @@
+/* ============================================================
+   SHIFA – Component Library Entry Point
+   Import order matters: tokens first, then components.
+   ============================================================ */
+
+@import './_tokens.css';
+@import './_buttons.css';
