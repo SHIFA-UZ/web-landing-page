@@ -186,18 +186,72 @@ function initContactForm() {
   if (!form) return;
 
   const submitBtn = form.querySelector('.form-submit');
+  let submitting = false;
 
-  form.addEventListener('submit', e => {
+  // Set timestamp for bot timing detection
+  const tsField = form.querySelector('input[name="_t"]');
+  if (tsField) tsField.value = Math.floor(Date.now() / 1000);
+
+  form.addEventListener('submit', async e => {
     e.preventDefault();
+    if (submitting) return;
+    submitting = true;
 
-    submitBtn.textContent = t('contact.form.sent');
-    submitBtn.classList.add('is-sent');
+    // Client-side validation
+    const name = form.elements.name.value.trim();
+    const email = form.elements.email.value.trim();
+    const message = form.elements.message.value.trim();
 
-    setTimeout(() => {
-      submitBtn.textContent = t('contact.form.submit');
-      submitBtn.classList.remove('is-sent');
+    if (!name || !email || !message) {
+      submitting = false;
+      form.reportValidity();
+      return;
+    }
+    if (name.length > 100 || email.length > 254 || message.length > 5000) {
+      submitting = false;
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      submitting = false;
+      form.elements.email.setCustomValidity(t('contact.form.error'));
+      form.reportValidity();
+      form.elements.email.setCustomValidity('');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = t('contact.form.sending');
+
+    try {
+      const res = await fetch('send-mail.php', {
+        method: 'POST',
+        body: new FormData(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        submitBtn.textContent = t('contact.form.error');
+        submitBtn.classList.add('is-error');
+        return;
+      }
+
+      submitBtn.textContent = t('contact.form.sent');
+      submitBtn.classList.add('is-sent');
       form.reset();
-    }, 3000);
+      // Reset timestamp for next submission
+      if (tsField) tsField.value = Math.floor(Date.now() / 1000);
+    } catch {
+      submitBtn.textContent = t('contact.form.error');
+      submitBtn.classList.add('is-error');
+    } finally {
+      setTimeout(() => {
+        submitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = t('contact.form.submit');
+        submitBtn.classList.remove('is-sent', 'is-error');
+      }, 3000);
+    }
   });
 }
 

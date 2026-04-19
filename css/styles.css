@@ -1236,6 +1236,15 @@ section {
   background: #059669;
 }
 
+.form-submit.is-error {
+  background: var(--color-destructive);
+}
+
+.form-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 
 /* ============================================================
    OFFICES

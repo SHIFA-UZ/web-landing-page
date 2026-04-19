@@ -1,1 +1,10 @@
-.claude/
+.DS_Store
+
+# Ignore all markdown files except CLAUDE.md and README.md
+*.md
+!CLAUDE.md
+!README.md
+.idea
+
+# Rate limiting data (server-generated)
+.rate_limits/
