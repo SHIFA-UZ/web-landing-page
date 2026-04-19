@@ -225,7 +225,8 @@ function initContactForm() {
     try {
       const res = await fetch('send-mail.php', {
         method: 'POST',
-        body: new FormData(form),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString(),
       });
 
       const data = await res.json();
