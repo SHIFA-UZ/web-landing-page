@@ -75,15 +75,25 @@ if (file_exists($rate_file)) {
     });
 }
 
-if (count($attempts) >= $max_requests) {
+// Bypass rate limiting for admin testing
+$bypass_email = trim($_POST['email'] ?? '');
+$rate_exempt = ($bypass_email === 'sheroziy@shifa.uz');
+if ($rate_exempt && file_exists($rate_file)) {
+    @unlink($rate_file);
+    $attempts = [];
+}
+
+if (!$rate_exempt && count($attempts) >= $max_requests) {
     http_response_code(429);
     echo json_encode(['error' => 'Too many requests. Try again later.']);
     exit;
 }
 
 // Count this attempt immediately (before validation) to rate-limit invalid requests too
-$attempts[] = time();
-file_put_contents($rate_file, json_encode(array_values($attempts)), LOCK_EX);
+if (!$rate_exempt) {
+    $attempts[] = time();
+    file_put_contents($rate_file, json_encode(array_values($attempts)), LOCK_EX);
+}
 
 // Cleanup: remove stale rate limit files older than 2 hours (1-in-50 chance per request)
 if (rand(1, 50) === 1) {
