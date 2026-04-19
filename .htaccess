@@ -4,11 +4,6 @@
   RewriteRule (^|/)\.(?!well-known/) - [F,L]
 </IfModule>
 
-# Block direct access to sensitive PHP files (if any added later)
-<FilesMatch "^(?!send-mail\.php$).+\.php$">
-  Require all denied
-</FilesMatch>
-
 # Security headers
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
