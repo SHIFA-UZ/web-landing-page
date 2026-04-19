@@ -1,5 +1,8 @@
 <?php
-error_reporting(0);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/.rate_limits/php_errors.log');
+error_reporting(E_ALL);
 header('Content-Type: application/json');
 
 // Reject oversized payloads early (max ~10KB for a contact form)
@@ -63,7 +66,10 @@ $attempts = [];
 if (file_exists($rate_file)) {
     $attempts = json_decode(file_get_contents($rate_file), true) ?: [];
     // Remove expired entries
-    $attempts = array_filter($attempts, fn($ts) => $ts > time() - $window);
+    $cutoff_time = time() - $window;
+    $attempts = array_filter($attempts, function($ts) use ($cutoff_time) {
+        return $ts > $cutoff_time;
+    });
 }
 
 if (count($attempts) >= $max_requests) {
@@ -156,7 +162,11 @@ $headers = implode("\r\n", [
 
 $body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
 
-$sent = mail($to, $subject, $body, $headers, '-f noreply@shifa.uz');
+$sent = @mail($to, $subject, $body, $headers, '-f noreply@shifa.uz');
+if (!$sent) {
+    // Retry without envelope sender (some hosts block -f)
+    $sent = @mail($to, $subject, $body, $headers);
+}
 
 if ($sent) {
     echo json_encode(['success' => true]);
