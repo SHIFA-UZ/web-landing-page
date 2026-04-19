@@ -291,7 +291,7 @@ const TRANSLATIONS = {
 
     "privacy.s12.heading": "12. Contact Us",
     "privacy.s12.intro":   "If you have questions or requests regarding this Privacy Policy, please reach out:",
-    "privacy.s12.items":   "<li>Website: <a href=\"https://shifa.uz\">shifa.uz</a></li><li>Email: <a href=\"mailto:info@shifa.uz\">info@shifa.uz</a></li>",
+    "privacy.s12.items":   "<li>Website: <a href=\"https://shifa.uz\">shifa.uz</a></li><li>Email: <a href=\"mailto:contact@shifa.uz\">contact@shifa.uz</a></li>",
   },
 
   de: {
@@ -581,7 +581,7 @@ const TRANSLATIONS = {
 
     "privacy.s12.heading": "12. Kontakt",
     "privacy.s12.intro":   "Bei Fragen oder Anfragen zu dieser Datenschutzrichtlinie wenden Sie sich bitte an uns:",
-    "privacy.s12.items":   "<li>Website: <a href=\"https://shifa.uz\">shifa.uz</a></li><li>E-Mail: <a href=\"mailto:info@shifa.uz\">info@shifa.uz</a></li>",
+    "privacy.s12.items":   "<li>Website: <a href=\"https://shifa.uz\">shifa.uz</a></li><li>E-Mail: <a href=\"mailto:contact@shifa.uz\">contact@shifa.uz</a></li>",
   },
 
   uz: {
@@ -871,7 +871,7 @@ const TRANSLATIONS = {
 
     "privacy.s12.heading": "12. Biz bilan bog\u02bblaning",
     "privacy.s12.intro":   "Ushbu maxfiylik siyosati bo\u02bbyicha savol yoki so\u02bbrovlar bo\u02bblsa, biz bilan bog\u02bblaning:",
-    "privacy.s12.items":   "<li>Veb-sayt: <a href=\"https://shifa.uz\">shifa.uz</a></li><li>Elektron pochta: <a href=\"mailto:info@shifa.uz\">info@shifa.uz</a></li>",
+    "privacy.s12.items":   "<li>Veb-sayt: <a href=\"https://shifa.uz\">shifa.uz</a></li><li>Elektron pochta: <a href=\"mailto:contact@shifa.uz\">contact@shifa.uz</a></li>",
   },
 
   ru: {
@@ -1161,6 +1161,6 @@ const TRANSLATIONS = {
 
     "privacy.s12.heading": "12. \u0421\u0432\u044f\u0436\u0438\u0442\u0435\u0441\u044c \u0441 \u043d\u0430\u043c\u0438",
     "privacy.s12.intro":   "\u0415\u0441\u043b\u0438 \u0443 \u0432\u0430\u0441 \u0435\u0441\u0442\u044c \u0432\u043e\u043f\u0440\u043e\u0441\u044b \u0438\u043b\u0438 \u0437\u0430\u043f\u0440\u043e\u0441\u044b \u043f\u043e \u044d\u0442\u043e\u0439 \u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430 \u0441\u0432\u044f\u0436\u0438\u0442\u0435\u0441\u044c \u0441 \u043d\u0430\u043c\u0438:",
-    "privacy.s12.items":   "<li>\u0421\u0430\u0439\u0442: <a href=\"https://shifa.uz\">shifa.uz</a></li><li>\u042d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u0430\u044f \u043f\u043e\u0447\u0442\u0430: <a href=\"mailto:info@shifa.uz\">info@shifa.uz</a></li>",
+    "privacy.s12.items":   "<li>\u0421\u0430\u0439\u0442: <a href=\"https://shifa.uz\">shifa.uz</a></li><li>\u042d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u0430\u044f \u043f\u043e\u0447\u0442\u0430: <a href=\"mailto:contact@shifa.uz\">contact@shifa.uz</a></li>",
   },
 };
