@@ -1,105 +1,133 @@
-# SHIFA — Digital Healthcare Platform
+# SHIFA
 
-A modern landing page for SHIFA, a digital healthcare ecosystem that connects patients and doctors through secure video consultations, intelligent scheduling, and AI-powered clinical tools.
+> Digital healthcare platform connecting patients and doctors through secure video consultations, intelligent scheduling, and AI-powered clinical tools.
 
-## Quick Start
+[![Deploy to cPanel](https://github.com/SheroziyCODE/web-landing-page/actions/workflows/deploy.yml/badge.svg)](https://github.com/SheroziyCODE/web-landing-page/actions/workflows/deploy.yml)
+
+## Getting Started
 
 ```bash
-# No dependencies to install — open directly in a browser
-open index.html
-
-# Or serve locally for development
+# Serve locally
 python3 -m http.server 8000
 ```
 
-Then visit `http://localhost:8000`.
+Open [http://localhost:8000](http://localhost:8000). No install, no build step required.
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
 | Markup | HTML5 (semantic, accessible) |
-| Styling | Vanilla CSS3 (custom properties, grid, flexbox) |
+| Styling | CSS3 — custom properties, grid, flexbox, glassmorphism |
 | Logic | Vanilla JavaScript (ES6+) |
-| Maps | [Leaflet.js 1.9.4](https://leafletjs.com/) via CDN |
-| Fonts | [Google Fonts — Manrope](https://fonts.google.com/specimen/Manrope) |
+| Maps | [Leaflet.js 1.9.4](https://leafletjs.com/) (CDN) |
+| Fonts | [Manrope](https://fonts.google.com/specimen/Manrope) (Google Fonts) |
+| Backend | PHP (`send-mail.php` — contact form) |
+| CI/CD | GitHub Actions → FTP deploy to cPanel |
 
-No frameworks. No build tools. No package manager.
+No frameworks. No bundler. No package manager.
 
 ## Project Structure
 
 ```
-├── index.html                 # All pages (SPA-style, single file)
+├── index.html                  Main SPA — all pages in one file
 ├── css/
-│   ├── styles.css             # Main layout & responsive styles
+│   ├── styles.css              Layout, nav, responsive rules
 │   └── components/
-│       ├── index.css          # Entry point (imports tokens & buttons)
-│       ├── _tokens.css        # Design tokens (colors, spacing, typography)
-│       └── _buttons.css       # Button component system
+│       ├── index.css            Imports tokens & buttons
+│       ├── _tokens.css          Design tokens (colors, spacing, type, motion)
+│       └── _buttons.css         Button component system
 ├── js/
-│   ├── main.js               # Core logic (routing, i18n, map, countdown)
-│   └── translations.js       # i18n dictionary (EN, DE, UZ, RU)
-└── assets/
-    └── images/               # All visual assets (PNG)
+│   ├── main.js                 Routing, i18n, map, countdown, animations
+│   └── translations.js         i18n dictionaries (EN, DE, UZ, RU)
+├── assets/images/              Visual assets (PNG)
+├── send-mail.php               Contact form endpoint
+└── .github/workflows/
+    └── deploy.yml              CI/CD pipeline
 ```
 
-## Features
+## Architecture
 
-- **Single-page navigation** — Five pages (Product, Features, Pricing, Contact, Privacy) rendered as toggled sections
-- **Internationalization** — Full support for English, German, Uzbek, and Russian
-- **Responsive design** — Mobile-first with glassmorphism navigation and animated drawer
-- **Accessibility** — Semantic HTML, ARIA attributes, proper label associations, keyboard navigable
-- **Launch countdown** — Live timer counting down to September 1, 2026
-- **Interactive map** — Leaflet-powered office locations (Berlin & Andijan)
-- **Feature tabs** — Separate views for patient and doctor capabilities
-- **Cookie consent** — GDPR-compliant banner with localStorage persistence
+### SPA Routing
 
-## Internationalization
+Pages (Product, Features, Pricing, Contact, Privacy) live as `<section data-page="...">` elements in `index.html`. Navigation toggles visibility and dispatches `shifa:pagechange` custom events. No hash or history API — purely DOM-driven.
 
-Four languages are supported. Translations are defined in `js/translations.js` and applied to the DOM via data attributes:
+### Internationalization (i18n)
+
+Four languages: English, German, Uzbek, Russian.
 
 ```html
+<!-- Text content -->
 <h1 data-i18n="hero.heading"></h1>
+
+<!-- Attributes -->
 <input data-i18n-placeholder="contact.form.email">
 ```
 
-The user's language preference is persisted in `localStorage` under the key `shifa-lang`.
+Language persists in `localStorage` (`shifa-lang` key). To add a language:
 
-To add a new language:
-1. Add a new language object in `js/translations.js`
-2. Add a language button in the nav and mobile drawer in `index.html`
+1. Add a language object to `js/translations.js`
+2. Add a language switcher button in the nav and mobile drawer in `index.html`
 
-## Design Tokens
+### Design Tokens
 
-Brand colors and spacing are centralized in `css/components/_tokens.css`:
+All visual values are centralized in `css/components/_tokens.css`:
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--color-primary` | `#00BBB0` | Brand teal — buttons, accents, links |
-| `--color-destructive` | `#E53E3E` | Error states, destructive actions |
-| `--color-text` | `#0D1117` | Primary text |
-| `--space-1` to `--space-16` | 4px–64px | Spacing scale (4px base) |
+| Token | Value | Purpose |
+|-------|-------|---------|
+| `--color-primary` | `#00BBB0` | Brand teal |
+| `--color-destructive` | `#DC2F2F` | Errors, destructive actions |
+| `--color-text` | `#0D1117` | Body text |
+| `--space-1` … `--space-16` | 4px – 64px | Spacing scale (4px base) |
+| `--radius-btn` / `--radius-card` / `--radius-pill` | 8px / 14px / 50px | Border radii |
+| `--ease-expo` / `--ease-smooth` | cubic-bezier | Motion curves |
+| `--nav-height` | 68px | Fixed nav offset |
+
+### JavaScript Patterns
+
+- **Event delegation** — listeners on `document`, not individual elements
+- **Custom events** — `shifa:pagechange`, `shifa:tabchange` for cross-component communication
+- **IntersectionObserver** — scroll reveal animations, nav shadow toggle
+- **Lazy initialization** — Leaflet map waits for CDN load before rendering
+
+### Contact Form
+
+`send-mail.php` accepts POST with `name`, `email`, `message` fields. Validates and sanitizes input, sends to `contact@shifa.uz`, returns JSON responses.
 
 ## Deployment
 
-This is a fully static site. Deploy to any static hosting provider:
+### Automatic (CI/CD)
 
-- **GitHub Pages** — Push to `main` and enable Pages in repo settings
-- **Netlify / Vercel** — Connect the repo, no build command needed
-- **S3 + CloudFront** — Upload files directly
-- **Any web server** — Serve the root directory
+Pushes to `main` trigger FTP deployment via GitHub Actions. Required repository secrets:
 
-No environment variables or server-side configuration required.
+| Secret | Description |
+|--------|-------------|
+| `FTP_HOST` | FTP server hostname |
+| `FTP_USERNAME` | FTP account username |
+| `FTP_PASSWORD` | FTP account password |
+| `FTP_SERVER_DIR` | Remote directory path |
+
+### Manual Alternatives
+
+| Provider | Setup |
+|----------|-------|
+| GitHub Pages | Enable Pages in repo settings, set source to `main` |
+| Netlify / Vercel | Connect repo — no build command needed |
+| S3 + CloudFront | Upload files to bucket, configure distribution |
+| Any web server | Serve the root directory as static files |
+
+The contact form requires a PHP-capable host (e.g., cPanel shared hosting).
 
 ## Browser Support
 
-Targets modern evergreen browsers (Chrome, Firefox, Safari, Edge). Uses:
+Targets modern evergreen browsers (Chrome, Firefox, Safari, Edge). Key APIs used:
+
 - CSS Custom Properties
 - CSS Grid & Flexbox
-- `backdrop-filter` (glassmorphism)
+- `backdrop-filter` (glassmorphism effects)
 - `IntersectionObserver`
-- ES6 modules pattern (non-module script)
+- `localStorage`
 
 ## License
 
-Private repository. All rights reserved.
+All rights reserved. Private repository.
