@@ -106,6 +106,19 @@ GitHub Actions (`.github/workflows/deploy.yml`) FTP-deploys to cPanel on push to
 1. Add a complete language object to `TRANSLATIONS` in `js/translations.js` covering every existing key
 2. Add `<button class="lang-btn" data-lang="{code}">` in both the nav `.lang-switcher` and the drawer `.lang-switcher--drawer`
 
+### Security (DO NOT remove or weaken)
+
+The contact form (`send-mail.php`) and `.htaccess` implement a hardened security stack. These protections are **critical** and must not be removed, bypassed, or weakened:
+
+- **`.htaccess`** — blocks dotfile access, restricts PHP execution, sets CSP/X-Frame-Options/nosniff/Permissions-Policy headers. Do not delete or simplify.
+- **Rate limiting** — file-based, 5 req/IP/hour, counts ALL attempts (not just successful ones). Do not raise the limit above 10 without user approval.
+- **Honeypot + timing check** — silent bot rejection. Do not remove the hidden `company_url` field or the `_t` timestamp field from the form.
+- **Origin/Referer validation** — do not remove. If adding new allowed origins (e.g., staging domain), add to the `$allowed_origins` array only.
+- **Input validation** — enforced at 3 layers (HTML maxlength, JS validation, PHP validation). All three must stay in sync. If changing a limit, update all three.
+- **SRI hashes** — `integrity` attributes on CDN `<link>` and `<script>` tags. If upgrading Leaflet version, regenerate hashes.
+- **CSP header** — if adding new external resources (scripts, fonts, APIs), update the CSP in `.htaccess` to allowlist them explicitly. Never use `unsafe-eval` or wildcard `*`.
+- **Field allowlist** — PHP rejects any POST fields not in the `$allowed_fields` array. If adding a form field, add it to this array too.
+
 ### Git Workflow
 
 - **Never commit directly to `main`**. When the user is on `main` and wants to push changes, always create a new branch first:

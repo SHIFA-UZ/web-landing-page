@@ -92,7 +92,16 @@ All visual values are centralized in `css/components/_tokens.css`:
 
 ### Contact Form
 
-`send-mail.php` accepts POST with `name`, `email`, `message` fields. Validates and sanitizes input, sends to `contact@shifa.uz`, returns JSON responses.
+`send-mail.php` accepts POST with `name`, `email`, `message` fields and sends to `contact@shifa.uz`. Hardened with multi-layer security:
+
+- **CSRF protection** — Origin/Referer validation
+- **Rate limiting** — 5 requests per IP per hour (file-based, SHA-256 hashed)
+- **Bot detection** — Honeypot field + submission timing check
+- **Input validation** — Length limits, email format, field allowlist
+- **Header injection prevention** — Newline/tab stripping
+- **Payload size cap** — 10KB max before parsing
+- **CSP** — `form-action 'self'` restricts where form data can be sent
+- **SRI** — Subresource Integrity hashes on all CDN assets (Leaflet)
 
 ## Deployment
 
