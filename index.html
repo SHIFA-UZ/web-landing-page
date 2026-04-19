@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/components/index.css" />
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" />
 </head>
 <body>
 
@@ -735,6 +735,8 @@
           <div class="contact-bottom-inner">
             <div class="contact-form-section">
               <form class="contact-form" id="contact-form" novalidate>
+                <input type="text" name="company_url" tabindex="-1" autocomplete="nope" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden;">
+                <input type="hidden" name="_t" value="">
                 <div class="form-group">
                   <label for="contact-name" data-i18n="contact.form.name">Name</label>
                   <input
@@ -743,6 +745,7 @@
                     name="name"
                     placeholder="Your full name"
                     data-i18n-placeholder="contact.form.name.placeholder"
+                    maxlength="100"
                     required
                   />
                 </div>
@@ -754,6 +757,7 @@
                     name="email"
                     placeholder="your@email.com"
                     data-i18n-placeholder="contact.form.email.placeholder"
+                    maxlength="254"
                     required
                   />
                 </div>
@@ -764,6 +768,7 @@
                     name="message"
                     placeholder="How can we help?"
                     data-i18n-placeholder="contact.form.message.placeholder"
+                    maxlength="5000"
                     required
                   ></textarea>
                 </div>
@@ -940,7 +945,7 @@
   </div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
 <script src="js/translations.js" defer></script>
 <script src="js/main.js" defer></script>
 </body>

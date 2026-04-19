@@ -5,3 +5,6 @@
 !CLAUDE.md
 !README.md
 .idea
+
+# Rate limiting data (server-generated)
+.rate_limits/

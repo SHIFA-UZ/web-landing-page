@@ -220,7 +220,9 @@ const TRANSLATIONS = {
     "contact.form.message":            "Message",
     "contact.form.message.placeholder":"How can we help?",
     "contact.form.submit":             "Send Message",
+    "contact.form.sending":            "Sending…",
     "contact.form.sent":               "Sent \u2713",
+    "contact.form.error":              "Failed to send",
 
     /* ── Footer ── */
     /* ── Careers section ── */
@@ -508,7 +510,9 @@ const TRANSLATIONS = {
     "contact.form.message":             "Nachricht",
     "contact.form.message.placeholder": "Wie k\u00f6nnen wir helfen?",
     "contact.form.submit":              "Nachricht senden",
+    "contact.form.sending":             "Wird gesendet…",
     "contact.form.sent":                "Gesendet \u2713",
+    "contact.form.error":               "Senden fehlgeschlagen",
 
     /* ── Footer ── */
     /* ── Careers section ── */
@@ -796,7 +800,9 @@ const TRANSLATIONS = {
     "contact.form.message":             "Xabar",
     "contact.form.message.placeholder": "Qanday yordam bera olamiz?",
     "contact.form.submit":              "Xabar yuborish",
+    "contact.form.sending":             "Yuborilmoqda…",
     "contact.form.sent":                "Yuborildi \u2713",
+    "contact.form.error":               "Yuborib bo'lmadi",
 
     /* ── Footer ── */
     /* ── Careers section ── */
@@ -1084,7 +1090,9 @@ const TRANSLATIONS = {
     "contact.form.message":             "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435",
     "contact.form.message.placeholder": "\u0427\u0435\u043c \u043c\u044b \u043c\u043e\u0436\u0435\u043c \u043f\u043e\u043c\u043e\u0447\u044c?",
     "contact.form.submit":              "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435",
+    "contact.form.sending":             "\u041e\u0442\u043f\u0440\u0430\u0432\u043a\u0430…",
     "contact.form.sent":                "\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u043e \u2713",
+    "contact.form.error":               "\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u043e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c",
 
     /* ── Careers section ── */
     "careers.heading": "\u041f\u0440\u0438\u0441\u043e\u0435\u0434\u0438\u043d\u044f\u0439\u0442\u0435\u0441\u044c. \u0424\u043e\u0440\u043c\u0438\u0440\u0443\u0439\u0442\u0435 \u0431\u0443\u0434\u0443\u0449\u0435\u0435 \u043c\u0435\u0434\u0438\u0446\u0438\u043d\u044b.",
