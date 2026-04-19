@@ -24,32 +24,79 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $name = str_replace(["\r", "\n", "\t"], '', $name);
 $email = str_replace(["\r", "\n", "\t"], '', $email);
 
-// Use PEAR Mail + Net_SMTP (installed on this server)
-require_once 'Mail.php';
-
 $to = 'contact@shifa.uz';
 $subject = '[SHIFA Contact] Message from ' . substr($name, 0, 60);
 $body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
 
-$headers = [
-    'From'         => 'noreply@shifa.uz',
-    'Reply-To'     => $email,
-    'To'           => $to,
-    'Subject'      => $subject,
-    'Content-Type' => 'text/plain; charset=UTF-8',
-    'Date'         => date('r'),
-];
+// Try PEAR Mail
+$pear_available = @include_once 'Mail.php';
+if ($pear_available) {
+    $headers = [
+        'From'         => 'noreply@shifa.uz',
+        'Reply-To'     => $email,
+        'To'           => $to,
+        'Subject'      => $subject,
+        'Content-Type' => 'text/plain; charset=UTF-8',
+    ];
+    $smtp = Mail::factory('smtp', ['host' => 'localhost', 'port' => 25]);
+    $result = $smtp->send($to, $headers, $body);
+    if ($result === true) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['error' => 'SMTP failed', 'debug' => $result->getMessage()]);
+    }
+    exit;
+}
 
-$smtp = Mail::factory('smtp', [
-    'host' => 'localhost',
-    'port' => 25,
-]);
-
-$result = $smtp->send($to, $headers, $body);
-
-if ($result === true) {
+// Fallback: raw SMTP via fsockopen
+$sent = smtp_send($to, 'noreply@shifa.uz', $subject, $body, $email);
+if ($sent === true) {
     echo json_encode(['success' => true]);
 } else {
-    http_response_code(500);
-    echo json_encode(['error' => 'Failed to send', 'debug' => $result->getMessage()]);
+    echo json_encode(['error' => 'Send failed', 'debug' => $sent]);
+}
+
+function smtp_send($to, $from, $subject, $body, $reply_to) {
+    $socket = @fsockopen('localhost', 25, $errno, $errstr, 10);
+    if (!$socket) {
+        $socket = @fsockopen('localhost', 587, $errno, $errstr, 10);
+        if (!$socket) return "Cannot connect: $errstr ($errno)";
+    }
+
+    $res = fgets($socket, 512);
+    if (substr($res, 0, 3) !== '220') { fclose($socket); return "Bad greeting: $res"; }
+
+    $hostname = gethostname() ?: 'shifa.uz';
+    fwrite($socket, "EHLO $hostname\r\n");
+    // Read all EHLO response lines
+    do { $res = fgets($socket, 512); } while (substr($res, 3, 1) === '-');
+
+    fwrite($socket, "MAIL FROM:<$from>\r\n");
+    $res = fgets($socket, 512);
+    if (substr($res, 0, 3) !== '250') { fclose($socket); return "MAIL FROM rejected: $res"; }
+
+    fwrite($socket, "RCPT TO:<$to>\r\n");
+    $res = fgets($socket, 512);
+    if (substr($res, 0, 3) !== '250') { fclose($socket); return "RCPT TO rejected: $res"; }
+
+    fwrite($socket, "DATA\r\n");
+    $res = fgets($socket, 512);
+    if (substr($res, 0, 3) !== '354') { fclose($socket); return "DATA rejected: $res"; }
+
+    $msg = "From: $from\r\n";
+    $msg .= "Reply-To: $reply_to\r\n";
+    $msg .= "To: $to\r\n";
+    $msg .= "Subject: $subject\r\n";
+    $msg .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $msg .= "Date: " . date('r') . "\r\n";
+    $msg .= "\r\n";
+    $msg .= str_replace("\n.", "\n..", $body);
+    $msg .= "\r\n.\r\n";
+
+    fwrite($socket, $msg);
+    $res = fgets($socket, 512);
+    fwrite($socket, "QUIT\r\n");
+    fclose($socket);
+
+    return (substr($res, 0, 3) === '250') ? true : "Not accepted: $res";
 }
