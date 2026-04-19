@@ -554,15 +554,23 @@ function initCookieBanner() {
 
   // Show banner if no choice has been saved yet
   if (!localStorage.getItem(STORAGE_KEY)) {
-    // Small delay so the page paints before sliding in
     setTimeout(() => banner.classList.add('is-visible'), 600);
   }
 
-  function dismiss(choice) {
-    localStorage.setItem(STORAGE_KEY, choice);
+  function accept() {
+    localStorage.setItem(STORAGE_KEY, 'accepted');
     banner.classList.remove('is-visible');
   }
 
-  document.getElementById('cookie-accept').addEventListener('click', () => dismiss('accepted'));
-  document.getElementById('cookie-reject').addEventListener('click', () => dismiss('rejected'));
+  function decline() {
+    // Clear all localStorage except the cookie choice itself
+    const keys = Object.keys(localStorage);
+    keys.forEach(k => { if (k !== STORAGE_KEY) localStorage.removeItem(k); });
+    localStorage.setItem(STORAGE_KEY, 'declined');
+    sessionStorage.clear();
+    banner.classList.remove('is-visible');
+  }
+
+  document.getElementById('cookie-accept').addEventListener('click', accept);
+  document.getElementById('cookie-reject').addEventListener('click', decline);
 }

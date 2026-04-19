@@ -224,6 +224,13 @@ const TRANSLATIONS = {
     "contact.form.sent":               "Sent \u2713",
     "contact.form.error":              "Failed to send",
 
+    /* ── Cookie Banner ── */
+    "cookie.title":   "We value your privacy",
+    "cookie.body":    "This site uses only essential browser storage to remember your language preference and cookie choice. We do not use tracking cookies, analytics, or share any data with third parties.",
+    "cookie.link":    "Read our Privacy Policy",
+    "cookie.accept":  "Got it",
+    "cookie.decline": "Decline",
+
     /* ── Footer ── */
     /* ── Careers section ── */
     "careers.heading": "Join us. Shape the future of care.",
@@ -513,6 +520,13 @@ const TRANSLATIONS = {
     "contact.form.sending":             "Wird gesendet…",
     "contact.form.sent":                "Gesendet \u2713",
     "contact.form.error":               "Senden fehlgeschlagen",
+
+    /* ── Cookie Banner ── */
+    "cookie.title":   "Wir sch\u00e4tzen Ihre Privatsph\u00e4re",
+    "cookie.body":    "Diese Website verwendet nur essentiellen Browser-Speicher, um Ihre Spracheinstellung und Cookie-Auswahl zu speichern. Wir verwenden keine Tracking-Cookies, Analysetools oder geben Daten an Dritte weiter.",
+    "cookie.link":    "Datenschutzerkl\u00e4rung lesen",
+    "cookie.accept":  "Verstanden",
+    "cookie.decline": "Ablehnen",
 
     /* ── Footer ── */
     /* ── Careers section ── */
@@ -804,6 +818,13 @@ const TRANSLATIONS = {
     "contact.form.sent":                "Yuborildi \u2713",
     "contact.form.error":               "Yuborib bo'lmadi",
 
+    /* ── Cookie Banner ── */
+    "cookie.title":   "Maxfiyligingiz biz uchun muhim",
+    "cookie.body":    "Bu sayt faqat til sozlamasi va cookie tanlovingizni saqlash uchun brauzerning asosiy xotirasidan foydalanadi. Biz kuzatuv cookie-laridan, analitikadan foydalanmaymiz va ma\u02bclumotlaringizni uchinchi tomonlarga bermaymiz.",
+    "cookie.link":    "Maxfiylik siyosatini o\u02bbqing",
+    "cookie.accept":  "Tushunarli",
+    "cookie.decline": "Rad etish",
+
     /* ── Footer ── */
     /* ── Careers section ── */
     "careers.heading": "Bizga qo\u02bbshing. Tibbiy yordamning kelajagini shakllantiring.",
@@ -1093,6 +1114,13 @@ const TRANSLATIONS = {
     "contact.form.sending":             "\u041e\u0442\u043f\u0440\u0430\u0432\u043a\u0430…",
     "contact.form.sent":                "\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u043e \u2713",
     "contact.form.error":               "\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u043e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c",
+
+    /* ── Cookie Banner ── */
+    "cookie.title":   "\u041c\u044b \u0446\u0435\u043d\u0438\u043c \u0432\u0430\u0448\u0443 \u043a\u043e\u043d\u0444\u0438\u0434\u0435\u043d\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u044c",
+    "cookie.body":    "\u042d\u0442\u043e\u0442 \u0441\u0430\u0439\u0442 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430 \u0434\u043b\u044f \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u044f \u044f\u0437\u044b\u043a\u043e\u0432\u044b\u0445 \u043d\u0430\u0441\u0442\u0440\u043e\u0435\u043a \u0438 \u0432\u044b\u0431\u043e\u0440\u0430 cookie. \u041c\u044b \u043d\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u044e\u0449\u0438\u0435 cookie, \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0443 \u0438 \u043d\u0435 \u043f\u0435\u0440\u0435\u0434\u0430\u0451\u043c \u0434\u0430\u043d\u043d\u044b\u0435 \u0442\u0440\u0435\u0442\u044c\u0438\u043c \u043b\u0438\u0446\u0430\u043c.",
+    "cookie.link":    "\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430 \u043a\u043e\u043d\u0444\u0438\u0434\u0435\u043d\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438",
+    "cookie.accept":  "\u041f\u043e\u043d\u044f\u0442\u043d\u043e",
+    "cookie.decline": "\u041e\u0442\u043a\u043b\u043e\u043d\u0438\u0442\u044c",
 
     /* ── Careers section ── */
     "careers.heading": "\u041f\u0440\u0438\u0441\u043e\u0435\u0434\u0438\u043d\u044f\u0439\u0442\u0435\u0441\u044c. \u0424\u043e\u0440\u043c\u0438\u0440\u0443\u0439\u0442\u0435 \u0431\u0443\u0434\u0443\u0449\u0435\u0435 \u043c\u0435\u0434\u0438\u0446\u0438\u043d\u044b.",
