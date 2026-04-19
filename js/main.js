@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initNavigation() {
   const pages = ['product', 'features', 'pricing', 'contact', 'privacy'];
 
-  function navigateTo(pageId) {
+  function navigateTo(pageId, skipScroll) {
     // Hide all pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
 
@@ -44,8 +44,15 @@ function initNavigation() {
     if (targetNavLink) targetNavLink.classList.add('is-active');
     if (targetDrawer)  targetDrawer.classList.add('is-active');
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!skipScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+    sessionStorage.setItem('shifa-page', pageId);
     document.dispatchEvent(new CustomEvent('shifa:pagechange', { detail: { id: pageId } }));
+  }
+
+  // Restore saved page on refresh
+  const saved = sessionStorage.getItem('shifa-page');
+  if (saved && pages.includes(saved) && saved !== 'product') {
+    navigateTo(saved, true);
   }
 
   // Delegate clicks on [data-page] elements
@@ -325,9 +332,9 @@ function initOfficesMap() {
 /* ── Internationalisation ── */
 function t(key) {
   const lang = document.documentElement.dataset.lang || 'en';
-  return (TRANSLATIONS[lang] && TRANSLATIONS[lang][key])
-      || (TRANSLATIONS.en  && TRANSLATIONS.en[key])
-      || key;
+  if (TRANSLATIONS[lang] && key in TRANSLATIONS[lang]) return TRANSLATIONS[lang][key];
+  if (TRANSLATIONS.en && key in TRANSLATIONS.en) return TRANSLATIONS.en[key];
+  return key;
 }
 
 function setLanguage(lang) {
@@ -338,7 +345,8 @@ function setLanguage(lang) {
 
   // Swap innerHTML for all [data-i18n] elements
   document.querySelectorAll('[data-i18n]').forEach(el => {
-    const val = TRANSLATIONS[lang][el.dataset.i18n] || TRANSLATIONS.en[el.dataset.i18n];
+    const key = el.dataset.i18n;
+    const val = (key in TRANSLATIONS[lang]) ? TRANSLATIONS[lang][key] : TRANSLATIONS.en[key];
     if (val !== undefined) el.innerHTML = val;
   });
 

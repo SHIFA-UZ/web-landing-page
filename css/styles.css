@@ -860,6 +860,7 @@ section {
 .pricing-price {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: 2px;
   margin-bottom: 4px;
 }
@@ -871,8 +872,12 @@ section {
   margin-top: 7px;
 }
 
+.pricing-currency:empty {
+  display: none;
+}
+
 .pricing-amount {
-  font-size: 3.2rem;
+  font-size: clamp(1.6rem, 5vw, 3.2rem);
   font-weight: 800;
   color: var(--text);
   line-height: 1;
