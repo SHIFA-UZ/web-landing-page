@@ -63,24 +63,24 @@ function smtp_send($to, $from, $subject, $body, $reply_to) {
         if (!$socket) return "Cannot connect: $errstr ($errno)";
     }
 
-    $res = fgets($socket, 512);
+    $res = smtp_read($socket);
     if (substr($res, 0, 3) !== '220') { fclose($socket); return "Bad greeting: $res"; }
 
     $hostname = gethostname() ?: 'shifa.uz';
     fwrite($socket, "EHLO $hostname\r\n");
-    // Read all EHLO response lines
-    do { $res = fgets($socket, 512); } while (substr($res, 3, 1) === '-');
+    $res = smtp_read($socket);
+    if (substr($res, 0, 3) !== '250') { fclose($socket); return "EHLO rejected: $res"; }
 
     fwrite($socket, "MAIL FROM:<$from>\r\n");
-    $res = fgets($socket, 512);
+    $res = smtp_read($socket);
     if (substr($res, 0, 3) !== '250') { fclose($socket); return "MAIL FROM rejected: $res"; }
 
     fwrite($socket, "RCPT TO:<$to>\r\n");
-    $res = fgets($socket, 512);
+    $res = smtp_read($socket);
     if (substr($res, 0, 3) !== '250') { fclose($socket); return "RCPT TO rejected: $res"; }
 
     fwrite($socket, "DATA\r\n");
-    $res = fgets($socket, 512);
+    $res = smtp_read($socket);
     if (substr($res, 0, 3) !== '354') { fclose($socket); return "DATA rejected: $res"; }
 
     $msg = "From: $from\r\n";
@@ -94,9 +94,21 @@ function smtp_send($to, $from, $subject, $body, $reply_to) {
     $msg .= "\r\n.\r\n";
 
     fwrite($socket, $msg);
-    $res = fgets($socket, 512);
+    $res = smtp_read($socket);
     fwrite($socket, "QUIT\r\n");
     fclose($socket);
 
     return (substr($res, 0, 3) === '250') ? true : "Not accepted: $res";
+}
+
+function smtp_read($socket) {
+    $response = '';
+    while (true) {
+        $line = fgets($socket, 512);
+        if ($line === false) break;
+        $response = $line;
+        // If 4th character is a space (not '-'), this is the last line
+        if (isset($line[3]) && $line[3] !== '-') break;
+    }
+    return $response;
 }
