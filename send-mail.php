@@ -107,7 +107,7 @@ if (!empty($honeypot)) {
 }
 
 // Reject if any unexpected fields are present (form stuffing)
-$allowed_fields = ['name', 'email', 'message', 'company_url', '_t'];
+$allowed_fields = ['name', 'email', 'message', 'company_url', '_t', '_lang'];
 $extra_fields = array_diff(array_keys($_POST), $allowed_fields);
 if (!empty($extra_fields)) {
     http_response_code(400);
@@ -163,6 +163,59 @@ $body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
 $sent = smtp_send($to, 'noreply@shifa.uz', $subject, $body, $email);
 
 if ($sent === true) {
+    // Send localized confirmation email to user
+    $lang = isset($_POST['_lang']) ? $_POST['_lang'] : 'en';
+    if (!in_array($lang, ['en', 'de', 'uz', 'ru'], true)) $lang = 'en';
+
+    $confirmations = [
+        'en' => [
+            'subject' => 'We received your message — SHIFA',
+            'greeting' => "Hi $name,",
+            'body' => "Thank you for reaching out to us. We have received your message and our team will get back to you as soon as possible.",
+            'copy' => "Here's a copy of what you sent:",
+            'urgent' => "If you have any urgent questions, feel free to reply to this email.",
+            'regards' => "Best regards,\nThe SHIFA Team",
+        ],
+        'de' => [
+            'subject' => 'Wir haben Ihre Nachricht erhalten — SHIFA',
+            'greeting' => "Hallo $name,",
+            'body' => "Vielen Dank, dass Sie sich an uns gewendet haben. Wir haben Ihre Nachricht erhalten und unser Team wird sich so schnell wie möglich bei Ihnen melden.",
+            'copy' => "Hier ist eine Kopie Ihrer Nachricht:",
+            'urgent' => "Bei dringenden Fragen können Sie gerne auf diese E-Mail antworten.",
+            'regards' => "Mit freundlichen Grüßen,\nDas SHIFA-Team",
+        ],
+        'uz' => [
+            'subject' => 'Xabaringiz qabul qilindi — SHIFA',
+            'greeting' => "Salom $name,",
+            'body' => "Biz bilan bog'langaningiz uchun rahmat. Xabaringizni qabul qildik va jamoamiz imkon qadar tezroq siz bilan bog'lanadi.",
+            'copy' => "Yuborgan xabaringiz nusxasi:",
+            'urgent' => "Shoshilinch savollaringiz bo'lsa, ushbu xatga javob yozishingiz mumkin.",
+            'regards' => "Hurmat bilan,\nSHIFA jamoasi",
+        ],
+        'ru' => [
+            'subject' => 'Мы получили ваше сообщение — SHIFA',
+            'greeting' => "Здравствуйте, $name!",
+            'body' => "Спасибо за обращение. Мы получили ваше сообщение и наша команда свяжется с вами в ближайшее время.",
+            'copy' => "Копия вашего сообщения:",
+            'urgent' => "Если у вас есть срочные вопросы, вы можете ответить на это письмо.",
+            'regards' => "С уважением,\nКоманда SHIFA",
+        ],
+    ];
+
+    $c = $confirmations[$lang];
+    $confirm_subject = $c['subject'];
+    $confirm_body = $c['greeting'] . "\n\n";
+    $confirm_body .= $c['body'] . "\n\n";
+    $confirm_body .= $c['copy'] . "\n";
+    $confirm_body .= "────────────────────────────\n";
+    $confirm_body .= "$message\n";
+    $confirm_body .= "────────────────────────────\n\n";
+    $confirm_body .= $c['urgent'] . "\n\n";
+    $confirm_body .= $c['regards'] . "\n";
+    $confirm_body .= "https://shifa.uz";
+
+    smtp_send($email, 'noreply@shifa.uz', $confirm_subject, $confirm_body, 'contact@shifa.uz');
+
     echo json_encode(['success' => true]);
 } else {
     http_response_code(500);

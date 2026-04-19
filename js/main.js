@@ -353,6 +353,10 @@ function setLanguage(lang) {
     btn.classList.toggle('is-active', btn.dataset.lang === lang);
   });
 
+  // Keep form language field in sync
+  const langField = document.querySelector('input[name="_lang"]');
+  if (langField) langField.value = lang;
+
   localStorage.setItem('shifa-lang', lang);
 }
 
