@@ -53,9 +53,24 @@ All interactive state uses `is-*` class toggling:
 
 `js/main.js` initializes all features in `DOMContentLoaded` via separate `init*()` functions. No modules, no imports — both JS files loaded as regular `<script>` tags with `translations.js` first (provides the `TRANSLATIONS` global).
 
-### Backend
+### Backend (Email Sending)
 
-`send-mail.php` handles contact form POST (validates name/email/message, sends to `contact@shifa.uz`, returns JSON).
+`send-mail.php` handles contact form POST requests. Sends to `contact@shifa.uz` via **raw SMTP over fsockopen** (NOT PHP's `mail()` function — it is disabled on the production server).
+
+**Why raw SMTP**: The hosting provider (cPanel with Engintron/nginx) has `mail()` disabled at the server level. It cannot be enabled from cPanel. The server does have a local SMTP server (Exim) running on port 25, so we connect directly via `fsockopen('localhost', 25)` and speak the SMTP protocol manually.
+
+**How it works**:
+1. Opens a TCP socket to `localhost:25`
+2. Performs SMTP handshake: `EHLO` → `MAIL FROM` → `RCPT TO` → `DATA`
+3. Sends email headers + body, then `QUIT`
+4. `smtp_read()` helper properly handles multiline SMTP responses (lines ending with `-` indicate more lines follow)
+
+**Critical constraints**:
+- Do NOT replace with `mail()` — it will cause a 500 error (fatal crash, zero output)
+- Do NOT use `require_once 'Mail.php'` (PEAR) — it also crashes on this server
+- The `fsockopen` approach is the ONLY working method
+- Falls back to port 587 if port 25 is unavailable
+- If migrating to a new host, test `mail()` first — if it works there, it's simpler
 
 ## Deployment
 

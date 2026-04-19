@@ -92,14 +92,19 @@ All visual values are centralized in `css/components/_tokens.css`:
 
 ### Contact Form
 
-`send-mail.php` accepts POST with `name`, `email`, `message` fields and sends to `contact@shifa.uz`. Hardened with multi-layer security:
+`send-mail.php` accepts POST with `name`, `email`, `message` fields and sends to `contact@shifa.uz`.
+
+**Email transport**: Uses raw SMTP via `fsockopen` to `localhost:25` (the server's Exim MTA). PHP's `mail()` function is disabled on the production host — do not attempt to use it. The script speaks SMTP protocol directly: EHLO → MAIL FROM → RCPT TO → DATA → QUIT.
+
+**Security layers**:
 
 - **CSRF protection** — Origin/Referer validation
-- **Rate limiting** — 5 requests per IP per hour (file-based, SHA-256 hashed)
-- **Bot detection** — Honeypot field + submission timing check
-- **Input validation** — Length limits, email format, field allowlist
-- **Header injection prevention** — Newline/tab stripping
+- **Rate limiting** — 5 requests per IP per hour (file-based, SHA-256 hashed), admin bypass for `sheroziy@shifa.uz`
+- **Bot detection** — Honeypot field + submission timing check (< 3s = bot)
+- **Input validation** — Length limits (100/254/5000), email format, field allowlist
+- **Header injection prevention** — Newline/tab stripping on name and email
 - **Payload size cap** — 10KB max before parsing
+- **Form stuffing rejection** — Only whitelisted POST fields accepted
 - **CSP** — `form-action 'self'` restricts where form data can be sent
 - **SRI** — Subresource Integrity hashes on all CDN assets (Leaflet)
 
