@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed 's/data:image\\\\/[^;]*;base64,[A-Za-z0-9+/=]*/[BASE64_IMAGE]/g' \"c:/Users/franc/OneDrive/Desktop/Shifa/shifa_v7.html\")",
+      "Bash(\"c:/Users/franc/OneDrive/Desktop/Shifa/shifa_v7_stripped.html\")",
+      "Bash(mv image-1.png hero-backdrop.png)",
+      "Bash(mv image-4.png about-bg-pattern.png)",
+      "Bash(grep -E \"\\\\.\\(html|css|js|json\\)$\")",
+      "Bash(node -e \"require\\('c:/Users/franc/OneDrive/Desktop/Shifa/js/translations.js'\\); console.log\\('OK'\\)\")",
+      "Bash(grep -n \"\\\\\\\\\\\\\\\\u02bp\" \"c:/Users/franc/OneDrive/Desktop/Shifa/js/translations.js\")",
+      "Bash(python -c ' *)",
+      "Bash(powershell -Command ' *)",
+      "Bash(node -e \"require\\('./js/translations.js'\\); console.log\\('OK'\\)\")",
+      "Bash(gh api *)",
+      "Bash(git config *)",
+      "Bash(python3 -m http.server 8000)",
+      "Bash(py --version)",
+      "Bash(py -m http.server 8000)"
+    ]
+  }
+}

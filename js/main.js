@@ -3,6 +3,13 @@
    Main JavaScript
    ============================================================ */
 
+// Apply theme before paint to prevent flash
+(function () {
+  if (localStorage.getItem('shifa-theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initMobileMenu();
@@ -16,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initCookieBanner();
   initScrollReveal();
   initHeroAnimations();
+  initDarkMode();
+  initAIChat();
 });
 
 
@@ -120,7 +129,7 @@ function initCountdown() {
   if (!countdownEl) return;
 
   // Update this date when you have a confirmed launch date
-  const launchDate = new Date('2026-09-01T00:00:00');
+  const launchDate = new Date('2026-06-05T00:00:00');
 
   const daysEl  = document.getElementById('days');
   const hrsEl   = document.getElementById('hrs');
@@ -391,8 +400,18 @@ function initScrollReveal() {
         }
       });
     },
-    { threshold: 0.08, rootMargin: '0px 0px -48px 0px' }
+    { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
   );
+
+  // Add section-level enter-from-bottom to every section except the hero
+  document.querySelectorAll('main section:not(.hero)').forEach(section => {
+    if (!section.classList.contains('anim')) {
+      // If already in view on load, mark as done to avoid flash
+      const rect = section.getBoundingClientRect();
+      section.classList.add('anim');
+      if (rect.top < window.innerHeight) section.classList.add('in');
+    }
+  });
 
   function observe(root) {
     (root || document).querySelectorAll('.anim:not(.in)').forEach(el => obs.observe(el));
@@ -427,12 +446,15 @@ function initScrollReveal() {
 
 const HERO_ANIMS = {
   product: [
-    { sel: '#page-product .countdown',   kf: 'heroFadeUp',      dur: '0.75s', delay: '0.05s' },
-    { sel: '.hero-heading-main',          kf: 'heroWordReveal',  dur: '1.0s',  delay: '0.20s' },
-    { sel: '.hero-heading-sub',           kf: 'heroFadeUp',      dur: '0.9s',  delay: '0.38s' },
-    { sel: '.hero-subtitle',              kf: 'heroFadeUp',      dur: '0.9s',  delay: '0.54s' },
-    { sel: '.hero-btns',                  kf: 'heroFadeUp',      dur: '0.9s',  delay: '0.70s' },
-    { sel: '.hero-hand-img',              kf: 'heroImageEnter',  dur: '1.3s',  delay: '0.24s' },
+    { sel: '#page-product .countdown-unit:nth-child(1)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.05s' },
+    { sel: '#page-product .countdown-unit:nth-child(2)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.14s' },
+    { sel: '#page-product .countdown-unit:nth-child(3)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.23s' },
+    { sel: '#page-product .countdown-unit:nth-child(4)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.32s' },
+    { sel: '.hero-heading-main', kf: 'heroFadeUp', dur: '0.7s', delay: '0.18s' },
+    { sel: '.hero-heading-sub',  kf: 'heroFadeUp', dur: '0.6s', delay: '0.38s' },
+    { sel: '.hero-subtitle',     kf: 'heroFadeUp', dur: '0.6s', delay: '0.50s' },
+    { sel: '.hero-btns',         kf: 'heroFadeUp', dur: '0.6s', delay: '0.62s' },
+    { sel: '.hero-hand-img',     kf: 'heroImageEnter', dur: '2.0s', delay: '0.10s' },
   ],
   features: [
     { sel: '#page-features .features-hero .label',      kf: 'heroBadgePop',  dur: '0.65s', delay: '0.08s' },
@@ -466,28 +488,62 @@ function playHero(pageId) {
     });
   });
 
-  // After product hero image finishes entering, start its floating loop
+
+  // After entrance completes, hand off to parallax controller
   if (pageId === 'product') {
     const img = document.querySelector('.hero-hand-img');
     if (img) {
-      img.classList.remove('is-floating');
-      // entrance: 1.3s duration + 0.24s delay ≈ 1.55s
-      setTimeout(() => img.classList.add('is-floating'), 1600);
+      // entrance: 2.0s duration + 0.10s delay
+      setTimeout(() => enableHandParallax(img), 2200);
     }
   }
 }
 
+function enableHandParallax(img) {
+  // Lock in opacity + transform so clearing animation doesn't flash
+  img.style.opacity = '1';
+  img.style.transform = 'translateY(0)';
+  img.style.animation = '';
+  img._parallaxReady = true;
+}
+
+function initHandParallax() {
+  const img = document.querySelector('.hero-hand-img');
+  const hero = document.querySelector('#page-product .hero');
+  if (!img || !hero) return;
+
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!img._parallaxReady || ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const onProduct = document.getElementById('page-product').classList.contains('is-active');
+      if (!onProduct) { ticking = false; return; }
+
+      const progress = Math.max(0, Math.min(1, window.scrollY / hero.offsetHeight));
+      img.style.transform = `translateY(${progress * 180}px)`;
+      img.style.opacity = String(Math.max(0, 1 - progress * 2.5));
+      ticking = false;
+    });
+  }, { passive: true });
+}
+
 function initHeroAnimations() {
-  // Play the product (initial) page hero right away
+  initHandParallax();
+
   playHero('product');
 
-  // Replay the appropriate hero whenever the user navigates
   document.addEventListener('shifa:pagechange', e => {
+    // Reset parallax state when navigating back to product
+    const img = document.querySelector('.hero-hand-img');
+    if (img && e.detail.id === 'product') {
+      img._parallaxReady = false;
+      img.style.opacity = '';
+      img.style.transform = '';
+    }
     playHero(e.detail.id);
   });
-
-  // Scroll-out: slide hand back down when user scrolls past the hero
-  initHandScrollOut();
 }
 
 function initHandScrollOut() {
@@ -505,7 +561,6 @@ function initHandScrollOut() {
       if (!onProductPage) return;
 
       if (!entry.isIntersecting && !exited) {
-        // Hero scrolled out of view — slide the hand down
         exited = true;
         img.classList.remove('is-floating');
         img.classList.add('is-exiting');
@@ -545,6 +600,27 @@ function initScrollTo() {
 }
 
 
+/* ── Dark Mode ── */
+function initDarkMode() {
+  const toggles = [
+    document.getElementById('theme-toggle'),
+    document.getElementById('theme-toggle-drawer'),
+  ].filter(Boolean);
+
+  function setTheme(dark) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    localStorage.setItem('shifa-theme', dark ? 'dark' : 'light');
+  }
+
+  toggles.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      setTheme(!isDark);
+    });
+  });
+}
+
+
 /* ── Cookie Banner ── */
 function initCookieBanner() {
   const banner = document.getElementById('cookie-banner');
@@ -573,4 +649,99 @@ function initCookieBanner() {
 
   document.getElementById('cookie-accept').addEventListener('click', accept);
   document.getElementById('cookie-reject').addEventListener('click', decline);
+}
+
+
+/* ── AI Chat Widget ── */
+function initAIChat() {
+  const container = document.getElementById('ai-chat-messages');
+  if (!container) return;
+
+  const MESSAGES = [
+    { from: 'user', text: 'Give me a summary of my last appointment.' },
+    { from: 'ai',   text: 'Your last visit was about a year ago. You reported recurring headaches and mild flu symptoms. The doctor recommended rest and prescribed ibuprofen. No follow-up was scheduled.' },
+    { from: 'user', text: 'Please compare my current blood test with the previous results.' },
+    { from: 'ai',   text: 'Your iron levels have improved by 12%. Cholesterol is slightly elevated compared to last time — 198 vs 181 mg/dL. All other markers are within normal range.' },
+    { from: 'user', text: 'What was the name of the dentist I visited last year?' },
+    { from: 'ai',   text: 'It would be best to visit the clinic soon — some of your symptoms could become more serious. Can I help you find an open slot with your closest doctor?' },
+  ];
+
+  const TYPING_MS   = 1600;   // how long typing indicator shows
+  const READ_MS     = 2200;   // initial pause before first message
+  const USER_GAP_MS = 1100;  // gap before user / AI messages
+
+  let started  = false;
+  let sequence = null;
+
+  function createBubble(msg) {
+    const row = document.createElement('div');
+    row.className = `chat-msg chat-msg--${msg.from}`;
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble';
+    bubble.textContent = msg.text;
+    row.appendChild(bubble);
+    return row;
+  }
+
+  function createTyping() {
+    const row = document.createElement('div');
+    row.className = 'chat-msg chat-msg--ai';
+    row.innerHTML = '<div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>';
+    return row;
+  }
+
+  function scrollBottom() {
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function runSequence(index) {
+    if (index >= MESSAGES.length) {
+      // Pause then restart loop
+      sequence = setTimeout(() => {
+        container.innerHTML = '';
+        runSequence(0);
+      }, 3000);
+      return;
+    }
+
+    const msg = MESSAGES[index];
+
+    if (msg.from === 'user') {
+      const delay = index === 0 ? 0 : USER_GAP_MS;
+      sequence = setTimeout(() => {
+        container.appendChild(createBubble(msg));
+        scrollBottom();
+        runSequence(index + 1);
+      }, delay);
+    } else {
+      // Show typing indicator first
+      sequence = setTimeout(() => {
+        const typing = createTyping();
+        container.appendChild(typing);
+        scrollBottom();
+
+        sequence = setTimeout(() => {
+          container.removeChild(typing);
+          container.appendChild(createBubble(msg));
+          scrollBottom();
+          runSequence(index + 1);
+        }, TYPING_MS);
+      }, USER_GAP_MS);
+    }
+  }
+
+  // Start when widget enters viewport (IntersectionObserver)
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        // Small delay so widget is visible before first message
+        setTimeout(() => runSequence(0), READ_MS);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const widget = container.closest('.ai-chat-widget');
+  if (widget) observer.observe(widget);
 }
