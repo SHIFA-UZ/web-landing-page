@@ -534,9 +534,8 @@ function playHero(pageId) {
 
   items.forEach(({ sel, kf, dur, delay }) => {
     document.querySelectorAll(sel).forEach(node => {
-      // Cancel any running animation, force reflow, then start fresh
       node.style.animation = 'none';
-      void node.offsetHeight; // synchronous reflow commits the reset
+      void node.offsetHeight;
       node.style.animation = `${kf} ${dur} ${ease} ${delay} both`;
     });
   });
