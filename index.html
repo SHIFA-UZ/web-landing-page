@@ -771,36 +771,30 @@
         <div class="offices anim">
           <h2 class="heading-lg offices-heading" data-i18n="contact.offices.heading">Our Offices</h2>
 
-          <div class="offices-combined">
-            <div class="offices-list">
-              <div class="office-item">
-                <div class="card-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <div>
-                  <p class="office-country">🇺🇿 Uzbekistan</p>
-                  <p class="office-address">Istiqbol street 30<br />Bulakbashi, Andijan</p>
-                </div>
-              </div>
-
-              <div class="office-item">
-                <div class="card-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <div>
-                  <p class="office-country">🇩🇪 Germany</p>
-                  <p class="office-address">Hansastraße 116<br />13088 Berlin</p>
-                </div>
+          <div class="offices-grid">
+            <div class="office-card" data-office="uz">
+              <div class="office-card-map" id="map-uz"></div>
+              <div class="office-card-info">
+                <p class="office-country">🇺🇿 Uzbekistan</p>
+                <p class="office-address">Istiqbol street 30<br />Bulakbashi, Andijan</p>
+                <a class="office-directions" href="https://www.google.com/maps/search/?api=1&query=40.7829,72.3442" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  Get Directions
+                </a>
               </div>
             </div>
 
-            <div id="offices-map" style="height:320px;"></div>
+            <div class="office-card" data-office="de">
+              <div class="office-card-map" id="map-de"></div>
+              <div class="office-card-info">
+                <p class="office-country">🇩🇪 Germany</p>
+                <p class="office-address">Hansastraße 116<br />13088 Berlin</p>
+                <a class="office-directions" href="https://www.google.com/maps/search/?api=1&query=52.5486,13.4468" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  Get Directions
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 

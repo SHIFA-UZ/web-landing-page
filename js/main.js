@@ -314,65 +314,57 @@ function initContactForm() {
 
 /* ── Offices Map (Leaflet + OpenStreetMap) ── */
 function initOfficesMap() {
-  const el = document.getElementById('offices-map');
-  if (!el) return;
-
   const offices = [
-    { name: '🇺🇿 Shifa Uzbekistan', address: 'Istiqbol street 30, Bulakbashi, Andijan', lat: 40.7829, lng: 72.3442 },
-    { name: '🇩🇪 Shifa Germany',    address: 'Hansastraße 116, 13088 Berlin',           lat: 52.5486, lng: 13.4468 },
+    { id: 'map-uz', name: '🇺🇿 Shifa Uzbekistan', address: 'Istiqbol street 30, Bulakbashi, Andijan', lat: 40.7829, lng: 72.3442, zoom: 15 },
+    { id: 'map-de', name: '🇩🇪 Shifa Germany',    address: 'Hansastraße 116, 13088 Berlin',           lat: 52.5486, lng: 13.4468, zoom: 15 },
   ];
 
-  let map = null;
+  var maps = {};
 
-  function buildMap() {
-    // Wait for Leaflet to be available
+  var tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+  var tileAttr = '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
+
+  function buildMaps() {
     if (typeof L === 'undefined') {
-      setTimeout(buildMap, 100);
+      setTimeout(buildMaps, 100);
       return;
     }
-    if (map) {
-      map.invalidateSize();
+    if (maps[offices[0].id]) {
+      Object.values(maps).forEach(function(m) { m.invalidateSize(); });
       return;
     }
 
-    map = L.map(el, { zoomControl: true, scrollWheelZoom: false });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18,
-    }).addTo(map);
-
-    const icon = L.divIcon({
+    var icon = L.divIcon({
       className: '',
       html: '<div class="map-marker"></div>',
-      iconSize:   [20, 20],
+      iconSize: [20, 20],
       iconAnchor: [10, 10],
-      popupAnchor:[0, -13],
+      popupAnchor: [0, -13],
     });
 
-    offices.forEach(o => {
-      L.marker([o.lat, o.lng], { icon })
-       .addTo(map)
-       .bindPopup('<strong>' + o.name + '</strong><br>' + o.address);
+    offices.forEach(function(o) {
+      var el = document.getElementById(o.id);
+      if (!el) return;
+      var m = L.map(el, { zoomControl: false, scrollWheelZoom: false, dragging: false, attributionControl: true });
+      L.tileLayer(tileUrl, { attribution: tileAttr, maxZoom: 18 }).addTo(m);
+      L.marker([o.lat, o.lng], { icon: icon }).addTo(m).bindPopup('<strong>' + o.name + '</strong><br>' + o.address);
+      m.setView([o.lat, o.lng], o.zoom);
+      setTimeout(function() { m.invalidateSize(); }, 50);
+      maps[o.id] = m;
     });
-
-    map.fitBounds(L.latLngBounds(offices.map(o => [o.lat, o.lng])), { padding: [40, 40] });
-
-    // Force tile refresh after layout settles
-    setTimeout(() => map.invalidateSize(), 50);
   }
 
   // Build when Contact page is navigated to
   document.addEventListener('click', e => {
     const trigger = e.target.closest('[data-page]');
     if (trigger && trigger.dataset.page === 'contact') {
-      setTimeout(buildMap, 350);
+      setTimeout(buildMaps, 350);
     }
   });
 
   // Build immediately if Contact is the landing page
   if (document.getElementById('page-contact').classList.contains('is-active')) {
-    setTimeout(buildMap, 100);
+    setTimeout(buildMaps, 100);
   }
 }
 
