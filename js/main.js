@@ -5,9 +5,9 @@
 
 // Apply theme before paint to prevent flash
 (function () {
-  if (localStorage.getItem('shifa-theme') === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
+  var saved = localStorage.getItem('shifa-theme');
+  var prefersDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (prefersDark) document.documentElement.setAttribute('data-theme', 'dark');
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -617,6 +617,10 @@ function initDarkMode() {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       setTheme(!isDark);
     });
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('shifa-theme')) setTheme(e.matches);
   });
 }
 

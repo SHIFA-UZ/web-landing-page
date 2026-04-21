@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-SHIFA is a static landing page for a digital healthcare platform. Zero dependencies — pure HTML5, CSS3, and vanilla JavaScript (ES6+). Only external resources are Leaflet.js (v1.9.4) via CDN for maps and Google Fonts (Manrope).
+SHIFA is a landing page for a digital healthcare platform. Frontend is pure HTML5, CSS3, and vanilla JavaScript (ES6+) with no framework dependencies. Backend is a single PHP file (`send-mail.php`) for the contact form. External CDN resources: Leaflet.js (v1.9.4) for maps and Google Fonts (Manrope). Hosted on cPanel (Engintron/nginx + Exim SMTP).
 
 ## Development
 
@@ -48,6 +48,7 @@ All interactive state uses `is-*` class toggling:
 - `is-visible` — cookie banner
 - `is-floating` / `is-exiting` — hero hand image states
 - `is-sent` — form submit button success state
+- `is-error` — form submit button error state
 
 ### JavaScript Module Pattern
 
@@ -75,6 +76,8 @@ All interactive state uses `is-*` class toggling:
 ## Deployment
 
 GitHub Actions (`.github/workflows/deploy.yml`) FTP-deploys to cPanel on push to `main`. Requires secrets: `FTP_HOST`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR`. Excludes: `.git*`, `.gitignore`, `CLAUDE.md`, `README.md`, `shifa_v7.html`.
+
+`.htaccess` is deployed alongside the site and provides security headers (CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) and blocks dotfile access. The CSP allowlists `'self'`, `unpkg.com` (Leaflet), `fonts.googleapis.com`, `fonts.gstatic.com`, and `*.tile.openstreetmap.org`.
 
 ## Best Practices
 
@@ -129,10 +132,11 @@ The contact form (`send-mail.php`) and `.htaccess` implement a hardened security
 - **Rate limiting** — file-based, 5 req/IP/hour, counts ALL attempts (not just successful ones). Do not raise the limit above 10 without user approval.
 - **Honeypot + timing check** — silent bot rejection. Do not remove the hidden `company_url` field or the `_t` timestamp field from the form.
 - **Origin/Referer validation** — do not remove. If adding new allowed origins (e.g., staging domain), add to the `$allowed_origins` array only.
-- **Input validation** — enforced at 3 layers (HTML maxlength, JS validation, PHP validation). All three must stay in sync. If changing a limit, update all three.
+- **Input validation** — enforced at 3 layers (HTML maxlength, JS validation, PHP validation). All three must stay in sync. Current limits: name ≤100, email ≤254, message ≤5000. If changing a limit, update all three.
 - **SRI hashes** — `integrity` attributes on CDN `<link>` and `<script>` tags. If upgrading Leaflet version, regenerate hashes.
 - **CSP header** — if adding new external resources (scripts, fonts, APIs), update the CSP in `.htaccess` to allowlist them explicitly. Never use `unsafe-eval` or wildcard `*`.
 - **Field allowlist** — PHP rejects any POST fields not in the `$allowed_fields` array. If adding a form field, add it to this array too.
+- **Confirmation emails** — after successful submission, a localized confirmation email is sent to the user in their current language (EN/DE/UZ/RU). The `_lang` hidden field carries the language. If adding a language, add a confirmation template in `send-mail.php`'s `$confirmations` array.
 
 ### Git Workflow
 
