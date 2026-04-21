@@ -16,7 +16,14 @@
       "Bash(python3 -m http.server 8000)",
       "Bash(py --version)",
       "Bash(py -m http.server 8000)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(sips *)",
+      "Bash(python3 -c ' *)",
+      "Bash(pip3 install *)",
+      "Bash(python3 *)",
+      "Bash(xmllint /Users/sheroziy.saidkhodjaev/Projects/Private/web-landing-page/sitemap.xml --noout)",
+      "Bash(awk -F'<h' '{print $2}')",
+      "Bash(awk *)"
     ]
   }
 }
