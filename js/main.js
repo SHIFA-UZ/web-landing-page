@@ -111,13 +111,13 @@ function initNavigation() {
         if (tabBtn) tabBtn.click();
       }
 
-      // If a scroll target was specified, scroll to it after page switch
+      // If a scroll target was specified, scroll to it after page transition
       const scrollTarget = trigger.dataset.scrollTo;
       if (scrollTarget) {
-        requestAnimationFrame(() => {
+        setTimeout(() => {
           const el = document.getElementById(scrollTarget);
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
+        }, 450);
       }
     }
   });
