@@ -409,7 +409,6 @@ section {
   color: var(--muted);
   margin-bottom: 16px;
   line-height: 1.5;
-  white-space: nowrap;
 }
 
 .hero-heading-sub em {
