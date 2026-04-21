@@ -261,11 +261,18 @@ nav.scrolled {
   display: none;
   min-height: 100vh;
   padding-top: var(--nav-h);
+  opacity: 0;
 }
 
 .page.is-active {
   display: block;
-  /* animation defined in ANIMATION SYSTEM section below */
+  opacity: 1;
+}
+
+.page.is-leaving {
+  display: block;
+  opacity: 0;
+  pointer-events: none;
 }
 
 
@@ -2150,8 +2157,13 @@ footer {
 
 /* ── Keyframes: page / tab transitions ── */
 @keyframes pageEnter {
-  from { opacity: 0; transform: translateY(28px); }
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pageLeave {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-10px); }
 }
 
 @keyframes tabEnter {
@@ -2300,7 +2312,11 @@ footer {
 /* ── Page / Tab entrance transitions ── */
 .page.is-active {
   display: block;
-  animation: pageEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: pageEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.page.is-leaving {
+  animation: pageLeave 0.2s ease-out forwards;
 }
 
 .tab-panel.is-active {
@@ -2379,7 +2395,9 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .hero::before, .hero::after,
   .features-hero::before, .features-hero::after,
-  .page-header::before, .page-header::after {
+  .page-header::before, .page-header::after,
+  .page.is-active,
+  .page.is-leaving {
     animation: none !important;
   }
 }

@@ -32,11 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function initNavigation() {
   const pages = ['product', 'features', 'pricing', 'contact', 'privacy'];
 
-  function navigateTo(pageId, skipScroll) {
-    // Hide all pages
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
+  var transitioning = false;
 
-    // Deactivate all nav links (desktop + drawer)
+  function navigateTo(pageId, skipScroll) {
+    const currentPage = document.querySelector('.page.is-active');
+    const targetPage  = document.getElementById(`page-${pageId}`);
+
+    if (!targetPage || targetPage === currentPage) return;
+
+    // Update nav links immediately
     pages.forEach(id => {
       const navLink    = document.getElementById(`n-${id}`);
       const drawerLink = document.getElementById(`d-${id}`);
@@ -44,18 +48,33 @@ function initNavigation() {
       if (drawerLink) drawerLink.classList.remove('is-active');
     });
 
-    // Show target page and activate its nav links
-    const targetPage    = document.getElementById(`page-${pageId}`);
     const targetNavLink = document.getElementById(`n-${pageId}`);
     const targetDrawer  = document.getElementById(`d-${pageId}`);
-
-    if (targetPage)    targetPage.classList.add('is-active');
     if (targetNavLink) targetNavLink.classList.add('is-active');
     if (targetDrawer)  targetDrawer.classList.add('is-active');
 
-    if (!skipScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
-    sessionStorage.setItem('shifa-page', pageId);
-    document.dispatchEvent(new CustomEvent('shifa:pagechange', { detail: { id: pageId } }));
+    function showTarget() {
+      document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('is-active');
+        p.classList.remove('is-leaving');
+      });
+      targetPage.classList.add('is-active');
+      if (!skipScroll) window.scrollTo({ top: 0 });
+      transitioning = false;
+      sessionStorage.setItem('shifa-page', pageId);
+      document.dispatchEvent(new CustomEvent('shifa:pagechange', { detail: { id: pageId } }));
+    }
+
+    if (currentPage && !skipScroll && !transitioning) {
+      transitioning = true;
+      currentPage.classList.add('is-leaving');
+      currentPage.addEventListener('animationend', function once() {
+        currentPage.removeEventListener('animationend', once);
+        showTarget();
+      });
+    } else {
+      showTarget();
+    }
   }
 
   // Restore saved page on refresh
