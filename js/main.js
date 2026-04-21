@@ -80,6 +80,15 @@ function initNavigation() {
         const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
         if (tabBtn) tabBtn.click();
       }
+
+      // If a scroll target was specified, scroll to it after page switch
+      const scrollTarget = trigger.dataset.scrollTo;
+      if (scrollTarget) {
+        requestAnimationFrame(() => {
+          const el = document.getElementById(scrollTarget);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
     }
   });
 }
