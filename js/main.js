@@ -61,7 +61,6 @@ function initNavigation() {
       targetPage.classList.add('is-active');
       if (!skipScroll) window.scrollTo({ top: 0 });
       transitioning = false;
-      sessionStorage.setItem('shifa-page', pageId);
       document.dispatchEvent(new CustomEvent('shifa:pagechange', { detail: { id: pageId } }));
     }
 
@@ -77,11 +76,22 @@ function initNavigation() {
     }
   }
 
-  // Restore saved page on refresh
-  const saved = sessionStorage.getItem('shifa-page');
-  if (saved && pages.includes(saved) && saved !== 'product') {
-    navigateTo(saved, true);
+  function getPageFromHash() {
+    const hash = location.hash.replace('#', '');
+    return pages.includes(hash) ? hash : null;
   }
+
+  // Restore page from hash on load, or default to product
+  const initialPage = getPageFromHash();
+  if (initialPage && initialPage !== 'product') {
+    navigateTo(initialPage, true);
+  }
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', () => {
+    const pageId = getPageFromHash() || 'product';
+    navigateTo(pageId, false);
+  });
 
   // Delegate clicks on [data-page] elements
   document.addEventListener('click', e => {
@@ -91,6 +101,7 @@ function initNavigation() {
     const pageId = trigger.dataset.page;
     if (pages.includes(pageId)) {
       e.preventDefault();
+      history.pushState(null, '', '#' + pageId);
       navigateTo(pageId);
 
       // If a specific tab was requested, activate it after navigation
