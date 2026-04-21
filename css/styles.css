@@ -14,6 +14,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -259,7 +260,7 @@ nav.scrolled {
    ============================================================ */
 .page {
   display: none;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding-top: var(--nav-h);
   opacity: 0;
 }
@@ -359,7 +360,7 @@ section {
    HERO
    ============================================================ */
 .hero {
-  height: calc(100vh - var(--nav-h));
+  height: calc(100dvh - var(--nav-h));
   min-height: 580px;
   display: flex;
   flex-direction: column;
@@ -441,7 +442,7 @@ section {
   display: block;
   width: auto;
   height: auto;
-  max-height: calc(100vh - var(--nav-h) - 60px);
+  max-height: calc(100dvh - var(--nav-h) - 60px);
   max-width: 660px;
 }
 
@@ -1682,7 +1683,7 @@ footer {
    ============================================================ */
 .privacy-section {
   padding: 80px 24px 100px;
-  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100dvh - var(--nav-h));
 }
 
 .privacy-wrap {
