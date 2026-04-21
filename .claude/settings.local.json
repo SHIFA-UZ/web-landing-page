@@ -23,7 +23,10 @@
       "Bash(python3 *)",
       "Bash(xmllint /Users/sheroziy.saidkhodjaev/Projects/Private/web-landing-page/sitemap.xml --noout)",
       "Bash(awk -F'<h' '{print $2}')",
-      "Bash(awk *)"
+      "Bash(awk *)",
+      "Bash(curl -s https://freeipapi.com/api/json)",
+      "Bash(curl -s https://ipapi.co/json/)",
+      "Bash(curl *)"
     ]
   }
 }

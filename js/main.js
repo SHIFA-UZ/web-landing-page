@@ -387,10 +387,24 @@ function setLanguage(lang) {
 }
 
 function initI18n() {
-  const saved = localStorage.getItem('shifa-lang') || 'en';
-  setLanguage(saved);
+  const saved = localStorage.getItem('shifa-lang');
 
-  // Delegate clicks on every [data-lang] button
+  if (saved) {
+    setLanguage(saved);
+  } else {
+    setLanguage('en');
+    fetch('https://api.country.is')
+      .then(r => r.json())
+      .then(data => {
+        const country = (data.country || '').toUpperCase();
+        var lang = 'en';
+        if (country === 'DE' || country === 'AT' || country === 'CH') lang = 'de';
+        else if (country === 'UZ') lang = 'ru';
+        if (lang !== 'en') setLanguage(lang);
+      })
+      .catch(() => {});
+  }
+
   document.addEventListener('click', e => {
     const btn = e.target.closest('[data-lang]');
     if (btn) setLanguage(btn.dataset.lang);
