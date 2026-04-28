@@ -16,17 +16,17 @@
       "Bash(python3 -m http.server 8000)",
       "Bash(py --version)",
       "Bash(py -m http.server 8000)",
-      "Bash(node -e ' *)",
-      "Bash(node c:/Users/franc/OneDrive/Desktop/Shifa/fix_copyright.js)",
-      "Bash(node c:/Users/franc/OneDrive/Desktop/Shifa/add_ru_social.js)",
-      "Bash(node c:/Users/franc/OneDrive/Desktop/Shifa/add_widget_keys.js)",
-      "Bash(npx serve *)",
-      "Bash(node c:/Users/franc/OneDrive/Desktop/Shifa/add_booking_keys.js)",
-      "Bash(node c:/Users/franc/OneDrive/Desktop/Shifa/add_sample_key.js)",
-      "Bash(node add_video_ru.js)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4200/)",
-      "Bash(sort -k6,7)",
-      "Bash(node add_doctor_keys.js)"
+      "Bash(node *)",
+      "Bash(sips *)",
+      "Bash(python3 -c ' *)",
+      "Bash(pip3 install *)",
+      "Bash(python3 *)",
+      "Bash(xmllint /Users/sheroziy.saidkhodjaev/Projects/Private/web-landing-page/sitemap.xml --noout)",
+      "Bash(awk -F'<h' '{print $2}')",
+      "Bash(awk *)",
+      "Bash(curl -s https://freeipapi.com/api/json)",
+      "Bash(curl -s https://ipapi.co/json/)",
+      "Bash(curl *)"
     ]
   }
 }

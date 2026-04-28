@@ -49,14 +49,15 @@
 /* Hover */
 .btn:hover {
   background:  var(--color-primary-hover);
-  box-shadow:  var(--shadow-default);
-  transform:   translateY(-1px);
+  box-shadow:  var(--shadow-teal);
+  transform:   translateY(-2px);
 }
 
 /* Active / pressed */
 .btn:active {
   transform:  translateY(0);
   box-shadow: none;
+  transition-duration: 0.06s;
 }
 
 /* Disabled */
@@ -126,13 +127,16 @@
 .btn-outline:hover {
   background:  var(--color-primary-light);
   border-color: var(--color-primary);
-  box-shadow:  none;
-  transform:   none;
+  box-shadow:  var(--shadow-default);
+  transform:   translateY(-2px);
 }
 
 /* Active */
 .btn-outline:active {
   background: var(--color-primary-light);
+  transform:  translateY(0);
+  box-shadow: none;
+  transition-duration: 0.06s;
 }
 
 /* Destructive */

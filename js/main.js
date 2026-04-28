@@ -5,9 +5,9 @@
 
 // Apply theme before paint to prevent flash
 (function () {
-  if (localStorage.getItem('shifa-theme') === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
+  var saved = localStorage.getItem('shifa-theme');
+  var prefersDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (prefersDark) document.documentElement.setAttribute('data-theme', 'dark');
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -63,11 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function initNavigation() {
   const pages = ['product', 'features', 'pricing', 'contact', 'privacy'];
 
-  function navigateTo(pageId, skipScroll) {
-    // Hide all pages
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
+  var transitioning = false;
 
-    // Deactivate all nav links (desktop + drawer)
+  function navigateTo(pageId, skipScroll) {
+    const currentPage = document.querySelector('.page.is-active');
+    const targetPage  = document.getElementById(`page-${pageId}`);
+
+    if (!targetPage || targetPage === currentPage) return;
+
+    // Update nav links immediately
     pages.forEach(id => {
       const navLink    = document.getElementById(`n-${id}`);
       const drawerLink = document.getElementById(`d-${id}`);
@@ -75,25 +79,50 @@ function initNavigation() {
       if (drawerLink) drawerLink.classList.remove('is-active');
     });
 
-    // Show target page and activate its nav links
-    const targetPage    = document.getElementById(`page-${pageId}`);
     const targetNavLink = document.getElementById(`n-${pageId}`);
     const targetDrawer  = document.getElementById(`d-${pageId}`);
-
-    if (targetPage)    targetPage.classList.add('is-active');
     if (targetNavLink) targetNavLink.classList.add('is-active');
     if (targetDrawer)  targetDrawer.classList.add('is-active');
 
-    if (!skipScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
-    sessionStorage.setItem('shifa-page', pageId);
-    document.dispatchEvent(new CustomEvent('shifa:pagechange', { detail: { id: pageId } }));
+    function showTarget() {
+      document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('is-active');
+        p.classList.remove('is-leaving');
+      });
+      targetPage.classList.add('is-active');
+      if (!skipScroll) window.scrollTo({ top: 0 });
+      transitioning = false;
+      document.dispatchEvent(new CustomEvent('shifa:pagechange', { detail: { id: pageId } }));
+    }
+
+    if (currentPage && !skipScroll && !transitioning) {
+      transitioning = true;
+      currentPage.classList.add('is-leaving');
+      currentPage.addEventListener('animationend', function once() {
+        currentPage.removeEventListener('animationend', once);
+        showTarget();
+      });
+    } else {
+      showTarget();
+    }
   }
 
-  // Restore saved page on refresh
-  const saved = sessionStorage.getItem('shifa-page');
-  if (saved && pages.includes(saved) && saved !== 'product') {
-    navigateTo(saved, true);
+  function getPageFromHash() {
+    const hash = location.hash.replace('#', '');
+    return pages.includes(hash) ? hash : null;
   }
+
+  // Restore page from hash on load, or default to product
+  const initialPage = getPageFromHash();
+  if (initialPage && initialPage !== 'product') {
+    navigateTo(initialPage, true);
+  }
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', () => {
+    const pageId = getPageFromHash() || 'product';
+    navigateTo(pageId, false);
+  });
 
   // Delegate clicks on [data-page] elements
   document.addEventListener('click', e => {
@@ -103,6 +132,7 @@ function initNavigation() {
     const pageId = trigger.dataset.page;
     if (pages.includes(pageId)) {
       e.preventDefault();
+      history.pushState(null, '', '#' + pageId);
       navigateTo(pageId);
 
       // If a specific tab was requested, activate it after navigation
@@ -110,6 +140,15 @@ function initNavigation() {
       if (tabId) {
         const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
         if (tabBtn) tabBtn.click();
+      }
+
+      // If a scroll target was specified, scroll to it after page transition
+      const scrollTarget = trigger.dataset.scrollTo;
+      if (scrollTarget) {
+        setTimeout(() => {
+          const el = document.getElementById(scrollTarget);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 450);
       }
     }
   });
@@ -306,65 +345,57 @@ function initContactForm() {
 
 /* ── Offices Map (Leaflet + OpenStreetMap) ── */
 function initOfficesMap() {
-  const el = document.getElementById('offices-map');
-  if (!el) return;
-
   const offices = [
-    { name: '🇺🇿 Shifa Uzbekistan', address: 'Istiqbol street 30, Bulakbashi, Andijan', lat: 40.7829, lng: 72.3442 },
-    { name: '🇩🇪 Shifa Germany',    address: 'Hansastraße 116, 13088 Berlin',           lat: 52.5486, lng: 13.4468 },
+    { id: 'map-uz', name: '🇺🇿 Shifa Uzbekistan', address: 'Istiqbol street 30, Bulakbashi, Andijan', lat: 40.7829, lng: 72.3442, zoom: 15 },
+    { id: 'map-de', name: '🇩🇪 Shifa Germany',    address: 'Hansastraße 116, 13088 Berlin',           lat: 52.5486, lng: 13.4468, zoom: 15 },
   ];
 
-  let map = null;
+  var maps = {};
 
-  function buildMap() {
-    // Wait for Leaflet to be available
+  var tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+  var tileAttr = '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
+
+  function buildMaps() {
     if (typeof L === 'undefined') {
-      setTimeout(buildMap, 100);
+      setTimeout(buildMaps, 100);
       return;
     }
-    if (map) {
-      map.invalidateSize();
+    if (maps[offices[0].id]) {
+      Object.values(maps).forEach(function(m) { m.invalidateSize(); });
       return;
     }
 
-    map = L.map(el, { zoomControl: true, scrollWheelZoom: false });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18,
-    }).addTo(map);
-
-    const icon = L.divIcon({
+    var icon = L.divIcon({
       className: '',
       html: '<div class="map-marker"></div>',
-      iconSize:   [20, 20],
+      iconSize: [20, 20],
       iconAnchor: [10, 10],
-      popupAnchor:[0, -13],
+      popupAnchor: [0, -13],
     });
 
-    offices.forEach(o => {
-      L.marker([o.lat, o.lng], { icon })
-       .addTo(map)
-       .bindPopup('<strong>' + o.name + '</strong><br>' + o.address);
+    offices.forEach(function(o) {
+      var el = document.getElementById(o.id);
+      if (!el) return;
+      var m = L.map(el, { zoomControl: false, scrollWheelZoom: false, dragging: false, attributionControl: true });
+      L.tileLayer(tileUrl, { attribution: tileAttr, maxZoom: 18 }).addTo(m);
+      L.marker([o.lat, o.lng], { icon: icon }).addTo(m).bindPopup('<strong>' + o.name + '</strong><br>' + o.address);
+      m.setView([o.lat, o.lng], o.zoom);
+      setTimeout(function() { m.invalidateSize(); }, 50);
+      maps[o.id] = m;
     });
-
-    map.fitBounds(L.latLngBounds(offices.map(o => [o.lat, o.lng])), { padding: [40, 40] });
-
-    // Force tile refresh after layout settles
-    setTimeout(() => map.invalidateSize(), 50);
   }
 
   // Build when Contact page is navigated to
   document.addEventListener('click', e => {
     const trigger = e.target.closest('[data-page]');
     if (trigger && trigger.dataset.page === 'contact') {
-      setTimeout(buildMap, 350);
+      setTimeout(buildMaps, 350);
     }
   });
 
   // Build immediately if Contact is the landing page
   if (document.getElementById('page-contact').classList.contains('is-active')) {
-    setTimeout(buildMap, 100);
+    setTimeout(buildMaps, 100);
   }
 }
 
@@ -410,10 +441,24 @@ function setLanguage(lang) {
 }
 
 function initI18n() {
-  const saved = localStorage.getItem('shifa-lang') || 'en';
-  setLanguage(saved);
+  const saved = localStorage.getItem('shifa-lang');
 
-  // Delegate clicks on every [data-lang] button
+  if (saved) {
+    setLanguage(saved);
+  } else {
+    setLanguage('en');
+    fetch('https://api.country.is')
+      .then(r => r.json())
+      .then(data => {
+        const country = (data.country || '').toUpperCase();
+        var lang = 'en';
+        if (country === 'DE' || country === 'AT' || country === 'CH') lang = 'de';
+        else if (country === 'UZ') lang = 'ru';
+        if (lang !== 'en') setLanguage(lang);
+      })
+      .catch(() => {});
+  }
+
   document.addEventListener('click', e => {
     const btn = e.target.closest('[data-lang]');
     if (btn) setLanguage(btn.dataset.lang);
@@ -513,9 +558,8 @@ function playHero(pageId) {
 
   items.forEach(({ sel, kf, dur, delay }) => {
     document.querySelectorAll(sel).forEach(node => {
-      // Cancel any running animation, force reflow, then start fresh
       node.style.animation = 'none';
-      void node.offsetHeight; // synchronous reflow commits the reset
+      void node.offsetHeight;
       node.style.animation = `${kf} ${dur} ${ease} ${delay} both`;
     });
   });
@@ -649,6 +693,10 @@ function initDarkMode() {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       setTheme(!isDark);
     });
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('shifa-theme')) setTheme(e.matches);
   });
 }
 
