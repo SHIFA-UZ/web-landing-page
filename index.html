@@ -76,6 +76,10 @@
     <!-- Hero -->
     <section class="hero">
 
+      <p class="hero-heading-sub hero-heading-sub--above-countdown" data-i18n="hero.heading">
+        Try our <em>Demo</em> before it's too late!
+      </p>
+
       <div class="countdown" id="countdown">
         <div class="countdown-unit">
           <span class="countdown-num" id="days">00</span>
@@ -101,9 +105,6 @@
           <h1 class="hero-heading-main" data-i18n="hero.heading.main">
             Take your health<br />into your own hands
           </h1>
-          <p class="hero-heading-sub" data-i18n="hero.heading">
-            Try our <em>Demo</em> before it's too late!
-          </p>
           <p class="hero-subtitle" data-i18n="hero.subtitle">
             Shifa is reshaping care by aligning the needs of patients and clinicians
             in one trusted, modern space.
@@ -200,14 +201,14 @@
                 </svg>
               </div>
               <div>
-                <div class="ai-chat-title">Smart Chat</div>
-                <div class="ai-chat-online"><span class="ai-chat-dot"></span>Shifa AI</div>
+                <div class="ai-chat-title" data-i18n="ai.widget.title">Smart Chat</div>
+                <div class="ai-chat-online"><span class="ai-chat-dot"></span><span data-i18n="ai.widget.online">Shifa AI</span></div>
               </div>
             </div>
             <div class="ai-chat-messages" id="ai-chat-messages"></div>
             <div class="ai-chat-input">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-              <span>Ask Shifa AI anything…</span>
+              <span data-i18n="ai.widget.input">Ask Shifa AI anything…</span>
               <button aria-label="Send">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
               </button>
@@ -350,7 +351,34 @@
               <p class="bullet" data-i18n="patients.booking.b3">Receive automated confirmations and calendar integration</p>
             </div>
           </div>
-          <img src="assets/images/remote-booking.png" alt="Remote booking screen" class="feature-row-img" />
+          <!-- Booking Widget (animated) -->
+          <div class="booking-widget" id="booking-widget">
+            <div class="bw-phone">
+
+              <div class="bw-card bw-doctor-card">
+                <div class="bw-avatar">SN</div>
+                <div class="bw-doctor-info">
+                  <div class="bw-doctor-name">Shavit Namtov</div>
+                  <div class="bw-appt-time">10:30, Sep 22 2025</div>
+                </div>
+                <svg class="bw-chevron" width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 1 7 7 1 13"/></svg>
+              </div>
+
+              <div class="bw-card bw-toggle-card">
+                <span class="bw-card-label" data-i18n="widget.booking.video">Video Consultation</span>
+                <div class="bw-toggle" id="bw-toggle">
+                  <div class="bw-toggle-thumb"></div>
+                </div>
+              </div>
+
+              <div class="bw-card bw-reason-card">
+                <div class="bw-reason-label" data-i18n="widget.booking.reason">Reason For Visit</div>
+                <div class="bw-reason-input"><span data-i18n="widget.booking.sample">General consultation</span></div>
+              </div>
+
+            </div>
+            <div class="bw-cursor" id="bw-cursor"></div>
+          </div>
         </div>
       </div>
 
@@ -365,7 +393,69 @@
               <p class="bullet" data-i18n="patients.video.b3">Private waiting rooms</p>
             </div>
           </div>
-          <img src="assets/images/video-consultation.png" alt="Video consultation screen" class="feature-row-img" />
+          <div class="vc-widget" id="vc-widget">
+            <div class="vc-phone">
+
+              <!-- Screen 1: Waiting Room -->
+              <div class="vc-screen vc-waiting is-active" id="vc-waiting">
+                <div class="vc-w-top">
+                  <div class="vc-dots">
+                    <span class="vc-dot"></span>
+                    <span class="vc-dot vc-dot--on"></span>
+                    <span class="vc-dot"></span>
+                  </div>
+                  <p class="vc-w-title" data-i18n="widget.video.waiting">Waiting for Doctor</p>
+                  <p class="vc-w-sub" data-i18n="widget.video.joining">Dr. Gulnora will join shortly</p>
+                </div>
+                <div class="vc-patient-frame">
+                  <div class="vc-patient-cam">
+                    <img src="assets/images/Images-1.png" alt="Patient camera" class="vc-patient-img" />
+                  </div>
+                </div>
+                <button class="vc-join-btn" id="vc-join" tabindex="-1">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                  <span data-i18n="widget.video.join">Join</span>
+                </button>
+              </div>
+
+              <!-- Screen 2: Video Call -->
+              <div class="vc-screen vc-call" id="vc-call">
+                <img src="assets/images/Images.png" alt="Doctor camera" class="vc-doctor-img" />
+                <div class="vc-call-header">
+                  <div class="vc-call-back">
+                    <svg width="8" height="13" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="7 1 1 7 7 13"/></svg>
+                    <span data-i18n="widget.video.doctor">Dr. Gulnora Yusupova</span>
+                  </div>
+                  <div class="vc-call-timer">
+                    <span class="vc-rec-dot"></span>
+                    <span>15:00</span>
+                  </div>
+                </div>
+                <div class="vc-pip">
+                  <img src="assets/images/Images-1.png" alt="" class="vc-pip-img" />
+                </div>
+                <div class="vc-controls">
+                  <button class="vc-ctrl" aria-label="Flip camera" tabindex="-1">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                  </button>
+                  <button class="vc-ctrl vc-ctrl--muted" aria-label="Microphone muted" tabindex="-1">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                  </button>
+                  <button class="vc-ctrl" aria-label="Camera" tabindex="-1">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                  </button>
+                  <button class="vc-ctrl" aria-label="Speaker" tabindex="-1">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                  </button>
+                  <button class="vc-ctrl vc-ctrl--end" aria-label="End call" tabindex="-1">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+            <div class="vc-cursor" id="vc-cursor"></div>
+          </div>
         </div>
       </div>
 
@@ -380,7 +470,94 @@
               <p class="bullet" data-i18n="patients.records.b3">Easily share and receive documents to/from your personal database</p>
             </div>
           </div>
-          <img src="assets/images/health-records.png" alt="Digital health records screen" class="feature-row-img" />
+          <!-- Patient EHR Phone Widget -->
+          <div class="ehrp-widget" id="ehrp-widget" aria-hidden="true">
+            <div class="ehrp-phone">
+              <!-- Screen 1: Documents list -->
+              <div class="ehrp-screen ehrp-main is-active" id="ehrp-main">
+                <div class="ehrp-header">
+                  <span class="ehrp-header-title" data-i18n="widget.ehr.doc.history">Document History</span>
+                </div>
+                <div class="ehrp-search-bar">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/><line x1="11" y1="11" x2="14.5" y2="14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  <span class="ehrp-search-placeholder" data-i18n="widget.ehr.search.docs">Search documents…</span>
+                </div>
+                <div class="ehrp-doc-list">
+                  <div class="ehrp-doc-row">
+                    <div class="ehrp-doc-icon ehrp-doc-icon--red">
+                      <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><rect x="0.5" y="0.5" width="9" height="11" rx="1.5" stroke="currentColor"/><line x1="2.5" y1="4" x2="7.5" y2="4" stroke="currentColor" stroke-width="1.2"/><line x1="2.5" y1="6.5" x2="6" y2="6.5" stroke="currentColor" stroke-width="1.2"/></svg>
+                    </div>
+                    <div class="ehrp-doc-info">
+                      <span class="ehrp-doc-name" data-i18n="widget.ehr.bloodtest">Blood Test Results</span>
+                      <span class="ehrp-doc-date">12 Apr 2025</span>
+                    </div>
+                  </div>
+                  <div class="ehrp-doc-row">
+                    <div class="ehrp-doc-icon ehrp-doc-icon--blue">
+                      <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><rect x="0.5" y="0.5" width="9" height="11" rx="1.5" stroke="currentColor"/><line x1="2.5" y1="4" x2="7.5" y2="4" stroke="currentColor" stroke-width="1.2"/><line x1="2.5" y1="6.5" x2="6" y2="6.5" stroke="currentColor" stroke-width="1.2"/></svg>
+                    </div>
+                    <div class="ehrp-doc-info">
+                      <span class="ehrp-doc-name" data-i18n="widget.ehr.allergy">Allergy Report</span>
+                      <span class="ehrp-doc-date">3 Mar 2025</span>
+                    </div>
+                  </div>
+                  <div class="ehrp-doc-row">
+                    <div class="ehrp-doc-icon ehrp-doc-icon--green">
+                      <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><rect x="0.5" y="0.5" width="9" height="11" rx="1.5" stroke="currentColor"/><line x1="2.5" y1="4" x2="7.5" y2="4" stroke="currentColor" stroke-width="1.2"/><line x1="2.5" y1="6.5" x2="6" y2="6.5" stroke="currentColor" stroke-width="1.2"/></svg>
+                    </div>
+                    <div class="ehrp-doc-info">
+                      <span class="ehrp-doc-name" data-i18n="widget.ehr.glucose">Glucose Levels</span>
+                      <span class="ehrp-doc-date">18 Feb 2025</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="ehrp-upload-btn" id="ehrp-upload-btn" tabindex="-1">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M4 5l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                  <span data-i18n="widget.ehr.upload.title">Upload Document</span>
+                </button>
+              </div>
+
+              <!-- Screen 2: Upload Modal (empty) -->
+              <div class="ehrp-screen ehrp-modal-screen" id="ehrp-modal-empty">
+                <div class="ehrp-modal-overlay"></div>
+                <div class="ehrp-modal">
+                  <div class="ehrp-modal-header">
+                    <span class="ehrp-modal-title" data-i18n="widget.ehr.upload.title">Upload Document</span>
+                  </div>
+                  <div class="ehrp-dropzone" id="ehrp-dropzone-empty">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 8l5-5 5 5" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17h16" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span class="ehrp-drop-text" data-i18n="widget.ehr.drop">Drop file here or select</span>
+                  </div>
+                  <button class="ehrp-select-btn" id="ehrp-select-btn" tabindex="-1" data-i18n="widget.ehr.select">Select from Device</button>
+                  <button class="ehrp-submit-btn ehrp-submit-btn--disabled" tabindex="-1" data-i18n="widget.ehr.upload.btn">Upload</button>
+                </div>
+              </div>
+
+              <!-- Screen 3: Upload Modal (file selected) -->
+              <div class="ehrp-screen ehrp-modal-screen" id="ehrp-modal-filled">
+                <div class="ehrp-modal-overlay"></div>
+                <div class="ehrp-modal">
+                  <div class="ehrp-modal-header">
+                    <span class="ehrp-modal-title" data-i18n="widget.ehr.upload.title">Upload Document</span>
+                  </div>
+                  <div class="ehrp-dropzone ehrp-dropzone--filled">
+                    <div class="ehrp-file-preview">
+                      <div class="ehrp-file-icon">
+                        <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="var(--color-primary-light)" stroke="var(--color-primary)"/><path d="M3 8h12M3 12h8" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </div>
+                      <div class="ehrp-file-meta">
+                        <span class="ehrp-file-name" data-i18n="widget.ehr.file.name">BloodTest_Report.pdf</span>
+                        <span class="ehrp-file-size">2.4 MB · PDF</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="ehrp-select-btn" tabindex="-1" data-i18n="widget.ehr.select">Select from Device</button>
+                  <button class="ehrp-submit-btn" id="ehrp-submit-btn" tabindex="-1" data-i18n="widget.ehr.upload.btn">Upload</button>
+                </div>
+              </div>
+            </div>
+            <div class="ehrp-cursor" id="ehrp-cursor"></div>
+          </div>
         </div>
       </div>
 
@@ -395,7 +572,34 @@
               <p class="bullet" data-i18n="patients.chat.b3">Symptom checking with suggested doctors or caretaking</p>
             </div>
           </div>
-          <img src="assets/images/ai-chat.png" alt="AI chat assistant screen" class="feature-row-img" />
+          <!-- Feature Chat Widget (reuses AI chat widget) -->
+          <div class="afc-widget" id="afc-widget" aria-hidden="true">
+            <div class="ai-chat-widget">
+              <div class="ai-chat-header">
+                <div class="ai-chat-avatar">
+                  <svg width="22" height="15" viewBox="0 0 26 18" fill="none" aria-hidden="true">
+                    <path d="M23.8664 2.36178L24.2355 1.54992L25.0473 1.18089L24.2355 0.811861L23.8664 0L23.4974 0.811861L22.6855 1.18089L23.4974 1.54992L23.8664 2.36178Z" fill="#fff"/>
+                    <path d="M23.8664 4.13306L23.4974 4.94492L22.6855 5.31395L23.4974 5.68297L23.8664 6.49483L24.2355 5.68297L25.0473 5.31395L24.2355 4.94492L23.8664 4.13306Z" fill="#fff"/>
+                    <path d="M21.6526 2.50946L20.9145 0.885742L20.1764 2.50946L18.5527 3.24752L20.1764 3.98557L20.9145 5.6093L21.6526 3.98557L23.2763 3.24752L21.6526 2.50946Z" fill="#fff"/>
+                    <path d="M4.6458 1.85571C4.66706 1.85571 4.68828 1.85586 4.70947 1.85614V1.85571H15.7368C16.4806 1.85571 17.0836 2.45777 17.0836 3.20045V3.41866C17.0836 4.16185 16.4798 4.76413 15.7355 4.76339L4.71028 4.75242V4.75253H4.71025C3.74888 4.75253 2.96954 5.5307 2.96954 6.49062C2.96954 7.44309 3.73682 8.21662 4.68789 8.22857V8.22262L16.6438 8.22262V8.22907C16.6631 8.22884 16.6825 8.22872 16.7019 8.22872C19.2655 8.22872 21.3438 10.3038 21.3438 12.8636C21.3438 15.4234 19.2655 17.4985 16.7019 17.4985C16.6825 17.4985 16.6631 17.4984 16.6438 17.4982V17.4985L5.34752 17.4985C4.60373 17.4985 4.00076 16.8965 4.00076 16.1538V15.9343C4.00076 15.1916 4.60373 14.5895 5.34752 14.5895L16.6438 14.5895V14.6017C17.6022 14.5982 18.3781 13.8214 18.3781 12.8636C18.3781 11.9059 17.6022 11.129 16.6438 11.1256V11.1316L4.68789 11.1316V11.1253C4.67387 11.1255 4.65985 11.1255 4.6458 11.1255C2.08215 11.1255 0.00390625 9.05042 0.00390625 6.49062C0.00390625 3.93083 2.08215 1.85571 4.6458 1.85571Z" fill="#fff"/>
+                    <ellipse cx="1.44217" cy="16.0278" rx="1.43827" ry="1.47069" fill="#fff"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="ai-chat-title" data-i18n="ai.widget.title">Smart Chat</div>
+                  <div class="ai-chat-online"><span class="ai-chat-dot"></span><span data-i18n="ai.widget.online">Shifa AI</span></div>
+                </div>
+              </div>
+              <div class="ai-chat-messages" id="afc-messages"></div>
+              <div class="ai-chat-input">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <span data-i18n="ai.widget.input">Ask Shifa AI anything…</span>
+                <button tabindex="-1" aria-label="Send">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -409,7 +613,129 @@
               <p class="bullet" data-i18n="patients.reminders.b2">Get reminded about picking up your medications or when to take them</p>
             </div>
           </div>
-          <img src="assets/images/smart-reminders.png" alt="Smart reminders screen" class="feature-row-img" />
+          <!-- Smart Reminders Phone Widget -->
+          <div class="smr-widget" id="smr-widget" aria-hidden="true">
+            <div class="smr-phone">
+              <!-- Teal header -->
+              <div class="smr-header">
+                <div class="smr-header-top">
+                  <div class="smr-logo-mark">
+                    <svg width="26" height="18" viewBox="0 0 26 18" fill="none" aria-hidden="true">
+                      <path d="M23.8664 2.36178L24.2355 1.54992L25.0473 1.18089L24.2355 0.811861L23.8664 0L23.4974 0.811861L22.6855 1.18089L23.4974 1.54992L23.8664 2.36178Z" fill="#fff"/>
+                      <path d="M23.8664 4.13306L23.4974 4.94492L22.6855 5.31395L23.4974 5.68297L23.8664 6.49483L24.2355 5.68297L25.0473 5.31395L24.2355 4.94492L23.8664 4.13306Z" fill="#fff"/>
+                      <path d="M21.6526 2.50946L20.9145 0.885742L20.1764 2.50946L18.5527 3.24752L20.1764 3.98557L20.9145 5.6093L21.6526 3.98557L23.2763 3.24752L21.6526 2.50946Z" fill="#fff"/>
+                      <path d="M4.6458 1.85571C4.66706 1.85571 4.68828 1.85586 4.70947 1.85614V1.85571H15.7368C16.4806 1.85571 17.0836 2.45777 17.0836 3.20045V3.41866C17.0836 4.16185 16.4798 4.76413 15.7355 4.76339L4.71028 4.75242V4.75253H4.71025C3.74888 4.75253 2.96954 5.5307 2.96954 6.49062C2.96954 7.44309 3.73682 8.21662 4.68789 8.22857V8.22262L16.6438 8.22262V8.22907C16.6631 8.22884 16.6825 8.22872 16.7019 8.22872C19.2655 8.22872 21.3438 10.3038 21.3438 12.8636C21.3438 15.4234 19.2655 17.4985 16.7019 17.4985C16.6825 17.4985 16.6631 17.4984 16.6438 17.4982V17.4985L5.34752 17.4985C4.60373 17.4985 4.00076 16.8965 4.00076 16.1538V15.9343C4.00076 15.1916 4.60373 14.5895 5.34752 14.5895L16.6438 14.5895V14.6017C17.6022 14.5982 18.3781 13.8214 18.3781 12.8636C18.3781 11.9059 17.6022 11.129 16.6438 11.1256V11.1316L4.68789 11.1316V11.1253C4.67387 11.1255 4.65985 11.1255 4.6458 11.1255C2.08215 11.1255 0.00390625 9.05042 0.00390625 6.49062C0.00390625 3.93083 2.08215 1.85571 4.6458 1.85571Z" fill="#fff"/>
+                      <ellipse cx="1.44217" cy="16.0278" rx="1.43827" ry="1.47069" fill="#fff"/>
+                    </svg>
+                  </div>
+                  <div class="smr-header-icons">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 3h14v11H3z" rx="1.5" stroke="white" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 14l3 3 3-3" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="7" r="3.5" stroke="white" stroke-width="1.6"/><path d="M3 18c0-3.866 3.134-6 7-6s7 2.134 7 6" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  </div>
+                </div>
+                <div class="smr-greeting" data-i18n="widget.reminders.hello">Hello, Malika</div>
+              </div>
+
+              <!-- Body -->
+              <div class="smr-body">
+                <p class="smr-section-title" data-i18n="widget.reminders.upcoming">Upcoming Appointments</p>
+                <div class="smr-apt-card">
+                  <div class="smr-apt-avatar smr-av--teal">SM</div>
+                  <div class="smr-apt-info">
+                    <span class="smr-apt-name">Sitora Mamatova</span>
+                    <span class="smr-apt-clinic" data-i18n="widget.reminders.appt.clinic">Tashkent Med Center</span>
+                  </div>
+                  <div class="smr-apt-meta">
+                    <span class="smr-apt-time-val" data-i18n="widget.reminders.appt.time">17:30, Today</span>
+                    <span class="smr-apt-type" data-i18n="widget.reminders.appt.type">Blood Tests</span>
+                  </div>
+                  <span class="smr-chevron">›</span>
+                </div>
+
+                <p class="smr-section-title" data-i18n="widget.reminders.nearby">Doctors near me</p>
+
+                <div class="smr-doc-card">
+                  <div class="smr-doc-avatar smr-av--blue">AR</div>
+                  <div class="smr-doc-info">
+                    <span class="smr-doc-name">Azamat Rakhimov</span>
+                    <span class="smr-doc-clinic" data-i18n="widget.reminders.clinic1">Sog'lom Hayot Klinikasi</span>
+                  </div>
+                  <span class="smr-chevron">›</span>
+                </div>
+                <div class="smr-doc-card">
+                  <div class="smr-doc-avatar smr-av--purple">NJ</div>
+                  <div class="smr-doc-info">
+                    <span class="smr-doc-name">Nodira Jalilova</span>
+                    <span class="smr-doc-clinic" data-i18n="widget.reminders.clinic2">Zukhro Med</span>
+                  </div>
+                  <span class="smr-chevron">›</span>
+                </div>
+                <div class="smr-doc-card">
+                  <div class="smr-doc-avatar smr-av--orange">UT</div>
+                  <div class="smr-doc-info">
+                    <span class="smr-doc-name">Ulugbek Tursunov</span>
+                    <span class="smr-doc-clinic" data-i18n="widget.reminders.clinic3">Salomatlik Klinika</span>
+                  </div>
+                  <span class="smr-chevron">›</span>
+                </div>
+              </div>
+
+              <!-- Bottom nav -->
+              <div class="smr-bottom-nav">
+                <div class="smr-nav-item smr-nav-item--active">
+                  <div class="smr-nav-pill">
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 4h10v13l-5-3.5L5 17V4z" fill="white"/></svg>
+                  </div>
+                  <span data-i18n="widget.reminders.home">Home</span>
+                </div>
+                <div class="smr-nav-item">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M10 6v8M6 10h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                  <span data-i18n="widget.reminders.bookings">Bookings</span>
+                </div>
+                <div class="smr-nav-item">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8h14v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8z" stroke="currentColor" stroke-width="1.7"/><path d="M3 8l2.5-4h9L17 8" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+                  <span data-i18n="widget.reminders.documents">Documents</span>
+                </div>
+                <div class="smr-nav-item">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M4 18c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                  <span data-i18n="widget.reminders.account">Account</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notification 1: Meds -->
+            <div class="smr-notif" id="smr-notif-1">
+              <div class="smr-notif-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <circle cx="10" cy="4"  r="2.5" fill="var(--color-primary)"/>
+                  <circle cx="4"  cy="15" r="2.5" fill="var(--color-primary)"/>
+                  <circle cx="16" cy="15" r="2.5" fill="var(--color-primary)"/>
+                  <line x1="10" y1="6.5" x2="5.5"  y2="12.5" stroke="var(--color-primary)" stroke-width="1.6" stroke-linecap="round"/>
+                  <line x1="10" y1="6.5" x2="14.5" y2="12.5" stroke="var(--color-primary)" stroke-width="1.6" stroke-linecap="round"/>
+                  <line x1="6.5" y1="15" x2="13.5" y2="15"   stroke="var(--color-primary)" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="smr-notif-text">
+                <div class="smr-notif-title" data-i18n="widget.reminders.notif1.title">Time to take your meds!</div>
+                <div class="smr-notif-body"  data-i18n="widget.reminders.notif1.body">You have 2 more doses left</div>
+              </div>
+            </div>
+
+            <!-- Notification 2: Appointment -->
+            <div class="smr-notif" id="smr-notif-2">
+              <div class="smr-notif-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <rect x="2" y="6" width="16" height="12" rx="2" stroke="var(--color-primary)" stroke-width="1.6"/>
+                  <path d="M6 6V4a4 4 0 0 1 8 0v2" stroke="var(--color-primary)" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M10 10v4M8 12h4" stroke="var(--color-primary)" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="smr-notif-text">
+                <div class="smr-notif-title" data-i18n="widget.reminders.notif2.title">Appointment tomorrow</div>
+                <div class="smr-notif-body"  data-i18n="widget.reminders.notif2.body">Dr. Sukar is at 08:00</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -424,7 +750,34 @@
               <p class="bullet" data-i18n="patients.aireports.b3">Red flag reports for emergency care</p>
             </div>
           </div>
-          <img src="assets/images/ai-reports.png" alt="AI-driven reports screen" class="feature-row-img" />
+          <!-- AI Report Chat Widget -->
+          <div class="air-widget" id="air-widget" aria-hidden="true">
+            <div class="ai-chat-widget">
+              <div class="ai-chat-header">
+                <div class="ai-chat-avatar">
+                  <svg width="22" height="15" viewBox="0 0 26 18" fill="none" aria-hidden="true">
+                    <path d="M23.8664 2.36178L24.2355 1.54992L25.0473 1.18089L24.2355 0.811861L23.8664 0L23.4974 0.811861L22.6855 1.18089L23.4974 1.54992L23.8664 2.36178Z" fill="#fff"/>
+                    <path d="M23.8664 4.13306L23.4974 4.94492L22.6855 5.31395L23.4974 5.68297L23.8664 6.49483L24.2355 5.68297L25.0473 5.31395L24.2355 4.94492L23.8664 4.13306Z" fill="#fff"/>
+                    <path d="M21.6526 2.50946L20.9145 0.885742L20.1764 2.50946L18.5527 3.24752L20.1764 3.98557L20.9145 5.6093L21.6526 3.98557L23.2763 3.24752L21.6526 2.50946Z" fill="#fff"/>
+                    <path d="M4.6458 1.85571C4.66706 1.85571 4.68828 1.85586 4.70947 1.85614V1.85571H15.7368C16.4806 1.85571 17.0836 2.45777 17.0836 3.20045V3.41866C17.0836 4.16185 16.4798 4.76413 15.7355 4.76339L4.71028 4.75242V4.75253H4.71025C3.74888 4.75253 2.96954 5.5307 2.96954 6.49062C2.96954 7.44309 3.73682 8.21662 4.68789 8.22857V8.22262L16.6438 8.22262V8.22907C16.6631 8.22884 16.6825 8.22872 16.7019 8.22872C19.2655 8.22872 21.3438 10.3038 21.3438 12.8636C21.3438 15.4234 19.2655 17.4985 16.7019 17.4985C16.6825 17.4985 16.6631 17.4984 16.6438 17.4982V17.4985L5.34752 17.4985C4.60373 17.4985 4.00076 16.8965 4.00076 16.1538V15.9343C4.00076 15.1916 4.60373 14.5895 5.34752 14.5895L16.6438 14.5895V14.6017C17.6022 14.5982 18.3781 13.8214 18.3781 12.8636C18.3781 11.9059 17.6022 11.129 16.6438 11.1256V11.1316L4.68789 11.1316V11.1253C4.67387 11.1255 4.65985 11.1255 4.6458 11.1255C2.08215 11.1255 0.00390625 9.05042 0.00390625 6.49062C0.00390625 3.93083 2.08215 1.85571 4.6458 1.85571Z" fill="#fff"/>
+                    <ellipse cx="1.44217" cy="16.0278" rx="1.43827" ry="1.47069" fill="#fff"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="ai-chat-title" data-i18n="ai.widget.title">Smart Chat</div>
+                  <div class="ai-chat-online"><span class="ai-chat-dot"></span><span data-i18n="ai.widget.online">Shifa AI</span></div>
+                </div>
+              </div>
+              <div class="ai-chat-messages" id="air-messages"></div>
+              <div class="ai-chat-input">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                <span data-i18n="widget.aireport.input">Send a document…</span>
+                <button tabindex="-1" aria-label="Send">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div><!-- /panel-patients -->
@@ -456,7 +809,151 @@
               <p class="bullet" data-i18n="doctors.patients.b3">Easily book appointments for any patient during appointments</p>
             </div>
           </div>
-          <img src="assets/images/patient-management.png" alt="Patient management screen" class="feature-row-img" />
+          <!-- Patient Management Tablet Widget -->
+          <div class="pm-widget" id="pm-widget" aria-hidden="true">
+            <div class="pm-tablet">
+
+              <!-- Patient list column -->
+              <div class="pm-list-col">
+                <div class="pm-list-header">
+                  <span class="pm-list-title" data-i18n="widget.ehr.patients">Patients</span>
+                  <div class="pm-search-bar">
+                    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.8"/><line x1="11" y1="11" x2="14.5" y2="14.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    <span data-i18n="widget.pm.search">Search</span>
+                  </div>
+                </div>
+                <div class="pm-list-rows">
+                  <div class="pm-row" id="pm-row-0">
+                    <div class="pm-row-av pm-av--blue">JK</div>
+                    <span class="pm-row-name">Jasur Karimov</span>
+                    <span class="pm-row-chev">›</span>
+                  </div>
+                  <div class="pm-row">
+                    <div class="pm-row-av pm-av--purple">GY</div>
+                    <span class="pm-row-name">Gulnora Yusupova</span>
+                    <span class="pm-row-chev">›</span>
+                  </div>
+                  <div class="pm-row" id="pm-row-2">
+                    <div class="pm-row-av pm-av--orange">UT</div>
+                    <span class="pm-row-name">Ulugbek Tursunov</span>
+                    <span class="pm-row-chev">›</span>
+                  </div>
+                  <div class="pm-row">
+                    <div class="pm-row-av pm-av--pink">DR</div>
+                    <span class="pm-row-name">Dilshoda Rasulova</span>
+                    <span class="pm-row-chev">›</span>
+                  </div>
+                  <div class="pm-row">
+                    <div class="pm-row-av pm-av--green">SN</div>
+                    <span class="pm-row-name">Shavkat Nematov</span>
+                    <span class="pm-row-chev">›</span>
+                  </div>
+                  <div class="pm-row">
+                    <div class="pm-row-av pm-av--teal">NA</div>
+                    <span class="pm-row-name">Nodira Akhmedova</span>
+                    <span class="pm-row-chev">›</span>
+                  </div>
+                  <div class="pm-row">
+                    <div class="pm-row-av pm-av--blue2">AR</div>
+                    <span class="pm-row-name">Azamat Rakhimov</span>
+                    <span class="pm-row-chev">›</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Detail column -->
+              <div class="pm-detail-col">
+
+                <!-- Profile 0: Jasur Karimov -->
+                <div class="pm-profile" id="pm-profile-0">
+                  <div class="pm-ph">
+                    <div class="pm-ph-av pm-av--blue">JK</div>
+                    <span class="pm-ph-name">Jasur Karimov</span>
+                  </div>
+                  <div class="pm-profile-body">
+                    <div class="pm-card">
+                      <div class="pm-card-title" data-i18n="widget.pm.general">General</div>
+                      <div class="pm-field" data-i18n="widget.pm.birth">Birth Date</div>
+                      <div class="pm-field" data-i18n="widget.pm.phone">Phone Number</div>
+                      <div class="pm-field">Email</div>
+                      <div class="pm-field" data-i18n="widget.pm.address">Address</div>
+                      <div class="pm-field" data-i18n="widget.pm.language">Language</div>
+                    </div>
+                    <div class="pm-card">
+                      <div class="pm-card-title" data-i18n="widget.ehr.doc.history">Document History</div>
+                      <div class="pm-doc-row">
+                        <div>
+                          <div class="pm-doc-name" data-i18n="widget.ehr.general">General Checkup</div>
+                          <div class="pm-doc-date">15.03.2025</div>
+                        </div>
+                        <button class="pm-dl-btn" tabindex="-1" aria-label="Download">
+                          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8M5 7l3 3 3-3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="13" x2="13" y2="13" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+                        </button>
+                      </div>
+                      <div class="pm-doc-row">
+                        <div>
+                          <div class="pm-doc-name" data-i18n="widget.pm.prescription">Prescription</div>
+                          <div class="pm-doc-date">15.03.2025</div>
+                        </div>
+                        <button class="pm-dl-btn" tabindex="-1" aria-label="Download">
+                          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8M5 7l3 3 3-3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="13" x2="13" y2="13" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="pm-upload-btn" tabindex="-1">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1v9M5 4l3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="2" y1="13" x2="14" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    <span data-i18n="widget.ehr.upload.title">Upload Document</span>
+                  </button>
+                </div>
+
+                <!-- Profile 1: Ulugbek Tursunov -->
+                <div class="pm-profile" id="pm-profile-1">
+                  <div class="pm-ph">
+                    <div class="pm-ph-av pm-av--orange">UT</div>
+                    <span class="pm-ph-name">Ulugbek Tursunov</span>
+                  </div>
+                  <div class="pm-profile-body">
+                    <div class="pm-card">
+                      <div class="pm-card-title" data-i18n="widget.pm.general">General</div>
+                      <div class="pm-field" data-i18n="widget.pm.birth">Birth Date</div>
+                      <div class="pm-field" data-i18n="widget.pm.phone">Phone Number</div>
+                      <div class="pm-field">Email</div>
+                      <div class="pm-field" data-i18n="widget.pm.address">Address</div>
+                      <div class="pm-field" data-i18n="widget.pm.language">Language</div>
+                    </div>
+                    <div class="pm-card">
+                      <div class="pm-card-title" data-i18n="widget.ehr.doc.history">Document History</div>
+                      <div class="pm-doc-row">
+                        <div>
+                          <div class="pm-doc-name" data-i18n="widget.pm.bloodtest">Blood Test</div>
+                          <div class="pm-doc-date">21.09.2024</div>
+                        </div>
+                        <button class="pm-dl-btn" tabindex="-1" aria-label="Download">
+                          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8M5 7l3 3 3-3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="13" x2="13" y2="13" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+                        </button>
+                      </div>
+                      <div class="pm-doc-row">
+                        <div>
+                          <div class="pm-doc-name" data-i18n="widget.pm.bloodtest">Blood Test</div>
+                          <div class="pm-doc-date">21.09.2024</div>
+                        </div>
+                        <button class="pm-dl-btn" tabindex="-1" aria-label="Download">
+                          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8M5 7l3 3 3-3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="13" x2="13" y2="13" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="pm-upload-btn" tabindex="-1">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1v9M5 4l3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="2" y1="13" x2="14" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    <span data-i18n="widget.ehr.upload.title">Upload Document</span>
+                  </button>
+                </div>
+
+              </div><!-- /pm-detail-col -->
+            </div><!-- /pm-tablet -->
+            <div class="pm-cursor" id="pm-cursor"></div>
+          </div>
         </div>
       </div>
 
@@ -471,7 +968,165 @@
               <p class="bullet" data-i18n="doctors.analytics.b3">Export your analytics to CSVs</p>
             </div>
           </div>
-          <img src="assets/images/analytics.png" alt="Analytics dashboard" class="feature-row-img" />
+          <!-- Analytics Dashboard Widget -->
+          <div class="anl-widget" id="anl-widget" aria-hidden="true">
+            <div class="anl-top">
+
+              <!-- Left: Today's schedule -->
+              <div class="anl-today-panel">
+                <div class="anl-panel-hdr">
+                  <span class="anl-panel-title" data-i18n="widget.anl.today">Today</span>
+                </div>
+                <div class="anl-list-mask">
+                  <div class="anl-appt-list" id="anl-appt-list">
+
+                    <div class="anl-appt anl-appt--active">
+                      <div class="anl-appt-lhs">
+                        <div class="anl-dot anl-dot--check">
+                          <svg width="8" height="8" viewBox="0 0 10 10" fill="none" aria-hidden="true"><polyline points="2,5 4.3,7.5 8.5,2.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div class="anl-appt-time"><span>10:00 am</span><span>10:30 am</span></div>
+                      </div>
+                      <div class="anl-av anl-av--a">JK</div>
+                      <div class="anl-appt-info">
+                        <span class="anl-appt-name">Jasur Karimov</span>
+                        <span class="anl-appt-sub" data-i18n="widget.anl.clinic">Tashkent Med Center</span>
+                      </div>
+                      <button class="anl-start" tabindex="-1" data-i18n="widget.anl.start">Start</button>
+                    </div>
+
+                    <div class="anl-appt">
+                      <div class="anl-appt-lhs">
+                        <div class="anl-dot"></div>
+                        <div class="anl-appt-time"><span>11:00 am</span><span>11:30 am</span></div>
+                      </div>
+                      <div class="anl-av anl-av--b">GY</div>
+                      <div class="anl-appt-info">
+                        <span class="anl-appt-name">Gulnora Yusupova</span>
+                        <span class="anl-appt-sub anl-appt-video">
+                          <svg width="10" height="8" viewBox="0 0 14 11" fill="none" aria-hidden="true"><rect x="1" y="1" width="8" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M9 3.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                          <span data-i18n="widget.anl.video">Video Consultation</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="anl-appt">
+                      <div class="anl-appt-lhs">
+                        <div class="anl-dot"></div>
+                        <div class="anl-appt-time"><span>12:00 pm</span><span>12:30 pm</span></div>
+                      </div>
+                      <div class="anl-av anl-av--c">NA</div>
+                      <div class="anl-appt-info">
+                        <span class="anl-appt-name">Nodira Akhmedova</span>
+                        <span class="anl-appt-sub anl-appt-video">
+                          <svg width="10" height="8" viewBox="0 0 14 11" fill="none" aria-hidden="true"><rect x="1" y="1" width="8" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M9 3.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                          <span data-i18n="widget.anl.video">Video Consultation</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="anl-appt">
+                      <div class="anl-appt-lhs">
+                        <div class="anl-dot"></div>
+                        <div class="anl-appt-time"><span>13:00 pm</span><span>13:30 pm</span></div>
+                      </div>
+                      <div class="anl-av anl-av--d">UT</div>
+                      <div class="anl-appt-info">
+                        <span class="anl-appt-name">Ulugbek Tursunov</span>
+                        <span class="anl-appt-sub anl-appt-video">
+                          <svg width="10" height="8" viewBox="0 0 14 11" fill="none" aria-hidden="true"><rect x="1" y="1" width="8" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M9 3.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                          <span data-i18n="widget.anl.video">Video Consultation</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="anl-appt">
+                      <div class="anl-appt-lhs">
+                        <div class="anl-dot"></div>
+                        <div class="anl-appt-time"><span>14:00 pm</span><span>14:30 pm</span></div>
+                      </div>
+                      <div class="anl-av anl-av--e">RJ</div>
+                      <div class="anl-appt-info">
+                        <span class="anl-appt-name">Rustam Jalilov</span>
+                        <span class="anl-appt-sub anl-appt-video">
+                          <svg width="10" height="8" viewBox="0 0 14 11" fill="none" aria-hidden="true"><rect x="1" y="1" width="8" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M9 3.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                          <span data-i18n="widget.anl.video">Video Consultation</span>
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Analytics stats + chart -->
+              <div class="anl-stats-panel">
+                <div class="anl-panel-hdr">
+                  <span class="anl-panel-title" data-i18n="widget.anl.analytics">Analytics</span>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="3" r="1.3" fill="currentColor"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="8" cy="13" r="1.3" fill="currentColor"/></svg>
+                </div>
+
+                <div class="anl-kpis">
+                  <div class="anl-kpi">
+                    <span class="anl-kpi-label" data-i18n="widget.anl.weekly">Weekly appointments</span>
+                    <div class="anl-kpi-row">
+                      <span class="anl-kpi-num" id="anl-kpi-1">0</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><polyline points="18,15 12,9 6,15" stroke="var(--color-primary)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="18,21 12,15 6,21" stroke="var(--color-primary)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="anl-kpi-sub" data-i18n="widget.anl.moreweek">15 more than last week</span>
+                  </div>
+                  <div class="anl-kpi anl-kpi--sep">
+                    <span class="anl-kpi-label" data-i18n="widget.anl.bookings">Bookings last 7 days</span>
+                    <div class="anl-kpi-row">
+                      <span class="anl-kpi-num anl-kpi-num--red" id="anl-kpi-2">0</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><polyline points="18,9 12,15 6,9" stroke="var(--color-destructive)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="18,3 12,9 6,3" stroke="var(--color-destructive)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="anl-kpi-sub" data-i18n="widget.anl.moreweek">15 more than last week</span>
+                  </div>
+                </div>
+
+                <div class="anl-chart-wrap">
+                  <div class="anl-chart-hdr">
+                    <span data-i18n="widget.anl.monthly">Monthly visits</span>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="3" r="1.3" fill="currentColor"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="8" cy="13" r="1.3" fill="currentColor"/></svg>
+                  </div>
+                  <svg class="anl-chart" id="anl-chart" viewBox="0 0 220 76" preserveAspectRatio="none" aria-hidden="true">
+                    <line x1="0" y1="19" x2="220" y2="19" stroke="var(--color-border)" stroke-width="0.6"/>
+                    <line x1="0" y1="38" x2="220" y2="38" stroke="var(--color-border)" stroke-width="0.6"/>
+                    <line x1="0" y1="57" x2="220" y2="57" stroke="var(--color-border)" stroke-width="0.6"/>
+                    <path id="anl-line1"
+                          d="M 5,66 C 38,60 68,46 100,32 C 132,20 170,12 215,6"
+                          stroke="var(--color-primary)" stroke-width="2.2" fill="none" stroke-linecap="round"
+                          pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+                    <path id="anl-line2"
+                          d="M 5,73 C 38,70 68,64 100,58 C 132,52 170,46 215,42"
+                          stroke="var(--color-primary-dark)" stroke-width="2.2" fill="none" stroke-linecap="round"
+                          pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+                  </svg>
+                  <div class="anl-chart-xlabels">
+                    <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- AI search bar -->
+            <div class="anl-ai-bar">
+              <div class="anl-chips">
+                <span class="anl-chip" data-i18n="widget.anl.chip1">Give me a summary of my next patients history</span>
+                <span class="anl-chip" data-i18n="widget.anl.chip2">Do I have any free slots next Thursday?</span>
+              </div>
+              <div class="anl-ai-input">
+                <div class="anl-ai-logo">
+                  <svg width="18" height="12" viewBox="0 0 26 18" fill="none" aria-hidden="true">
+                    <path d="M4.6458 1.85571C4.66706 1.85571 4.68828 1.85586 4.70947 1.85614V1.85571H15.7368C16.4806 1.85571 17.0836 2.45777 17.0836 3.20045V3.41866C17.0836 4.16185 16.4798 4.76413 15.7355 4.76339L4.71028 4.75242V4.75253H4.71025C3.74888 4.75253 2.96954 5.5307 2.96954 6.49062C2.96954 7.44309 3.73682 8.21662 4.68789 8.22857V8.22262L16.6438 8.22262V8.22907C16.6631 8.22884 16.6825 8.22872 16.7019 8.22872C19.2655 8.22872 21.3438 10.3038 21.3438 12.8636C21.3438 15.4234 19.2655 17.4985 16.7019 17.4985C16.6825 17.4985 16.6631 17.4984 16.6438 17.4982V17.4985L5.34752 17.4985C4.60373 17.4985 4.00076 16.8965 4.00076 16.1538V15.9343C4.00076 15.1916 4.60373 14.5895 5.34752 14.5895L16.6438 14.5895V14.6017C17.6022 14.5982 18.3781 13.8214 18.3781 12.8636C18.3781 11.9059 17.6022 11.129 16.6438 11.1256V11.1316L4.68789 11.1316V11.1253C4.67387 11.1255 4.65985 11.1255 4.6458 11.1255C2.08215 11.1255 0.00390625 9.05042 0.00390625 6.49062C0.00390625 3.93083 2.08215 1.85571 4.6458 1.85571Z" fill="var(--color-primary)"/>
+                  </svg>
+                </div>
+                <span class="anl-ai-ph" data-i18n="widget.anl.ask">Ask Shifa AI</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -486,7 +1141,100 @@
               <p class="bullet" data-i18n="doctors.prescription.b3">Easily provide e-prescriptions for export</p>
             </div>
           </div>
-          <img src="assets/images/prescription.png" alt="Prescription drafting screen" class="feature-row-img" />
+          <!-- PRESCRIPTION DRAFTING WIDGET -->
+          <div class="rx-widget" id="rx-widget" aria-hidden="true">
+            <div class="rx-phone">
+
+              <!-- Header -->
+              <div class="rx-hdr">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="7 1 1 7 7 13"/></svg>
+                <span class="rx-hdr-title" data-i18n="widget.rx.header">Prescriptions</span>
+                <button class="rx-hdr-new" id="rx-new-btn" tabindex="-1" data-i18n="widget.rx.new">+ New</button>
+              </div>
+
+              <!-- Prescription list (background state) -->
+              <div class="rx-list">
+                <div class="rx-item">
+                  <div class="rx-item-icon">
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="10" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="rx-item-body">
+                    <div class="rx-item-med">Metformin 500mg</div>
+                    <div class="rx-item-sub">Zarnigor A. · 30 days</div>
+                  </div>
+                  <div class="rx-item-date">Apr 12</div>
+                </div>
+                <div class="rx-item">
+                  <div class="rx-item-icon">
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="10" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="rx-item-body">
+                    <div class="rx-item-med">Lisinopril 10mg</div>
+                    <div class="rx-item-sub">Bobur K. · 14 days</div>
+                  </div>
+                  <div class="rx-item-date">Apr 8</div>
+                </div>
+                <div class="rx-item">
+                  <div class="rx-item-icon">
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="10" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="rx-item-body">
+                    <div class="rx-item-med">Ibuprofen 400mg</div>
+                    <div class="rx-item-sub">Sherzod M. · 5 days</div>
+                  </div>
+                  <div class="rx-item-date">Apr 3</div>
+                </div>
+              </div>
+
+              <!-- Modal: slides up from bottom -->
+              <div class="rx-modal" id="rx-modal">
+                <div class="rx-modal-handle"></div>
+                <div class="rx-modal-title" data-i18n="widget.rx.title">New Prescription</div>
+
+                <div class="rx-field">
+                  <div class="rx-label" data-i18n="widget.rx.patient">Patient</div>
+                  <div class="rx-input" id="rx-patient-input"></div>
+                </div>
+                <div class="rx-field">
+                  <div class="rx-label" data-i18n="widget.rx.medication">Medication</div>
+                  <div class="rx-input" id="rx-med-input"></div>
+                </div>
+                <div class="rx-field-row">
+                  <div class="rx-field">
+                    <div class="rx-label" data-i18n="widget.rx.dosage">Dosage</div>
+                    <div class="rx-input" id="rx-dosage-input"></div>
+                  </div>
+                  <div class="rx-field">
+                    <div class="rx-label" data-i18n="widget.rx.duration">Duration</div>
+                    <div class="rx-input" id="rx-duration-input"></div>
+                  </div>
+                </div>
+                <div class="rx-field">
+                  <div class="rx-label" data-i18n="widget.rx.instructions">Instructions</div>
+                  <div class="rx-input rx-input--area" id="rx-notes-input"></div>
+                </div>
+
+                <button class="rx-sign-btn" id="rx-sign-btn" tabindex="-1">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span data-i18n="widget.rx.sign">Sign &amp; Send</span>
+                </button>
+              </div>
+
+              <!-- Confirmation overlay -->
+              <div class="rx-confirm" id="rx-confirm">
+                <div class="rx-confirm-circle">
+                  <svg width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+                    <circle cx="28" cy="28" r="25" stroke="var(--color-primary)" stroke-width="2.5"/>
+                    <path id="rx-check-path" d="M16 28l9 9 15-15" stroke="var(--color-primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+                  </svg>
+                </div>
+                <div class="rx-confirm-title" data-i18n="widget.rx.created">Prescription Created</div>
+                <div class="rx-confirm-sub" data-i18n="widget.rx.sent">Sent to pharmacy</div>
+              </div>
+
+            </div><!-- /.rx-phone -->
+            <div class="rx-cursor" id="rx-cursor"></div>
+          </div><!-- /.rx-widget -->
         </div>
       </div>
 
@@ -501,7 +1249,99 @@
               <p class="bullet" data-i18n="doctors.video.b3">Conduct consultations from any device</p>
             </div>
           </div>
-          <img src="assets/images/video-consultation.png" alt="Video consultation for doctors" class="feature-row-img" />
+          <div class="vcd-widget" id="vcd-widget">
+            <div class="vcd-tablet">
+
+              <!-- Screen 1: Waiting Room -->
+              <div class="vcd-screen vcd-wr is-active" id="vcd-waiting">
+                <div class="vcd-wr-header">
+                  <svg width="7" height="12" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="7 1 1 7 7 13"/></svg>
+                  <span data-i18n="widget.doctor.waitroom">Waiting room</span>
+                </div>
+                <div class="vcd-wr-body">
+                  <div class="vcd-wr-avatar">
+                    <img src="assets/images/Images.png" alt="" class="vcd-wr-img" />
+                  </div>
+                  <p class="vcd-wr-name" data-i18n="widget.doctor.patient.name">Sara Wilder is waiting.</p>
+                  <p class="vcd-wr-sub" data-i18n="widget.doctor.patient.sub">Open the room to start the call</p>
+                </div>
+                <div class="vcd-wr-footer">
+                  <button class="vcd-back-btn" tabindex="-1">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    <span data-i18n="widget.doctor.back">Back</span>
+                  </button>
+                  <button class="vcd-open-btn" id="vcd-open" tabindex="-1">
+                    <span data-i18n="widget.doctor.open">Open Room</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Screen 2: Video Call -->
+              <div class="vcd-screen vcd-call" id="vcd-call">
+                <!-- Patient video (left) -->
+                <div class="vcd-video-side">
+                  <img src="assets/images/Images.png" alt="" class="vcd-main-video" />
+                  <span class="vcd-patient-label">Sara Wilder</span>
+                  <div class="vcd-self-pip">
+                    <img src="assets/images/Images-1.png" alt="" class="vcd-self-img" />
+                  </div>
+                  <div class="vcd-call-controls">
+                    <button class="vcd-ctrl" aria-label="Flip camera" tabindex="-1">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                    </button>
+                    <button class="vcd-ctrl vcd-ctrl--muted" aria-label="Muted" tabindex="-1">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                    </button>
+                    <button class="vcd-ctrl" aria-label="Camera" tabindex="-1">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </button>
+                    <button class="vcd-ctrl" aria-label="Speaker" tabindex="-1">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                    </button>
+                    <button class="vcd-ctrl vcd-ctrl--end" aria-label="End call" tabindex="-1">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <!-- Info panel (right) -->
+                <div class="vcd-info-side">
+                  <p class="vcd-panel-title" data-i18n="widget.doctor.docs">Documents</p>
+                  <div class="vcd-doc-item">
+                    <div>
+                      <div class="vcd-doc-name">Blood test</div>
+                      <div class="vcd-doc-date">15.09.2025</div>
+                    </div>
+                    <div class="vcd-dl-btn" aria-hidden="true">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    </div>
+                  </div>
+                  <div class="vcd-doc-item">
+                    <div>
+                      <div class="vcd-doc-name">Cancer screening</div>
+                      <div class="vcd-doc-date">13.02.2025</div>
+                    </div>
+                    <div class="vcd-dl-btn" aria-hidden="true">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    </div>
+                  </div>
+                  <div class="vcd-notes-section">
+                    <p class="vcd-panel-title" data-i18n="widget.doctor.notes">Notes</p>
+                    <div class="vcd-notes-content"></div>
+                    <div class="vcd-notes-input-bar">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                      <span class="vcd-notes-sep"></span>
+                      <span class="vcd-type-cursor"></span>
+                      <div class="vcd-send-btn" aria-hidden="true">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="vcd-cursor" id="vcd-cursor"></div>
+          </div>
         </div>
       </div>
 
@@ -516,7 +1356,104 @@
               <p class="bullet" data-i18n="doctors.ehr.b3">Role-based access and secure sharing</p>
             </div>
           </div>
-          <img src="assets/images/ehr.png" alt="Electronic health records screen" class="feature-row-img" />
+          <!-- Doctor EHR Tablet Widget -->
+          <div class="ehrd-widget" id="ehrd-widget" aria-hidden="true">
+            <div class="ehrd-tablet">
+              <!-- Screen 1: Patient list + detail -->
+              <div class="ehrd-screen ehrd-main is-active" id="ehrd-main">
+                <!-- Left: patient list -->
+                <div class="ehrd-list-col">
+                  <div class="ehrd-list-header" data-i18n="widget.ehr.patients">Patients</div>
+                  <div class="ehrd-patient-item ehrd-patient-item--active">
+                    <div class="ehrd-patient-avatar ehrd-pa--teal">SR</div>
+                    <div class="ehrd-patient-info">
+                      <span class="ehrd-patient-name">Sara R.</span>
+                      <span class="ehrd-patient-sub" data-i18n="widget.ehr.general">General Checkup</span>
+                    </div>
+                  </div>
+                  <div class="ehrd-patient-item">
+                    <div class="ehrd-patient-avatar ehrd-pa--blue">JM</div>
+                    <div class="ehrd-patient-info">
+                      <span class="ehrd-patient-name">John M.</span>
+                      <span class="ehrd-patient-sub" data-i18n="widget.ehr.bloodtest">Blood Test Results</span>
+                    </div>
+                  </div>
+                  <div class="ehrd-patient-item">
+                    <div class="ehrd-patient-avatar ehrd-pa--orange">AL</div>
+                    <div class="ehrd-patient-info">
+                      <span class="ehrd-patient-name">Amy L.</span>
+                      <span class="ehrd-patient-sub" data-i18n="widget.ehr.allergy">Allergy Report</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Right: patient detail -->
+                <div class="ehrd-detail-col">
+                  <div class="ehrd-detail-header">
+                    <div class="ehrd-detail-avatar">SR</div>
+                    <div>
+                      <div class="ehrd-detail-name">Sara Rashidova</div>
+                      <div class="ehrd-detail-sub" data-i18n="widget.ehr.general">General Checkup</div>
+                    </div>
+                  </div>
+                  <div class="ehrd-docs-section">
+                    <div class="ehrd-docs-title" data-i18n="widget.ehr.doc.history">Document History</div>
+                    <div class="ehrd-doc-row" id="ehrd-blood-row" style="display:none">
+                      <div class="ehrd-doc-chip ehrd-doc-chip--red">PDF</div>
+                      <span class="ehrd-doc-label" data-i18n="widget.ehr.bloodtest">Blood Test Results</span>
+                    </div>
+                    <div class="ehrd-doc-row">
+                      <div class="ehrd-doc-chip ehrd-doc-chip--green">PDF</div>
+                      <span class="ehrd-doc-label" data-i18n="widget.ehr.glucose">Glucose Levels</span>
+                    </div>
+                  </div>
+                  <button class="ehrd-upload-btn" id="ehrd-upload-btn" tabindex="-1">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M4 5l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    <span data-i18n="widget.ehr.upload.title">Upload Document</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Screen 2: Upload Modal (empty) -->
+              <div class="ehrd-screen ehrd-modal-screen" id="ehrd-modal-empty">
+                <div class="ehrd-modal-overlay"></div>
+                <div class="ehrd-modal">
+                  <div class="ehrd-modal-title" data-i18n="widget.ehr.upload.title">Upload Document</div>
+                  <div class="ehrd-dropzone" id="ehrd-dropzone-empty">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 8l5-5 5 5" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17h16" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span class="ehrd-drop-text" data-i18n="widget.ehr.drop">Drop file here or select</span>
+                  </div>
+                  <div class="ehrd-modal-actions">
+                    <button class="ehrd-select-btn" id="ehrd-select-btn" tabindex="-1" data-i18n="widget.ehr.select">Select from Device</button>
+                    <button class="ehrd-submit-btn ehrd-submit-btn--disabled" tabindex="-1" data-i18n="widget.ehr.upload.btn">Upload</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Screen 3: Upload Modal (file selected) -->
+              <div class="ehrd-screen ehrd-modal-screen" id="ehrd-modal-filled">
+                <div class="ehrd-modal-overlay"></div>
+                <div class="ehrd-modal">
+                  <div class="ehrd-modal-title" data-i18n="widget.ehr.upload.title">Upload Document</div>
+                  <div class="ehrd-dropzone ehrd-dropzone--filled">
+                    <div class="ehrd-file-preview">
+                      <div class="ehrd-file-icon">
+                        <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="var(--color-primary-light)" stroke="var(--color-primary)"/><path d="M3 8h12M3 12h8" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </div>
+                      <div class="ehrd-file-meta">
+                        <span class="ehrd-file-name" data-i18n="widget.ehr.file.name">BloodTest_Report.pdf</span>
+                        <span class="ehrd-file-size">2.4 MB · PDF</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ehrd-modal-actions">
+                    <button class="ehrd-select-btn" tabindex="-1" data-i18n="widget.ehr.select">Select from Device</button>
+                    <button class="ehrd-submit-btn" id="ehrd-submit-btn" tabindex="-1" data-i18n="widget.ehr.upload.btn">Upload</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ehrd-cursor" id="ehrd-cursor"></div>
+          </div>
         </div>
       </div>
 
@@ -531,7 +1468,44 @@
               <p class="bullet" data-i18n="doctors.calendar.b3">Easily change bookings in the calendar</p>
             </div>
           </div>
-          <img src="assets/images/calendar.png" alt="Calendar management screen" class="feature-row-img" />
+          <!-- Calendar Management Widget -->
+          <div class="calw-widget" id="calw-widget" aria-hidden="true">
+
+            <!-- Left: day schedule -->
+            <div class="calw-left">
+              <div class="calw-list-hdr">
+                <div class="calw-date-pill">
+                  <span id="calw-date-label">13 January 2025</span>
+                </div>
+                <div class="calw-filters-btn">
+                  <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="1" y1="3" x2="13" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="7" x2="11" y2="7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="5" y1="11" x2="9" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  <span data-i18n="widget.cal.filters">Filters</span>
+                </div>
+              </div>
+              <div class="calw-slots" id="calw-slots"></div>
+            </div>
+
+            <!-- Right: mini calendar + alert + button -->
+            <div class="calw-right">
+              <div class="calw-year">2025</div>
+              <div class="calw-month-card">
+                <div class="calw-month-nav">
+                  <button class="calw-nav" tabindex="-1" aria-label="Previous month">
+                    <svg width="7" height="12" viewBox="0 0 7 12" fill="none" aria-hidden="true"><polyline points="6,1 1,6 6,11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <span class="calw-month-name" data-i18n="widget.cal.month">January</span>
+                  <button class="calw-nav" tabindex="-1" aria-label="Next month">
+                    <svg width="7" height="12" viewBox="0 0 7 12" fill="none" aria-hidden="true"><polyline points="1,1 6,6 1,11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+                <div class="calw-weekdays">
+                  <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                </div>
+                <div class="calw-grid" id="calw-grid"></div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div><!-- /panel-doctors -->
@@ -683,6 +1657,19 @@
             <a class="btn" href="#" data-scroll-to="contact-form-anchor" data-i18n="contact.demo.cta">Contact Us</a>
           </div>
 
+        </div>
+
+        <!-- Social Media -->
+        <div class="contact-social anim" data-delay="1">
+          <p class="label" data-i18n="contact.social.heading">Follow Us</p>
+          <div class="social-links">
+            <a class="social-link" href="https://www.linkedin.com/company/shifauz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              <span data-i18n="contact.social.linkedin">LinkedIn</span>
+            </a>
+          </div>
         </div>
 
         <!-- Careers -->
@@ -956,10 +1943,24 @@
         <li><a href="#" data-i18n="footer.legal.gdpr">GDPR</a></li>
       </ul>
     </div>
+
+    <div class="footer-col">
+      <h4 data-i18n="footer.social.heading">Follow Us</h4>
+      <ul>
+        <li>
+          <a class="footer-social-link" href="https://www.linkedin.com/company/shifauz" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            LinkedIn
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div class="footer-bottom">
-    <span data-i18n="footer.copyright">© 2025 SHIFA. All rights reserved.</span>
+    <span data-i18n="footer.copyright">© 2026 SHIFA. All rights reserved.</span>
     <span data-i18n="footer.made">Made in Berlin 🇩🇪</span>
   </div>
 </footer>

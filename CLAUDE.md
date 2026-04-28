@@ -98,6 +98,7 @@ GitHub Actions (`.github/workflows/deploy.yml`) FTP-deploys to cPanel on push to
 - **Animations via style property, not classList** — hero animations use `node.style.animation = ...` with a reflow trick (`void node.offsetHeight`) to restart. Scroll reveal uses class toggling via IntersectionObserver.
 - **Leaflet lazy-loading** — check `typeof L === 'undefined'` and retry with `setTimeout` until CDN loads.
 - **localStorage keys** are namespaced with `shifa-` prefix: `shifa-lang`, `shifa-cookies`.
+- **Animated widgets with text must be fully translatable** — all static text inside a widget must use `data-i18n` (or `data-i18n-placeholder`) attributes. Text injected dynamically by JS must use the `t()` helper to read the current language at runtime. The widget must also listen for `shifa:langchange` (dispatched by `setLanguage`) to clear and restart with translated content when the user switches languages. Failing to do this means widget text stays in the original language even after a language switch.
 
 ### HTML
 

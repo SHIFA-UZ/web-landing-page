@@ -25,6 +25,37 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroAnimations();
   initDarkMode();
   initAIChat();
+  initBookingWidget();
+  initVideoWidget();
+  initDoctorWidget();
+  initEhrWidget({
+    widgetId:      'ehrd-widget',
+    mainId:        'ehrd-main',
+    modalEmptyId:  'ehrd-modal-empty',
+    modalFilledId: 'ehrd-modal-filled',
+    uploadBtnId:   'ehrd-upload-btn',
+    selectBtnId:   'ehrd-select-btn',
+    submitBtnId:   'ehrd-submit-btn',
+    cursorId:      'ehrd-cursor',
+    bloodRowId:    'ehrd-blood-row',
+  });
+  initEhrWidget({
+    widgetId:      'ehrp-widget',
+    mainId:        'ehrp-main',
+    modalEmptyId:  'ehrp-modal-empty',
+    modalFilledId: 'ehrp-modal-filled',
+    uploadBtnId:   'ehrp-upload-btn',
+    selectBtnId:   'ehrp-select-btn',
+    submitBtnId:   'ehrp-submit-btn',
+    cursorId:      'ehrp-cursor',
+  });
+  initSmrWidget();
+  initAIReportWidget();
+  initFeatureChatWidget();
+  initPmWidget();
+  initAnlWidget();
+  initCalWidget();
+  initRxWidget();
 });
 
 
@@ -375,6 +406,7 @@ function setLanguage(lang) {
   if (langField) langField.value = lang;
 
   localStorage.setItem('shifa-lang', lang);
+  document.dispatchEvent(new CustomEvent('shifa:langchange', { detail: { lang } }));
 }
 
 function initI18n() {
@@ -446,12 +478,12 @@ function initScrollReveal() {
 
 const HERO_ANIMS = {
   product: [
-    { sel: '#page-product .countdown-unit:nth-child(1)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.05s' },
-    { sel: '#page-product .countdown-unit:nth-child(2)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.14s' },
-    { sel: '#page-product .countdown-unit:nth-child(3)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.23s' },
-    { sel: '#page-product .countdown-unit:nth-child(4)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.32s' },
-    { sel: '.hero-heading-main', kf: 'heroFadeUp', dur: '0.7s', delay: '0.18s' },
-    { sel: '.hero-heading-sub',  kf: 'heroFadeUp', dur: '0.6s', delay: '0.38s' },
+    { sel: '.hero-heading-sub',  kf: 'heroFadeUp', dur: '0.6s', delay: '0.02s' },
+    { sel: '#page-product .countdown-unit:nth-child(1)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.12s' },
+    { sel: '#page-product .countdown-unit:nth-child(2)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.21s' },
+    { sel: '#page-product .countdown-unit:nth-child(3)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.30s' },
+    { sel: '#page-product .countdown-unit:nth-child(4)', kf: 'heroFadeUp', dur: '0.6s', delay: '0.39s' },
+    { sel: '.hero-heading-main', kf: 'heroFadeUp', dur: '0.7s', delay: '0.25s' },
     { sel: '.hero-subtitle',     kf: 'heroFadeUp', dur: '0.6s', delay: '0.50s' },
     { sel: '.hero-btns',         kf: 'heroFadeUp', dur: '0.6s', delay: '0.62s' },
     { sel: '.hero-hand-img',     kf: 'heroImageEnter', dur: '2.0s', delay: '0.10s' },
@@ -657,18 +689,20 @@ function initAIChat() {
   const container = document.getElementById('ai-chat-messages');
   if (!container) return;
 
-  const MESSAGES = [
-    { from: 'user', text: 'Give me a summary of my last appointment.' },
-    { from: 'ai',   text: 'Your last visit was about a year ago. You reported recurring headaches and mild flu symptoms. The doctor recommended rest and prescribed ibuprofen. No follow-up was scheduled.' },
-    { from: 'user', text: 'Please compare my current blood test with the previous results.' },
-    { from: 'ai',   text: 'Your iron levels have improved by 12%. Cholesterol is slightly elevated compared to last time — 198 vs 181 mg/dL. All other markers are within normal range.' },
-    { from: 'user', text: 'What was the name of the dentist I visited last year?' },
-    { from: 'ai',   text: 'It would be best to visit the clinic soon — some of your symptoms could become more serious. Can I help you find an open slot with your closest doctor?' },
-  ];
+  function getMessages() {
+    return [
+      { from: 'user', text: t('ai.widget.msg1.user') },
+      { from: 'ai',   text: t('ai.widget.msg1.ai')  },
+      { from: 'user', text: t('ai.widget.msg2.user') },
+      { from: 'ai',   text: t('ai.widget.msg2.ai')  },
+      { from: 'user', text: t('ai.widget.msg3.user') },
+      { from: 'ai',   text: t('ai.widget.msg3.ai')  },
+    ];
+  }
 
-  const TYPING_MS   = 1600;   // how long typing indicator shows
-  const READ_MS     = 2200;   // initial pause before first message
-  const USER_GAP_MS = 1100;  // gap before user / AI messages
+  const TYPING_MS   = 1600;
+  const READ_MS     = 2200;
+  const USER_GAP_MS = 1100;
 
   let started  = false;
   let sequence = null;
@@ -694,27 +728,25 @@ function initAIChat() {
     container.scrollTop = container.scrollHeight;
   }
 
-  function runSequence(index) {
-    if (index >= MESSAGES.length) {
-      // Pause then restart loop
+  function runSequence(messages, index) {
+    if (index >= messages.length) {
       sequence = setTimeout(() => {
         container.innerHTML = '';
-        runSequence(0);
+        runSequence(getMessages(), 0);
       }, 3000);
       return;
     }
 
-    const msg = MESSAGES[index];
+    const msg = messages[index];
 
     if (msg.from === 'user') {
       const delay = index === 0 ? 0 : USER_GAP_MS;
       sequence = setTimeout(() => {
         container.appendChild(createBubble(msg));
         scrollBottom();
-        runSequence(index + 1);
+        runSequence(messages, index + 1);
       }, delay);
     } else {
-      // Show typing indicator first
       sequence = setTimeout(() => {
         const typing = createTyping();
         container.appendChild(typing);
@@ -724,10 +756,16 @@ function initAIChat() {
           container.removeChild(typing);
           container.appendChild(createBubble(msg));
           scrollBottom();
-          runSequence(index + 1);
+          runSequence(messages, index + 1);
         }, TYPING_MS);
       }, USER_GAP_MS);
     }
+  }
+
+  function restart() {
+    clearTimeout(sequence);
+    container.innerHTML = '';
+    runSequence(getMessages(), 0);
   }
 
   // Start when widget enters viewport (IntersectionObserver)
@@ -736,12 +774,1181 @@ function initAIChat() {
       if (entry.isIntersecting && !started) {
         started = true;
         observer.disconnect();
-        // Small delay so widget is visible before first message
-        setTimeout(() => runSequence(0), READ_MS);
+        setTimeout(() => runSequence(getMessages(), 0), READ_MS);
       }
     });
   }, { threshold: 0.3 });
 
   const widget = container.closest('.ai-chat-widget');
   if (widget) observer.observe(widget);
+
+  // Restart with new language when user switches languages
+  document.addEventListener('shifa:langchange', () => {
+    if (started) restart();
+  });
+}
+
+
+/* ── Booking Widget ── */
+function initBookingWidget() {
+  const widget = document.getElementById('booking-widget');
+  const toggle = document.getElementById('bw-toggle');
+  const cursor = document.getElementById('bw-cursor');
+  if (!widget || !toggle || !cursor) return;
+
+  let started = false;
+  let seq = null;
+
+  function wait(ms, fn) { seq = setTimeout(fn, ms); }
+
+  function getTogglePos() {
+    const wr = widget.getBoundingClientRect();
+    const tr = toggle.getBoundingClientRect();
+    return {
+      x: tr.left + tr.width  / 2 - wr.left,
+      y: tr.top  + tr.height / 2 - wr.top,
+    };
+  }
+
+  function resetState() {
+    clearTimeout(seq);
+    toggle.classList.remove('is-on', 'is-pulsing');
+    cursor.classList.remove('is-visible', 'is-tapping');
+    cursor.style.transition = 'none';
+    const pos = getTogglePos();
+    cursor.style.left = pos.x + 'px';
+    cursor.style.top  = pos.y + 'px';
+  }
+
+  // Step 1: cursor drifts into view above the toggle
+  function step1() {
+    cursor.style.transition = 'opacity 0.4s, transform 0.55s cubic-bezier(0.16,1,0.3,1)';
+    cursor.classList.add('is-visible');
+    wait(700, step2);
+  }
+
+  // Step 2: tap compress
+  function step2() {
+    cursor.classList.add('is-tapping');
+    wait(120, step3);
+  }
+
+  // Step 3: toggle switches ON + ripple pulse fires
+  function step3() {
+    cursor.classList.remove('is-visible', 'is-tapping');
+
+    toggle.classList.add('is-on');
+
+    // One-shot ripple: remove then re-add after reflow so it replays every loop
+    toggle.classList.remove('is-pulsing');
+    void toggle.offsetHeight;
+    toggle.classList.add('is-pulsing');
+    setTimeout(() => toggle.classList.remove('is-pulsing'), 850);
+
+    wait(2800, step4);
+  }
+
+  // Step 4: toggle switches OFF
+  function step4() {
+    toggle.classList.remove('is-on', 'is-pulsing');
+    wait(1400, step5);
+  }
+
+  // Step 5: reset position and loop
+  function step5() {
+    resetState();
+    wait(300, step1);
+  }
+
+  function start() {
+    resetState();
+    wait(600, step1);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 900);
+      }
+    });
+  }, { threshold: 0.35 });
+
+  observer.observe(widget);
+}
+
+
+/* ── Video Consultation Widget ── */
+function initVideoWidget() {
+  const widget  = document.getElementById('vc-widget');
+  const waiting = document.getElementById('vc-waiting');
+  const call    = document.getElementById('vc-call');
+  const joinBtn = document.getElementById('vc-join');
+  const cursor  = document.getElementById('vc-cursor');
+  if (!widget || !waiting || !call || !joinBtn || !cursor) return;
+
+  let started = false;
+  let seq = null;
+
+  function wait(ms, fn) { seq = setTimeout(fn, ms); }
+
+  function getJoinPos() {
+    const wr = widget.getBoundingClientRect();
+    const jr = joinBtn.getBoundingClientRect();
+    return {
+      x: jr.left + jr.width  / 2 - wr.left,
+      y: jr.top  + jr.height / 2 - wr.top,
+    };
+  }
+
+  function resetState() {
+    clearTimeout(seq);
+    waiting.classList.add('is-active');
+    call.classList.remove('is-active');
+    cursor.classList.remove('is-visible', 'is-tapping');
+    cursor.style.transition = 'none';
+    const pos = getJoinPos();
+    cursor.style.left = pos.x + 'px';
+    cursor.style.top  = pos.y + 'px';
+  }
+
+  // Step 1: cursor fades in at join button
+  function step1() {
+    cursor.style.transition = 'opacity 0.4s, transform 0.55s cubic-bezier(0.16,1,0.3,1)';
+    cursor.classList.add('is-visible');
+    wait(700, step2);
+  }
+
+  // Step 2: tap compress
+  function step2() {
+    cursor.classList.add('is-tapping');
+    wait(130, step3);
+  }
+
+  // Step 3: transition to video call
+  function step3() {
+    cursor.classList.remove('is-visible', 'is-tapping');
+    waiting.classList.remove('is-active');
+    call.classList.add('is-active');
+    wait(3400, step4);
+  }
+
+  // Step 4: transition back to waiting room
+  function step4() {
+    call.classList.remove('is-active');
+    waiting.classList.add('is-active');
+    wait(1200, step5);
+  }
+
+  // Step 5: reset and loop
+  function step5() {
+    resetState();
+    wait(500, step1);
+  }
+
+  function start() {
+    resetState();
+    wait(1500, step1);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 1000);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(widget);
+}
+
+
+/* ── Doctor Video Widget (Tablet) ── */
+function initDoctorWidget() {
+  const widget  = document.getElementById('vcd-widget');
+  const waiting = document.getElementById('vcd-waiting');
+  const call    = document.getElementById('vcd-call');
+  const openBtn = document.getElementById('vcd-open');
+  const cursor  = document.getElementById('vcd-cursor');
+  if (!widget || !waiting || !call || !openBtn || !cursor) return;
+
+  let started = false;
+  let seq = null;
+
+  function wait(ms, fn) { seq = setTimeout(fn, ms); }
+
+  function getOpenPos() {
+    const wr = widget.getBoundingClientRect();
+    const br = openBtn.getBoundingClientRect();
+    return {
+      x: br.left + br.width  / 2 - wr.left,
+      y: br.top  + br.height / 2 - wr.top,
+    };
+  }
+
+  function resetState() {
+    clearTimeout(seq);
+    waiting.classList.add('is-active');
+    call.classList.remove('is-active');
+    cursor.classList.remove('is-visible', 'is-tapping');
+    cursor.style.transition = 'none';
+    const pos = getOpenPos();
+    cursor.style.left = pos.x + 'px';
+    cursor.style.top  = pos.y + 'px';
+  }
+
+  function step1() {
+    cursor.style.transition = 'opacity 0.4s, transform 0.55s cubic-bezier(0.16,1,0.3,1)';
+    cursor.classList.add('is-visible');
+    wait(700, step2);
+  }
+
+  function step2() {
+    cursor.classList.add('is-tapping');
+    wait(130, step3);
+  }
+
+  function step3() {
+    cursor.classList.remove('is-visible', 'is-tapping');
+    waiting.classList.remove('is-active');
+    call.classList.add('is-active');
+    wait(3400, step4);
+  }
+
+  function step4() {
+    call.classList.remove('is-active');
+    waiting.classList.add('is-active');
+    wait(1200, step5);
+  }
+
+  function step5() {
+    resetState();
+    wait(500, step1);
+  }
+
+  function start() {
+    resetState();
+    wait(1500, step1);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 1000);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(widget);
+}
+
+/* ── EHR Document Upload Widget ───────────────────────────────────────────
+   Shared logic for both doctor (tablet) and patient (phone).
+   ────────────────────────────────────────────────────── */
+function initEhrWidget(cfg) {
+  const widget      = document.getElementById(cfg.widgetId);
+  if (!widget) return;
+
+  const main        = document.getElementById(cfg.mainId);
+  const modalEmpty  = document.getElementById(cfg.modalEmptyId);
+  const modalFilled = document.getElementById(cfg.modalFilledId);
+  const uploadBtn   = document.getElementById(cfg.uploadBtnId);
+  const selectBtn   = document.getElementById(cfg.selectBtnId);
+  const submitBtn   = document.getElementById(cfg.submitBtnId);
+  const cursor      = document.getElementById(cfg.cursorId);
+  const bloodRow    = cfg.bloodRowId ? document.getElementById(cfg.bloodRowId) : null;
+
+  let started = false;
+  let timers  = [];
+
+  function wait(ms, fn) {
+    const id = setTimeout(fn, ms);
+    timers.push(id);
+  }
+
+  function clearTimers() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+
+  function moveCursor(targetEl) {
+    const tRect = targetEl.getBoundingClientRect();
+    const wRect = widget.getBoundingClientRect();
+    cursor.style.left = (tRect.left + tRect.width  / 2 - wRect.left) + 'px';
+    cursor.style.top  = (tRect.top  + tRect.height / 2 - wRect.top)  + 'px';
+  }
+
+  function tap(targetEl, cb) {
+    moveCursor(targetEl);
+    cursor.classList.add('is-visible');
+    wait(500, () => {
+      cursor.classList.add('is-tapping');
+      wait(350, () => {
+        cursor.classList.remove('is-tapping');
+        wait(200, cb);
+      });
+    });
+  }
+
+  function resetState() {
+    clearTimers();
+    cursor.classList.remove('is-visible', 'is-tapping');
+    main.classList.add('is-active');
+    modalEmpty.classList.remove('is-active');
+    modalFilled.classList.remove('is-active');
+    if (bloodRow) bloodRow.style.display = 'none';
+  }
+
+  function step1() {
+    moveCursor(uploadBtn);
+    cursor.classList.add('is-visible');
+    wait(700, step2);
+  }
+
+  function step2() {
+    tap(uploadBtn, () => {
+      main.classList.remove('is-active');
+      modalEmpty.classList.add('is-active');
+      wait(800, step3);
+    });
+  }
+
+  function step3() {
+    tap(selectBtn, () => {
+      modalEmpty.classList.remove('is-active');
+      modalFilled.classList.add('is-active');
+      wait(900, step4);
+    });
+  }
+
+  function step4() {
+    tap(submitBtn, () => {
+      modalFilled.classList.remove('is-active');
+      main.classList.add('is-active');
+      if (bloodRow) bloodRow.style.display = '';
+      wait(1000, step5);
+    });
+  }
+
+  function step5() {
+    cursor.classList.remove('is-visible');
+    wait(800, step1);
+  }
+
+  function start() {
+    resetState();
+    wait(1200, step1);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 800);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(widget);
+}
+
+function initSmrWidget() {
+  const widget = document.getElementById('smr-widget');
+  if (!widget) return;
+
+  const notif1 = document.getElementById('smr-notif-1');
+  const notif2 = document.getElementById('smr-notif-2');
+
+  let started = false;
+  let timers  = [];
+
+  function wait(ms, fn) {
+    const id = setTimeout(fn, ms);
+    timers.push(id);
+  }
+
+  function show(el) { el.classList.add('is-shown'); }
+  function hide(el) { el.classList.remove('is-shown'); }
+
+  function step1() { show(notif1); wait(2800, step2); }
+  function step2() { hide(notif1); wait(700,  step3); }
+  function step3() { show(notif2); wait(2800, step4); }
+  function step4() { hide(notif2); wait(1200, step1); }
+
+  function start() {
+    hide(notif1);
+    hide(notif2);
+    wait(1500, step1);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 800);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(widget);
+}
+
+function initAIReportWidget() {
+  const container = document.getElementById('air-messages');
+  if (!container) return;
+
+  const TYPING_SHORT = 1400;
+  const TYPING_LONG  = 2600;
+  const USER_GAP     = 800;
+
+  let started  = false;
+  let sequence = null;
+
+  function createUserBubble(text) {
+    const row = document.createElement('div');
+    row.className = 'chat-msg chat-msg--user';
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble';
+    bubble.textContent = text;
+    row.appendChild(bubble);
+    return row;
+  }
+
+  function createFileBubble() {
+    const row = document.createElement('div');
+    row.className = 'chat-msg chat-msg--user';
+    row.innerHTML =
+      '<div class="chat-bubble chat-file">' +
+        '<div class="chat-file-icon">' +
+          '<svg width="18" height="22" viewBox="0 0 18 22" fill="none">' +
+            '<rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.6)"/>' +
+            '<path d="M3 9h12M3 13h7" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round"/>' +
+            '<text x="3" y="7" font-size="4.5" font-weight="700" fill="rgba(255,255,255,0.85)" font-family="sans-serif">PDF</text>' +
+          '</svg>' +
+        '</div>' +
+        '<div class="chat-file-meta">' +
+          '<span class="chat-file-name">' + t('widget.ehr.file.name') + '</span>' +
+          '<span class="chat-file-size">2.4 MB · PDF</span>' +
+        '</div>' +
+      '</div>';
+    return row;
+  }
+
+  function createTyping() {
+    const row = document.createElement('div');
+    row.className = 'chat-msg chat-msg--ai';
+    row.innerHTML =
+      '<div class="chat-typing-dots">' +
+        '<div class="chat-typing-dot"></div>' +
+        '<div class="chat-typing-dot"></div>' +
+        '<div class="chat-typing-dot"></div>' +
+      '</div>';
+    return row;
+  }
+
+  function createReportBubble() {
+    const row = document.createElement('div');
+    row.className = 'chat-msg chat-msg--ai';
+
+    function badge(type, symbol) {
+      return '<span class="chat-report-badge chat-report-badge--' + type + '">' + symbol + '</span>';
+    }
+
+    function row_(label, val, type, symbol) {
+      return '<div class="chat-report-row">' +
+        '<span class="chat-report-label">' + t(label) + '</span>' +
+        '<span class="chat-report-val">' + val + '</span>' +
+        badge(type, symbol) +
+      '</div>';
+    }
+
+    row.innerHTML =
+      '<div class="chat-bubble chat-report">' +
+        '<div class="chat-report-intro">' + t('widget.aireport.ai.intro') + '</div>' +
+        '<div class="chat-report-card">' +
+          row_('widget.aireport.hgb',  '13.2 g/dL', 'ok',   '✓') +
+          row_('widget.aireport.iron', '68 µg/dL',  'up',   '↑') +
+          row_('widget.aireport.chol', '198 mg/dL', 'warn', '⚠') +
+          row_('widget.aireport.gluc', '95 mg/dL',  'ok',   '✓') +
+        '</div>' +
+        '<div class="chat-report-follow">' + t('widget.aireport.ai.follow') + '</div>' +
+      '</div>';
+    return row;
+  }
+
+  function scrollBottom() {
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function run() {
+    // 1. User text message
+    container.appendChild(createUserBubble(t('widget.aireport.user1')));
+    scrollBottom();
+
+    // 2. User sends file attachment
+    sequence = setTimeout(() => {
+      container.appendChild(createFileBubble());
+      scrollBottom();
+
+      // 3. AI typing indicator (longer — reading document)
+      sequence = setTimeout(() => {
+        const typing = createTyping();
+        container.appendChild(typing);
+        scrollBottom();
+
+        // 4. AI report card replaces typing
+        sequence = setTimeout(() => {
+          container.removeChild(typing);
+          container.appendChild(createReportBubble());
+          scrollBottom();
+
+          // 5. Pause then loop
+          sequence = setTimeout(() => {
+            container.innerHTML = '';
+            run();
+          }, 4200);
+        }, TYPING_LONG);
+      }, USER_GAP);
+    }, 750);
+  }
+
+  const widget = document.getElementById('air-widget');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(run, 1200);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  if (widget) observer.observe(widget);
+
+  document.addEventListener('shifa:langchange', () => {
+    if (started) {
+      clearTimeout(sequence);
+      container.innerHTML = '';
+      run();
+    }
+  });
+}
+
+function initFeatureChatWidget() {
+  const container = document.getElementById('afc-messages');
+  if (!container) return;
+
+  function getMessages() {
+    return [
+      { from: 'user', text: t('ai.widget.msg1.user') },
+      { from: 'ai',   text: t('ai.widget.msg1.ai')  },
+      { from: 'user', text: t('ai.widget.msg2.user') },
+      { from: 'ai',   text: t('ai.widget.msg2.ai')  },
+      { from: 'user', text: t('ai.widget.msg3.user') },
+      { from: 'ai',   text: t('ai.widget.msg3.ai')  },
+    ];
+  }
+
+  const TYPING_MS   = 1600;
+  const READ_MS     = 2200;
+  const USER_GAP_MS = 1100;
+
+  let started  = false;
+  let sequence = null;
+
+  function createBubble(msg) {
+    const row    = document.createElement('div');
+    row.className = 'chat-msg chat-msg--' + msg.from;
+    const bubble  = document.createElement('div');
+    bubble.className  = 'chat-bubble';
+    bubble.textContent = msg.text;
+    row.appendChild(bubble);
+    return row;
+  }
+
+  function createTyping() {
+    const row = document.createElement('div');
+    row.className = 'chat-msg chat-msg--ai';
+    row.innerHTML = '<div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>';
+    return row;
+  }
+
+  function scrollBottom() {
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function runSequence(messages, index) {
+    if (index >= messages.length) {
+      sequence = setTimeout(() => {
+        container.innerHTML = '';
+        runSequence(getMessages(), 0);
+      }, 3000);
+      return;
+    }
+
+    const msg = messages[index];
+
+    if (msg.from === 'user') {
+      const delay = index === 0 ? 0 : USER_GAP_MS;
+      sequence = setTimeout(() => {
+        container.appendChild(createBubble(msg));
+        scrollBottom();
+        runSequence(messages, index + 1);
+      }, delay);
+    } else {
+      sequence = setTimeout(() => {
+        const typing = createTyping();
+        container.appendChild(typing);
+        scrollBottom();
+        sequence = setTimeout(() => {
+          container.removeChild(typing);
+          container.appendChild(createBubble(msg));
+          scrollBottom();
+          runSequence(messages, index + 1);
+        }, TYPING_MS);
+      }, USER_GAP_MS);
+    }
+  }
+
+  function restart() {
+    clearTimeout(sequence);
+    container.innerHTML = '';
+    runSequence(getMessages(), 0);
+  }
+
+  const widget = document.getElementById('afc-widget');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(() => runSequence(getMessages(), 0), READ_MS);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  if (widget) observer.observe(widget);
+
+  document.addEventListener('shifa:langchange', () => {
+    if (started) restart();
+  });
+}
+
+function initPmWidget() {
+  const widget   = document.getElementById('pm-widget');
+  if (!widget) return;
+
+  const row0     = document.getElementById('pm-row-0');
+  const row2     = document.getElementById('pm-row-2');
+  const profile0 = document.getElementById('pm-profile-0');
+  const profile1 = document.getElementById('pm-profile-1');
+  const cursor   = document.getElementById('pm-cursor');
+
+  let started = false;
+  let timers  = [];
+
+  function wait(ms, fn) {
+    const id = setTimeout(fn, ms);
+    timers.push(id);
+  }
+
+  function clearTimers() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+
+  function moveCursor(el) {
+    const tRect = el.getBoundingClientRect();
+    const wRect = widget.getBoundingClientRect();
+    cursor.style.left = (tRect.left + tRect.width  / 2 - wRect.left) + 'px';
+    cursor.style.top  = (tRect.top  + tRect.height / 2 - wRect.top)  + 'px';
+  }
+
+  function tap(cb) {
+    cursor.classList.add('is-tapping');
+    wait(350, () => {
+      cursor.classList.remove('is-tapping');
+      wait(180, cb);
+    });
+  }
+
+  function resetState() {
+    clearTimers();
+    cursor.classList.remove('is-visible', 'is-tapping');
+    row0.classList.remove('is-selected');
+    row2.classList.remove('is-selected');
+    profile0.classList.remove('is-active');
+    profile1.classList.remove('is-active');
+  }
+
+  // Step 1: cursor glides to row0, taps it → profile0 opens
+  function step1() {
+    moveCursor(row0);
+    cursor.classList.add('is-visible');
+    wait(700, () => {
+      tap(() => {
+        row0.classList.add('is-selected');
+        profile0.classList.add('is-active');
+        wait(2600, step2);
+      });
+    });
+  }
+
+  // Step 2: cursor glides to row2, taps it → profile1 opens
+  function step2() {
+    moveCursor(row2);
+    wait(750, () => {
+      tap(() => {
+        row0.classList.remove('is-selected');
+        profile0.classList.remove('is-active');
+        row2.classList.add('is-selected');
+        profile1.classList.add('is-active');
+        wait(2600, step3);
+      });
+    });
+  }
+
+  // Step 3: reset and loop
+  function step3() {
+    cursor.classList.remove('is-visible');
+    wait(600, () => {
+      row2.classList.remove('is-selected');
+      profile1.classList.remove('is-active');
+      wait(500, step1);
+    });
+  }
+
+  function start() {
+    resetState();
+    wait(1200, step1);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 800);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(widget);
+}
+
+function initAnlWidget() {
+  const widget = document.getElementById('anl-widget');
+  if (!widget) return;
+
+  const list  = document.getElementById('anl-appt-list');
+  const line1 = document.getElementById('anl-line1');
+  const line2 = document.getElementById('anl-line2');
+  const kpi1  = document.getElementById('anl-kpi-1');
+  const kpi2  = document.getElementById('anl-kpi-2');
+
+  const ROW_H  = 60;
+  let timers   = [];
+  let started  = false;
+
+  function wait(ms, fn) {
+    const id = setTimeout(fn, ms);
+    timers.push(id);
+  }
+
+  function clearAll() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+
+  function countUp(el, target, dur) {
+    const t0 = Date.now();
+    (function tick() {
+      const p = Math.min((Date.now() - t0) / dur, 1);
+      el.textContent = Math.round(p * target);
+      if (p < 1) requestAnimationFrame(tick);
+    })();
+  }
+
+  function resetState() {
+    clearAll();
+    if (line1) { line1.style.transition = 'none'; line1.style.strokeDashoffset = '1000'; }
+    if (line2) { line2.style.transition = 'none'; line2.style.strokeDashoffset = '1000'; }
+    if (kpi1) kpi1.textContent = '0';
+    if (kpi2) kpi2.textContent = '0';
+    if (list) list.style.transform = 'translateY(0)';
+  }
+
+  function drawLines() {
+    void widget.offsetHeight; // reflow
+    if (line1) { line1.style.transition = ''; line1.style.strokeDashoffset = '0'; }
+    wait(300, () => {
+      if (line2) { line2.style.transition = ''; line2.style.strokeDashoffset = '0'; }
+    });
+  }
+
+  function scrollDown() {
+    if (list) list.style.transform = 'translateY(-' + ROW_H + 'px)';
+    wait(2600, scrollUp);
+  }
+
+  function scrollUp() {
+    if (list) list.style.transform = 'translateY(0)';
+    wait(2200, scrollDown);
+  }
+
+  function start() {
+    resetState();
+    wait(400, () => {
+      drawLines();
+      wait(800, () => {
+        countUp(kpi1, 22, 1300);
+        wait(180, () => countUp(kpi2, 13, 1100));
+      });
+      wait(3000, scrollDown);
+    });
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 700);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(widget);
+}
+
+function initCalWidget() {
+  const widget    = document.getElementById('calw-widget');
+  if (!widget) return;
+
+  const slotsEl   = document.getElementById('calw-slots');
+  const gridEl    = document.getElementById('calw-grid');
+  const dateLabel = document.getElementById('calw-date-label');
+
+  const FIRST_DOW   = 3;  // Jan 1 2025 = Wednesday
+  const MONTH_DAYS  = 31;
+  const CYCLE_DATES = [13, 14, 20];
+  const CYCLE_MS    = 3000;
+
+  const SCHEDULE = {
+    13: [
+      { type: 'appt', name: 'Jasur Karimov',    video: false, time: '09:00 – 09:30', tag: 'checkup',  av: 'JK', color: '#9B59B6' },
+      { type: 'free', time: '09:30 – 10:00' },
+      { type: 'appt', name: 'Gulnora Yusupova',  video: true,  time: '10:00 – 10:30', tag: 'checkup',  av: 'GY', color: '#E67E22' },
+      { type: 'free', time: '10:30 – 11:00' },
+      { type: 'appt', name: 'Ulugbek Tursunov',  video: true,  time: '12:00 – 12:30', tag: 'checkup',  av: 'UT', color: '#2196F3' },
+      { type: 'appt', name: 'Dilshoda Rasulova', video: true,  time: '13:00 – 13:30', tag: 'checkup',  av: 'DR', color: '#E91E8C' },
+      { type: 'appt', name: 'Shavkat Nematov',   video: false, time: '13:30 – 14:00', tag: 'checkup',  av: 'SN', color: '#27AE60' },
+    ],
+    14: [
+      { type: 'appt', name: 'Nodira Akhmedova',  video: true,  time: '09:00 – 09:30', tag: 'followup', av: 'NA', color: '#E91E8C' },
+      { type: 'appt', name: 'Rustam Jalilov',    video: false, time: '09:30 – 10:00', tag: 'checkup',  av: 'RJ', color: '#27AE60' },
+      { type: 'free', time: '10:00 – 11:00' },
+      { type: 'appt', name: 'Jasur Karimov',     video: false, time: '11:00 – 11:30', tag: 'followup', av: 'JK', color: '#9B59B6' },
+      { type: 'free', time: '11:30 – 13:00' },
+      { type: 'appt', name: 'Dilshoda Rasulova', video: true,  time: '13:00 – 13:30', tag: 'checkup',  av: 'DR', color: '#E91E8C' },
+    ],
+    20: [
+      { type: 'free', time: '09:00 – 10:00' },
+      { type: 'appt', name: 'Shavkat Nematov',   video: false, time: '10:00 – 10:30', tag: 'checkup',  av: 'SN', color: '#27AE60' },
+      { type: 'free', time: '10:30 – 12:00' },
+      { type: 'appt', name: 'Gulnora Yusupova',  video: true,  time: '12:00 – 12:30', tag: 'followup', av: 'GY', color: '#E67E22' },
+      { type: 'appt', name: 'Ulugbek Tursunov',  video: true,  time: '13:00 – 13:30', tag: 'checkup',  av: 'UT', color: '#2196F3' },
+      { type: 'free', time: '13:30 – 15:00' },
+    ],
+  };
+
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  let currentDate = 13;
+  let cycleIdx    = 0;
+  let cycleTimer  = null;
+  let started     = false;
+  let paused      = false;
+
+  function buildGrid() {
+    gridEl.innerHTML = '';
+    for (let i = 0; i < FIRST_DOW; i++) {
+      const empty = document.createElement('span');
+      empty.className = 'calw-day calw-day--empty';
+      gridEl.appendChild(empty);
+    }
+    for (let d = 1; d <= MONTH_DAYS; d++) {
+      const btn = document.createElement('button');
+      btn.className = 'calw-day' + (SCHEDULE[d] ? ' calw-day--has' : '');
+      btn.dataset.day = d;
+      btn.textContent = d;
+      btn.tabIndex = -1;
+      btn.addEventListener('click', function() {
+        pauseCycle();
+        selectDate(parseInt(this.dataset.day));
+      });
+      gridEl.appendChild(btn);
+    }
+  }
+
+  function highlightDay(d) {
+    gridEl.querySelectorAll('.calw-day').forEach(function(el) {
+      el.classList.toggle('is-active', parseInt(el.dataset.day) === d);
+    });
+  }
+
+  function videoSVG() {
+    return '<svg width="10" height="8" viewBox="0 0 14 11" fill="none" aria-hidden="true"><rect x="1" y="1" width="8" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M9 3.5l4-2v7l-4-2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+  }
+
+  function chevSVG() {
+    return '<svg class="calw-slot-chev" width="6" height="12" viewBox="0 0 6 12" fill="none" aria-hidden="true"><polyline points="1,1 5,6 1,11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function renderSlots(slots) {
+    if (!slots || !slots.length) {
+      slotsEl.innerHTML = '<div style="padding:20px 12px;font-size:10px;color:var(--color-muted)">No appointments</div>';
+      return;
+    }
+    slotsEl.innerHTML = slots.map(function(s) {
+      if (s.type === 'free') {
+        return '<div class="calw-slot">' +
+          '<div class="calw-slot-plus"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>' +
+          '<span class="calw-slot-free-label">' + t('widget.cal.free') + '</span>' +
+          '<div class="calw-slot-right"><span class="calw-slot-time">' + s.time + '</span></div>' +
+          chevSVG() +
+          '</div>';
+      }
+      var subHtml = s.video
+        ? '<span class="calw-slot-video">' + videoSVG() + t('widget.cal.video') + '</span>'
+        : '<span class="calw-slot-sub">Tashkent Med Center</span>';
+      return '<div class="calw-slot">' +
+        '<div class="calw-slot-av" style="background:' + s.color + '">' + s.av + '</div>' +
+        '<div class="calw-slot-info"><span class="calw-slot-name">' + s.name + '</span>' + subHtml + '</div>' +
+        '<div class="calw-slot-right">' +
+          '<span class="calw-slot-time">' + s.time + '</span>' +
+          '<span class="calw-slot-tag">' + t(s.tag === 'followup' ? 'widget.cal.followup' : 'widget.cal.checkup') + '</span>' +
+        '</div>' +
+        chevSVG() +
+        '</div>';
+    }).join('');
+  }
+
+  function selectDate(d) {
+    currentDate = d;
+    highlightDay(d);
+    dateLabel.textContent = d + ' ' + t('widget.cal.month') + ' 2025';
+    slotsEl.classList.add('is-fading');
+    setTimeout(function() {
+      renderSlots(SCHEDULE[d] || []);
+      slotsEl.classList.remove('is-fading');
+    }, 180);
+  }
+
+  function pauseCycle() {
+    paused = true;
+    clearTimeout(cycleTimer);
+    cycleTimer = setTimeout(function() {
+      paused = false;
+      cycle();
+    }, 6000);
+  }
+
+  function cycle() {
+    if (paused) return;
+    cycleIdx = (cycleIdx + 1) % CYCLE_DATES.length;
+    selectDate(CYCLE_DATES[cycleIdx]);
+    cycleTimer = setTimeout(cycle, CYCLE_MS);
+  }
+
+  function start() {
+    buildGrid();
+    selectDate(CYCLE_DATES[0]);
+    cycleTimer = setTimeout(cycle, CYCLE_MS);
+  }
+
+  document.addEventListener('shifa:langchange', function() {
+    if (!started) return;
+    dateLabel.textContent = currentDate + ' ' + t('widget.cal.month') + ' 2025';
+    renderSlots(SCHEDULE[currentDate] || []);
+  });
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 700);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(widget);
+}
+
+function initRxWidget() {
+  var widget        = document.getElementById('rx-widget');
+  if (!widget) return;
+
+  var newBtn        = document.getElementById('rx-new-btn');
+  var modal         = document.getElementById('rx-modal');
+  var confirmEl     = document.getElementById('rx-confirm');
+  var cursor        = document.getElementById('rx-cursor');
+  var checkPath     = document.getElementById('rx-check-path');
+  var patientInput  = document.getElementById('rx-patient-input');
+  var medInput      = document.getElementById('rx-med-input');
+  var dosageInput   = document.getElementById('rx-dosage-input');
+  var durationInput = document.getElementById('rx-duration-input');
+  var notesInput    = document.getElementById('rx-notes-input');
+  var signBtn       = document.getElementById('rx-sign-btn');
+
+  var started = false;
+  var timers  = [];
+
+  function wait(ms, fn) {
+    var id = setTimeout(fn, ms);
+    timers.push(id);
+  }
+
+  function clearTimers() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+
+  function moveCursor(targetEl) {
+    var tRect = targetEl.getBoundingClientRect();
+    var wRect = widget.getBoundingClientRect();
+    cursor.style.left = (tRect.left + tRect.width  / 2 - wRect.left) + 'px';
+    cursor.style.top  = (tRect.top  + tRect.height / 2 - wRect.top)  + 'px';
+  }
+
+  function tap(targetEl, cb) {
+    moveCursor(targetEl);
+    cursor.classList.add('is-visible');
+    wait(500, function() {
+      cursor.classList.add('is-tapping');
+      wait(350, function() {
+        cursor.classList.remove('is-tapping');
+        wait(200, cb);
+      });
+    });
+  }
+
+  function typeChar(el, text, speed, cb) {
+    var i = 0;
+    el.textContent = '';
+    function next() {
+      if (i < text.length) {
+        el.textContent += text[i++];
+        var id = setTimeout(next, speed);
+        timers.push(id);
+      } else if (cb) {
+        cb();
+      }
+    }
+    next();
+  }
+
+  function resetState() {
+    clearTimers();
+    cursor.classList.remove('is-visible', 'is-tapping');
+    modal.classList.remove('is-active');
+    confirmEl.classList.remove('is-active');
+    checkPath.style.transition = 'none';
+    checkPath.style.strokeDashoffset = '1';
+    patientInput.textContent  = '';
+    medInput.textContent      = '';
+    dosageInput.textContent   = '';
+    durationInput.textContent = '';
+    notesInput.textContent    = '';
+  }
+
+  function step1() {
+    moveCursor(newBtn);
+    cursor.classList.add('is-visible');
+    wait(700, step2);
+  }
+
+  function step2() {
+    tap(newBtn, function() {
+      modal.classList.add('is-active');
+      wait(650, step3);
+    });
+  }
+
+  function step3() {
+    typeChar(patientInput, t('widget.rx.pval'), 44, function() {
+      wait(300, step4);
+    });
+  }
+
+  function step4() {
+    typeChar(medInput, t('widget.rx.mval'), 38, function() {
+      wait(300, step5);
+    });
+  }
+
+  function step5() {
+    dosageInput.textContent   = t('widget.rx.dval');
+    durationInput.textContent = t('widget.rx.durval');
+    wait(450, step6);
+  }
+
+  function step6() {
+    typeChar(notesInput, t('widget.rx.nval'), 40, function() {
+      wait(380, step7);
+    });
+  }
+
+  function step7() {
+    moveCursor(signBtn);
+    wait(500, step8);
+  }
+
+  function step8() {
+    tap(signBtn, function() {
+      modal.classList.remove('is-active');
+      wait(320, function() {
+        confirmEl.classList.add('is-active');
+        wait(220, function() {
+          checkPath.style.transition = 'stroke-dashoffset 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+          checkPath.style.strokeDashoffset = '0';
+        });
+        wait(2900, step9);
+      });
+    });
+  }
+
+  function step9() {
+    confirmEl.classList.remove('is-active');
+    cursor.classList.remove('is-visible');
+    wait(900, function() {
+      resetState();
+      wait(800, step1);
+    });
+  }
+
+  function start() {
+    resetState();
+    wait(1200, step1);
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        observer.disconnect();
+        setTimeout(start, 800);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(widget);
 }
