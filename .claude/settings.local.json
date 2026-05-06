@@ -32,7 +32,16 @@
       "Bash(gzip -c /Users/sheroziy.saidkhodjaev/Projects/Private/web-landing-page/css/styles.css)",
       "Bash(grep -v '^$')",
       "Bash(sed '$s/ },$/};/')",
-      "Bash(sed -n '1250,1663p' translations.js)"
+      "Bash(sed -n '1250,1663p' translations.js)",
+      "Bash(npx --yes esbuild --version)",
+      "Bash(npx --yes esbuild css/styles.css --minify --outfile=css/styles.min.css)",
+      "Bash(npx --yes esbuild css/components/_tokens.css --minify --outfile=css/components/_tokens.min.css)",
+      "Bash(npx --yes esbuild css/components/_buttons.css --minify --outfile=css/components/_buttons.min.css)",
+      "Bash(npx --yes esbuild js/main.js --minify --outfile=js/main.min.js)",
+      "Bash(npx --yes esbuild js/translations.js --minify --outfile=js/translations.min.js)",
+      "Bash(npx --yes esbuild js/lang/de.js --minify --outfile=js/lang/de.min.js)",
+      "Bash(npx --yes esbuild js/lang/uz.js --minify --outfile=js/lang/uz.min.js)",
+      "Bash(npx --yes esbuild js/lang/ru.js --minify --outfile=js/lang/ru.min.js)"
     ]
   }
 }
