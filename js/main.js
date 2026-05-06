@@ -351,9 +351,27 @@ function initOfficesMap() {
   ];
 
   var maps = {};
+  var leafletLoaded = false;
 
   var tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
   var tileAttr = '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
+
+  function loadLeaflet(callback) {
+    if (leafletLoaded) { callback(); return; }
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    css.integrity = 'sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H';
+    css.crossOrigin = 'anonymous';
+    document.head.appendChild(css);
+
+    var js = document.createElement('script');
+    js.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    js.integrity = 'sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH';
+    js.crossOrigin = 'anonymous';
+    js.onload = function() { leafletLoaded = true; callback(); };
+    document.head.appendChild(js);
+  }
 
   function buildMaps() {
     if (typeof L === 'undefined') {
@@ -385,17 +403,26 @@ function initOfficesMap() {
     });
   }
 
+  function loadAndBuild() {
+    loadLeaflet(function() { setTimeout(buildMaps, 50); });
+  }
+
   // Build when Contact page is navigated to
   document.addEventListener('click', e => {
     const trigger = e.target.closest('[data-page]');
     if (trigger && trigger.dataset.page === 'contact') {
-      setTimeout(buildMaps, 350);
+      setTimeout(loadAndBuild, 350);
     }
+  });
+
+  // Handle hash-based navigation (direct link or back/forward)
+  window.addEventListener('popstate', () => {
+    if (location.hash === '#contact') loadAndBuild();
   });
 
   // Build immediately if Contact is the landing page
   if (document.getElementById('page-contact').classList.contains('is-active')) {
-    setTimeout(buildMaps, 100);
+    setTimeout(loadAndBuild, 100);
   }
 }
 
@@ -408,31 +435,42 @@ function t(key) {
   return key;
 }
 
-function setLanguage(lang) {
-  if (!TRANSLATIONS[lang]) return;
+var _langLoading = {};
 
+function loadLang(lang, callback) {
+  if (TRANSLATIONS[lang]) { callback(); return; }
+  if (_langLoading[lang]) { _langLoading[lang].push(callback); return; }
+
+  _langLoading[lang] = [callback];
+  var script = document.createElement('script');
+  script.src = 'js/lang/' + lang + '.js';
+  script.onload = function() {
+    _langLoading[lang].forEach(function(cb) { cb(); });
+    delete _langLoading[lang];
+  };
+  script.onerror = function() { delete _langLoading[lang]; };
+  document.head.appendChild(script);
+}
+
+function applyLanguage(lang) {
   document.documentElement.lang = lang;
   document.documentElement.dataset.lang = lang;
 
-  // Swap innerHTML for all [data-i18n] elements
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     const val = (key in TRANSLATIONS[lang]) ? TRANSLATIONS[lang][key] : TRANSLATIONS.en[key];
     if (val !== undefined) el.innerHTML = val;
   });
 
-  // Swap placeholder for all [data-i18n-placeholder] elements
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const val = TRANSLATIONS[lang][el.dataset.i18nPlaceholder] || TRANSLATIONS.en[el.dataset.i18nPlaceholder];
     if (val !== undefined) el.placeholder = val;
   });
 
-  // Mark active lang button in every switcher
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('is-active', btn.dataset.lang === lang);
   });
 
-  // Keep form language field in sync
   const langField = document.querySelector('input[name="_lang"]');
   if (langField) langField.value = lang;
 
@@ -440,13 +478,23 @@ function setLanguage(lang) {
   document.dispatchEvent(new CustomEvent('shifa:langchange', { detail: { lang } }));
 }
 
+function setLanguage(lang) {
+  if (lang === 'en') {
+    applyLanguage('en');
+    return;
+  }
+  loadLang(lang, function() { applyLanguage(lang); });
+}
+
 function initI18n() {
   const saved = localStorage.getItem('shifa-lang');
 
-  if (saved) {
+  if (saved && saved !== 'en') {
     setLanguage(saved);
+  } else if (saved === 'en') {
+    applyLanguage('en');
   } else {
-    setLanguage('en');
+    applyLanguage('en');
     fetch('https://api.country.is')
       .then(r => r.json())
       .then(data => {

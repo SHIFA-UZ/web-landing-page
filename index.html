@@ -44,10 +44,9 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/components/index.css" />
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" />
   <script defer src="https://cloud.umami.is/script.js" data-website-id="7fb953cb-b301-46cd-abe0-c1c2753f0922"></script>
 </head>
 <body>
@@ -449,7 +448,7 @@
                 </div>
                 <div class="vc-patient-frame">
                   <div class="vc-patient-cam">
-                    <img src="assets/images/Images-1.png" alt="Patient camera" class="vc-patient-img" />
+                    <img src="assets/images/Images-1.png" alt="Patient camera" class="vc-patient-img" loading="lazy" />
                   </div>
                 </div>
                 <button class="vc-join-btn" id="vc-join" tabindex="-1">
@@ -460,7 +459,7 @@
 
               <!-- Screen 2: Video Call -->
               <div class="vc-screen vc-call" id="vc-call">
-                <img src="assets/images/Images.png" alt="Doctor camera" class="vc-doctor-img" />
+                <img src="assets/images/Images.png" alt="Doctor camera" class="vc-doctor-img" loading="lazy" />
                 <div class="vc-call-header">
                   <div class="vc-call-back">
                     <svg width="8" height="13" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="7 1 1 7 7 13"/></svg>
@@ -472,7 +471,7 @@
                   </div>
                 </div>
                 <div class="vc-pip">
-                  <img src="assets/images/Images-1.png" alt="" class="vc-pip-img" />
+                  <img src="assets/images/Images-1.png" alt="" class="vc-pip-img" loading="lazy" />
                 </div>
                 <div class="vc-controls">
                   <button class="vc-ctrl" aria-label="Flip camera" tabindex="-1">
@@ -1300,7 +1299,7 @@
                 </div>
                 <div class="vcd-wr-body">
                   <div class="vcd-wr-avatar">
-                    <img src="assets/images/Images.png" alt="" class="vcd-wr-img" />
+                    <img src="assets/images/Images.png" alt="" class="vcd-wr-img" loading="lazy" />
                   </div>
                   <p class="vcd-wr-name" data-i18n="widget.doctor.patient.name">Sara Wilder is waiting.</p>
                   <p class="vcd-wr-sub" data-i18n="widget.doctor.patient.sub">Open the room to start the call</p>
@@ -1320,10 +1319,10 @@
               <div class="vcd-screen vcd-call" id="vcd-call">
                 <!-- Patient video (left) -->
                 <div class="vcd-video-side">
-                  <img src="assets/images/Images.png" alt="" class="vcd-main-video" />
+                  <img src="assets/images/Images.png" alt="" class="vcd-main-video" loading="lazy" />
                   <span class="vcd-patient-label">Sara Wilder</span>
                   <div class="vcd-self-pip">
-                    <img src="assets/images/Images-1.png" alt="" class="vcd-self-img" />
+                    <img src="assets/images/Images-1.png" alt="" class="vcd-self-img" loading="lazy" />
                   </div>
                   <div class="vcd-call-controls">
                     <button class="vcd-ctrl" aria-label="Flip camera" tabindex="-1">
@@ -2061,7 +2060,6 @@
   </div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
 <script src="js/translations.js" defer></script>
 <script src="js/main.js" defer></script>
 </body>

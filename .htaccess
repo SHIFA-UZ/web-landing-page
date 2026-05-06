@@ -5,6 +5,12 @@ ErrorDocument 404 /404.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
+  # SPA fallback — serve index.html for any path that isn't a real file/directory
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !\.php$
+  RewriteRule ^(.*)$ /index.html [L,R=302]
 </IfModule>
 
 # Security headers

@@ -26,7 +26,13 @@
       "Bash(awk *)",
       "Bash(curl -s https://freeipapi.com/api/json)",
       "Bash(curl -s https://ipapi.co/json/)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(gzip -c /Users/sheroziy.saidkhodjaev/Projects/Private/web-landing-page/js/translations.js)",
+      "Bash(gzip -c /Users/sheroziy.saidkhodjaev/Projects/Private/web-landing-page/js/main.js)",
+      "Bash(gzip -c /Users/sheroziy.saidkhodjaev/Projects/Private/web-landing-page/css/styles.css)",
+      "Bash(grep -v '^$')",
+      "Bash(sed '$s/ },$/};/')",
+      "Bash(sed -n '1250,1663p' translations.js)"
     ]
   }
 }
