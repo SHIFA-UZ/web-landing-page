@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +52,7 @@
   <link rel="stylesheet" href="css/components/_tokens.css" />
   <link rel="stylesheet" href="css/components/_buttons.css" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/download.css" />
   <script defer src="https://cloud.umami.is/script.js" data-website-id="7fb953cb-b301-46cd-abe0-c1c2753f0922"></script>
 </head>
 <body>
@@ -69,6 +72,10 @@
   </ul>
 
   <div class="nav-controls">
+    <a id="n-download" class="nav-download-btn" data-page="download" aria-label="Download the Shifa app">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="M8 12l4 4 4-4"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></svg>
+      <span data-i18n="nav.download">Download</span>
+    </a>
     <div class="lang-switcher" id="lang-switcher">
       <button class="lang-btn" data-lang="en">EN</button>
       <button class="lang-btn" data-lang="de">DE</button>
@@ -94,6 +101,7 @@
   <a id="d-features" data-page="features" data-i18n="nav.features">Features</a>
   <a id="d-pricing"  data-page="pricing"  data-i18n="nav.pricing">Pricing</a>
   <a id="d-contact"  data-page="contact"  data-i18n="nav.contact">Contact</a>
+  <a id="d-download" data-page="download" data-i18n="nav.download">Download</a>
   <div class="lang-switcher lang-switcher--drawer">
     <button class="lang-btn" data-lang="en">EN</button>
     <button class="lang-btn" data-lang="de">DE</button>
@@ -1989,6 +1997,85 @@
 
   </div><!-- /page-privacy -->
 
+
+  <!-- ══════════════════════════════════════════════════════════
+       DOWNLOAD PAGE
+       ══════════════════════════════════════════════════════════ -->
+  <div class="page" id="page-download">
+
+    <!-- Background: phone image -->
+    <div class="download-phone-col">
+      <img src="assets/images/Hand and phone.png"
+           alt="Shifa app running on a smartphone"
+           class="download-phone-img"
+           loading="eager" />
+    </div>
+
+    <!-- Foreground: content -->
+    <div class="download-hero">
+      <div class="download-content">
+
+        <!-- QR code + heading -->
+        <div class="download-intro">
+          <div class="download-qr-card">
+            <img src="assets/images/Qr Code.svg" alt="Scan to download Shifa" width="148" height="148" />
+          </div>
+          <h1 class="download-title" data-i18n="download.heading">Download the<br><span class="dl-accent">SHIFA Patient</span> App now</h1>
+        </div>
+
+        <!-- Platform cards -->
+        <div class="download-platforms">
+
+          <!-- iPadOS -->
+          <div class="platform-card anim" data-dir="scale" data-delay="2">
+            <span class="platform-type">Tablet</span>
+            <span class="platform-name">iPadOS</span>
+            <p class="platform-body" data-i18n="download.card.body">Connect with your doctor with ease. All the features you need in one app</p>
+            <a class="dl-badge" href="#" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+              <img src="assets/images/Icons/Apple Logo.png" alt="" aria-hidden="true" width="22" height="22" />
+              <span class="dl-badge-text">
+                <span class="dl-badge-over" data-i18n="download.badge.over">Download on</span>
+                <span class="dl-badge-store">App Store</span>
+              </span>
+            </a>
+          </div>
+
+          <!-- iOS -->
+          <div class="platform-card anim" data-dir="scale" data-delay="3">
+            <span class="platform-type">Tablet/Mobile</span>
+            <span class="platform-name">iOS</span>
+            <p class="platform-body" data-i18n="download.card.body">Connect with your doctor with ease. All the features you need in one app</p>
+            <a class="dl-badge" href="#" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+              <img src="assets/images/Icons/Apple Logo.png" alt="" aria-hidden="true" width="22" height="22" />
+              <span class="dl-badge-text">
+                <span class="dl-badge-over" data-i18n="download.badge.over">Download on</span>
+                <span class="dl-badge-store">App Store</span>
+              </span>
+            </a>
+          </div>
+
+          <!-- Android -->
+          <div class="platform-card anim" data-dir="scale" data-delay="4">
+            <span class="platform-type">Tablet/Mobile</span>
+            <span class="platform-name">Android</span>
+            <p class="platform-body" data-i18n="download.card.body">Connect with your doctor with ease. All the features you need in one app</p>
+            <a class="dl-badge" href="https://play.google.com/store/apps/details?id=com.shifa.patientapp" target="_blank" rel="noopener noreferrer" aria-label="Download on Google Play">
+              <img src="assets/images/Icons/image 3.svg" alt="" aria-hidden="true" width="22" height="22" />
+              <span class="dl-badge-text">
+                <span class="dl-badge-over" data-i18n="download.badge.over">Download on</span>
+                <span class="dl-badge-store">Google Play</span>
+              </span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div><!-- /download-hero -->
+
+  </div><!-- /page-download -->
+
+
 </main>
 
 
@@ -2014,6 +2101,7 @@
         <li><a data-page="features" data-i18n="nav.features">Features</a></li>
         <li><a data-page="pricing" data-i18n="nav.pricing">Pricing</a></li>
         <li><a data-page="contact" data-i18n="nav.contact">Contact</a></li>
+        <li><a data-page="download" data-i18n="nav.download">Download</a></li>
       </ul>
     </div>
 
