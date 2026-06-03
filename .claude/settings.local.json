@@ -41,7 +41,8 @@
       "Bash(npx --yes esbuild js/translations.js --minify --outfile=js/translations.min.js)",
       "Bash(npx --yes esbuild js/lang/de.js --minify --outfile=js/lang/de.min.js)",
       "Bash(npx --yes esbuild js/lang/uz.js --minify --outfile=js/lang/uz.min.js)",
-      "Bash(npx --yes esbuild js/lang/ru.js --minify --outfile=js/lang/ru.min.js)"
+      "Bash(npx --yes esbuild js/lang/ru.js --minify --outfile=js/lang/ru.min.js)",
+      "Bash(npx --yes esbuild css/download.css --minify --outfile=css/download.min.css)"
     ]
   }
 }
