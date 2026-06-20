@@ -68,7 +68,7 @@
     <li><a id="n-product" class="is-active" data-page="product" data-i18n="nav.product">Product</a></li>
     <li><a id="n-features" data-page="features" data-i18n="nav.features">Features</a></li>
     <li><a id="n-pricing"  data-page="pricing"  data-i18n="nav.pricing">Pricing</a></li>
-    <li><a id="n-contact"  data-page="contact"  data-i18n="nav.contact">Contact</a></li>
+    <li><a id="n-contact"  data-page="contact"  data-i18n="nav.contact">About</a></li>
   </ul>
 
   <div class="nav-controls">
@@ -106,7 +106,7 @@
   <a id="d-product" class="is-active" data-page="product" data-i18n="nav.product">Product</a>
   <a id="d-features" data-page="features" data-i18n="nav.features">Features</a>
   <a id="d-pricing"  data-page="pricing"  data-i18n="nav.pricing">Pricing</a>
-  <a id="d-contact"  data-page="contact"  data-i18n="nav.contact">Contact</a>
+  <a id="d-contact"  data-page="contact"  data-i18n="nav.contact">About</a>
   <a id="d-download" data-page="download" data-i18n="nav.download">Download</a>
   <div class="lang-switcher lang-switcher--drawer">
     <button class="lang-btn" data-lang="en">EN</button>
@@ -130,10 +130,6 @@
 
     <!-- Hero -->
     <section class="hero">
-
-      <p class="hero-heading-sub hero-heading-sub--above-countdown" data-i18n="hero.heading">
-        Try our <em>Demo</em> before it's too late!
-      </p>
 
       <div class="countdown" id="countdown">
         <div class="countdown-unit">
@@ -165,8 +161,7 @@
             in one trusted, modern space.
           </p>
           <div class="hero-btns">
-            <a class="btn" data-page="contact" data-scroll-to="contact-form-anchor" data-i18n="hero.cta">Get Early Access</a>
-            <a class="btn-outline" data-page="features" data-i18n="hero.features">See Features</a>
+            <a class="btn" data-page="features" data-i18n="hero.features">See Features</a>
           </div>
         </div>
 
@@ -1663,14 +1658,14 @@
 
 
   <!-- ══════════════════════════════════════════════════════════
-       CONTACT PAGE
+       ABOUT PAGE
        ══════════════════════════════════════════════════════════ -->
   <div class="page" id="page-contact">
 
     <div class="page-header">
       <div class="wrap">
-        <p class="label" data-i18n="contact.label">Get in Touch</p>
-        <h1 class="heading-xl" data-i18n="contact.heading">Contact Us</h1>
+        <p class="label" data-i18n="contact.label">Get to Know Us</p>
+        <h1 class="heading-xl" data-i18n="contact.heading">About Us</h1>
         <p class="body-text" data-i18n="contact.body">
           Clinic-ready features with a platform that scales alongside your growth.
         </p>
@@ -1680,56 +1675,76 @@
     <section>
       <div class="wrap">
 
-        <div class="contact-cards">
-          <div class="contact-card anim" data-dir="scale">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                <line x1="12" y1="17" x2="12.01" y2="17" />
-              </svg>
+        <!-- Founders -->
+        <div class="about-section about-section--first anim">
+          <p class="label" data-i18n="founders.label">Our Founders</p>
+          <h2 class="heading-lg" data-i18n="founders.heading">Meet the people behind Shifa.</h2>
+          <p class="body-text founders-intro" data-i18n="founders.body">
+            We are a team of engineers, designers, and product enthusiasts united by a shared belief: healthcare deserves better tools. Together, we are building a platform that puts patients and clinicians first, with doctors at the forefront of everything we do.
+          </p>
+          <div class="founders-grid">
+            <div class="contact-card founder-bio-card anim" data-dir="scale" data-delay="1">
+              <div class="founder-avatar-wrap">
+                <img src="assets/images/Bekzod Founder.jpeg" alt="Bekzod" loading="lazy" />
+              </div>
+              <h3 data-i18n="founder1.name">Bekzod</h3>
+              <p class="founder-role" data-i18n="founder1.role">Co-Founder, CEO</p>
+              <p class="founder-bio" data-i18n="founder1.desc">Placeholder description for Bekzod — their background, expertise, and what drives them to build Shifa.</p>
+              <p class="founder-handle" data-i18n="founder1.handle">@bekzod</p>
             </div>
-            <h3 data-i18n="contact.help.heading">Help and Support</h3>
-            <p data-i18n="contact.help.body">
-              Ask product questions, report problems, or leave feedback.
-              Unsure on how to get started with Shifa?
-            </p>
-            <a class="btn-outline" href="mailto:contact@shifa.uz?subject=Help%20and%20Support" data-i18n="contact.help.cta">Contact Us</a>
-          </div>
-
-          <div class="contact-card anim" data-dir="scale" data-delay="2">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="2" y="3" width="20" height="14" rx="2" />
-                <line x1="8" y1="21" x2="16" y2="21" />
-                <line x1="12" y1="17" x2="12" y2="21" />
-              </svg>
+            <div class="contact-card founder-bio-card anim" data-dir="scale" data-delay="2">
+              <div class="founder-avatar-wrap">
+                <img src="assets/images/Sheroizy Founder.jpeg" alt="Sheroizy" loading="lazy" />
+              </div>
+              <h3 data-i18n="founder2.name">Sheroizy</h3>
+              <p class="founder-role" data-i18n="founder2.role">Co-Founder, CTO</p>
+              <p class="founder-bio" data-i18n="founder2.desc">Placeholder description for Sheroizy — their background, expertise, and what drives them to build Shifa.</p>
+              <p class="founder-handle" data-i18n="founder2.handle">@sheroizy</p>
             </div>
-            <h3 data-i18n="contact.demo.heading">Book a Demo</h3>
-            <p data-i18n="contact.demo.body">
-              Try out Shifa or test certain features to find the fit for your
-              doctors or clinic.
-            </p>
-            <a class="btn" href="#contact-form-anchor" data-scroll-to="contact-form-anchor" data-i18n="contact.demo.cta">Contact Us</a>
-          </div>
-
-        </div>
-
-        <!-- Social Media -->
-        <div class="contact-social anim" data-delay="1">
-          <p class="label" data-i18n="contact.social.heading">Follow Us</p>
-          <div class="social-links">
-            <a class="social-link" href="https://www.linkedin.com/company/shifauz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-              <span data-i18n="contact.social.linkedin">LinkedIn</span>
-            </a>
+            <div class="contact-card founder-bio-card anim" data-dir="scale" data-delay="3">
+              <div class="founder-avatar-wrap">
+                <img src="assets/images/Franco Founder.jpeg" alt="Franco" loading="lazy" />
+              </div>
+              <h3 data-i18n="founder3.name">Franco</h3>
+              <p class="founder-role" data-i18n="founder3.role">Co-Founder, CPO</p>
+              <p class="founder-bio" data-i18n="founder3.desc">Placeholder description for Franco — their background, expertise, and what drives them to build Shifa.</p>
+              <p class="founder-handle" data-i18n="founder3.handle">@franco</p>
+            </div>
           </div>
         </div>
 
-        <!-- Careers -->
-        <div class="careers-section anim">
+        <!-- Offices -->
+        <div class="about-section offices anim">
+          <p class="label" data-i18n="offices.label">Locations</p>
+          <h2 class="heading-lg offices-heading" data-i18n="contact.offices.heading">Our Offices</h2>
+          <div class="offices-grid">
+            <div class="office-card" data-office="uz">
+              <div class="office-card-map" id="map-uz"></div>
+              <div class="office-card-info">
+                <p class="office-country">🇺🇿 Uzbekistan</p>
+                <p class="office-address">Istiqbol street 30<br />Bulakbashi, Andijan</p>
+                <a class="office-directions" href="https://www.google.com/maps/search/?api=1&query=40.7829,72.3442" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  Get Directions
+                </a>
+              </div>
+            </div>
+            <div class="office-card" data-office="de">
+              <div class="office-card-map" id="map-de"></div>
+              <div class="office-card-info">
+                <p class="office-country">🇩🇪 Germany</p>
+                <p class="office-address">Hansastraße 116<br />13088 Berlin</p>
+                <a class="office-directions" href="https://www.google.com/maps/search/?api=1&query=52.5486,13.4468" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  Get Directions
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Careers at Shifa -->
+        <div class="careers-section about-section anim">
           <div class="careers-header">
             <div>
               <p class="label" data-i18n="contact.careers.heading">Careers at Shifa</p>
@@ -1740,9 +1755,7 @@
               </p>
             </div>
           </div>
-
           <div class="job-list">
-
             <div class="job-card">
               <div class="job-card-left">
                 <span class="job-tag" data-i18n="job1.tag">Engineering</span>
@@ -1766,91 +1779,114 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
-        <!-- Offices -->
-        <div class="offices anim">
-          <h2 class="heading-lg offices-heading" data-i18n="contact.offices.heading">Our Offices</h2>
+        <!-- Contact -->
+        <div class="about-section anim">
+          <p class="label" data-i18n="contact.section.label">Contact</p>
+          <h2 class="heading-lg" data-i18n="contact.section.heading">Get in touch with us.</h2>
 
-          <div class="offices-grid">
-            <div class="office-card" data-office="uz">
-              <div class="office-card-map" id="map-uz"></div>
-              <div class="office-card-info">
-                <p class="office-country">🇺🇿 Uzbekistan</p>
-                <p class="office-address">Istiqbol street 30<br />Bulakbashi, Andijan</p>
-                <a class="office-directions" href="https://www.google.com/maps/search/?api=1&query=40.7829,72.3442" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                  Get Directions
-                </a>
+          <div class="contact-cards">
+            <div class="contact-card anim" data-dir="scale">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
               </div>
+              <h3 data-i18n="contact.help.heading">Help and Support</h3>
+              <p data-i18n="contact.help.body">
+                Ask product questions, report problems, or leave feedback.
+                Unsure on how to get started with Shifa?
+              </p>
+              <a class="btn-outline" href="mailto:contact@shifa.uz?subject=Help%20and%20Support" data-i18n="contact.help.cta">Contact Us</a>
             </div>
 
-            <div class="office-card" data-office="de">
-              <div class="office-card-map" id="map-de"></div>
-              <div class="office-card-info">
-                <p class="office-country">🇩🇪 Germany</p>
-                <p class="office-address">Hansastraße 116<br />13088 Berlin</p>
-                <a class="office-directions" href="https://www.google.com/maps/search/?api=1&query=52.5486,13.4468" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                  Get Directions
-                </a>
+            <div class="contact-card anim" data-dir="scale" data-delay="2">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="2" y="3" width="20" height="14" rx="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+              </div>
+              <h3 data-i18n="contact.demo.heading">Book a Demo</h3>
+              <p data-i18n="contact.demo.body">
+                Try out Shifa or test certain features to find the fit for your
+                doctors or clinic.
+              </p>
+              <a class="btn-outline" href="#contact-form-anchor" data-scroll-to="contact-form-anchor" data-i18n="contact.demo.cta">Contact Us</a>
+            </div>
+          </div>
+
+          <!-- Social Media -->
+          <div class="contact-social anim" data-delay="1">
+            <p class="label" data-i18n="contact.social.heading">Follow Us</p>
+            <div class="social-links">
+              <a class="social-link" href="https://www.linkedin.com/company/shifauz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                <span data-i18n="contact.social.linkedin">LinkedIn</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Let's Chat form -->
+          <div class="contact-bottom anim" id="contact-form-anchor">
+            <h2 class="heading-lg contact-bottom-heading" data-i18n="contact.form.heading">Let's Chat!</h2>
+            <div class="contact-bottom-inner">
+              <div class="contact-form-section">
+                <form class="contact-form" id="contact-form" novalidate>
+                  <input type="text" name="company_url" tabindex="-1" autocomplete="nope" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden;">
+                  <input type="hidden" name="_t" value="">
+                  <input type="hidden" name="_lang" value="en">
+                  <div class="form-group">
+                    <label for="contact-name" data-i18n="contact.form.name">Name</label>
+                    <input
+                      type="text"
+                      id="contact-name"
+                      name="name"
+                      placeholder="Your full name"
+                      data-i18n-placeholder="contact.form.name.placeholder"
+                      maxlength="100"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="contact-email" data-i18n="contact.form.email">Email</label>
+                    <input
+                      type="email"
+                      id="contact-email"
+                      name="email"
+                      placeholder="your@email.com"
+                      data-i18n-placeholder="contact.form.email.placeholder"
+                      maxlength="254"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="contact-message" data-i18n="contact.form.message">Message</label>
+                    <textarea
+                      id="contact-message"
+                      name="message"
+                      placeholder="How can we help?"
+                      data-i18n-placeholder="contact.form.message.placeholder"
+                      maxlength="5000"
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="btn form-submit" data-i18n="contact.form.submit">Send Message</button>
+                </form>
+              </div>
+              <div class="contact-team-img-wrap">
+                <img src="assets/images/team.png" alt="The Shifa team" class="team-photo" loading="lazy" />
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="contact-bottom anim" id="contact-form-anchor">
-          <h2 class="heading-lg contact-bottom-heading" data-i18n="contact.form.heading">Let's Chat!</h2>
-          <div class="contact-bottom-inner">
-            <div class="contact-form-section">
-              <form class="contact-form" id="contact-form" novalidate>
-                <input type="text" name="company_url" tabindex="-1" autocomplete="nope" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden;">
-                <input type="hidden" name="_t" value="">
-                <input type="hidden" name="_lang" value="en">
-                <div class="form-group">
-                  <label for="contact-name" data-i18n="contact.form.name">Name</label>
-                  <input
-                    type="text"
-                    id="contact-name"
-                    name="name"
-                    placeholder="Your full name"
-                    data-i18n-placeholder="contact.form.name.placeholder"
-                    maxlength="100"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="contact-email" data-i18n="contact.form.email">Email</label>
-                  <input
-                    type="email"
-                    id="contact-email"
-                    name="email"
-                    placeholder="your@email.com"
-                    data-i18n-placeholder="contact.form.email.placeholder"
-                    maxlength="254"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="contact-message" data-i18n="contact.form.message">Message</label>
-                  <textarea
-                    id="contact-message"
-                    name="message"
-                    placeholder="How can we help?"
-                    data-i18n-placeholder="contact.form.message.placeholder"
-                    maxlength="5000"
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" class="form-submit" data-i18n="contact.form.submit">Send Message</button>
-              </form>
-            </div>
-            <div class="contact-team-img-wrap">
-              <img src="assets/images/team.png" alt="The Shifa team" class="team-photo" loading="lazy" />
-            </div>
-          </div>
         </div>
 
       </div>
@@ -2092,7 +2128,7 @@
         <li><a data-page="product" data-i18n="nav.product">Product</a></li>
         <li><a data-page="features" data-i18n="nav.features">Features</a></li>
         <li><a data-page="pricing" data-i18n="nav.pricing">Pricing</a></li>
-        <li><a data-page="contact" data-i18n="nav.contact">Contact</a></li>
+        <li><a data-page="contact" data-i18n="nav.contact">About</a></li>
         <li><a data-page="download" data-i18n="nav.download">Download</a></li>
       </ul>
     </div>
