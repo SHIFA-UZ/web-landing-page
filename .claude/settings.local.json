@@ -47,7 +47,11 @@
       "Bash(grep -oE '\\(^|[},]\\)\\\\.card\\\\{[^}]*\\\\}' css/styles.css)",
       "Bash(grep -oE '\\\\.section-\\(feature|about|infrastructure|contact\\)[^,{]*[,{][^}]{0,160}' css/styles.css)",
       "Bash(grep -oE '@media\\\\\\(max-width:[0-9]+px\\\\\\)\\\\{[^@]*\\\\.card-grid\\\\{grid-template-columns:repeat\\\\\\(2,1fr\\\\\\)\\\\}' css/styles.css)",
-      "Bash(grep -oE '.{40}\\\\.card-grid\\\\{grid-template-columns:repeat\\\\\\(2,1fr\\\\\\)\\\\}' css/styles.css)"
+      "Bash(grep -oE '.{40}\\\\.card-grid\\\\{grid-template-columns:repeat\\\\\\(2,1fr\\\\\\)\\\\}' css/styles.css)",
+      "Bash(grep -oE 'data-scroll-to[^;]{0,120}' js/main.js)",
+      "Bash(grep -oE 'scroll-to[^\\)]{0,80}' js/main.js)",
+      "Bash(grep -oE '\\\\.tab-panel[^,{]*\\\\.feature-row[^{]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.feature-row[^{]{0,40}\\\\{background[^}]*\\\\}' css/styles.css)"
     ]
   }
 }
