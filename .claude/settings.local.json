@@ -57,7 +57,9 @@
       "Bash(grep -oE '\\\\*[, ]*[^{]*\\\\{[^}]*box-sizing[^}]*\\\\}' css/styles.css)",
       "Bash(grep -oE '\\\\.download-hero[^{,]*\\\\{[^}]*\\\\}' css/styles.css)",
       "Bash(npx --no-install playwright --version)",
-      "Read(//Applications/Google Chrome.app/Contents/MacOS/**)"
+      "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
+      "Bash(read -r line)",
+      "Bash(grep -oE 'function initCountdown\\\\\\(\\\\\\)\\\\{.*?setInterval\\\\\\(f,1e3\\\\\\)\\\\}' js/main.js)"
     ]
   }
 }
