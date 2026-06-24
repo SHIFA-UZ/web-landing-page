@@ -51,7 +51,13 @@
       "Bash(grep -oE 'data-scroll-to[^;]{0,120}' js/main.js)",
       "Bash(grep -oE 'scroll-to[^\\)]{0,80}' js/main.js)",
       "Bash(grep -oE '\\\\.tab-panel[^,{]*\\\\.feature-row[^{]*\\\\{[^}]*\\\\}' css/styles.css)",
-      "Bash(grep -oE '\\\\.feature-row[^{]{0,40}\\\\{background[^}]*\\\\}' css/styles.css)"
+      "Bash(grep -oE '\\\\.feature-row[^{]{0,40}\\\\{background[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.contact-bottom[^{,]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.contact-form[^{,]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\*[, ]*[^{]*\\\\{[^}]*box-sizing[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.download-hero[^{,]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(npx --no-install playwright --version)",
+      "Read(//Applications/Google Chrome.app/Contents/MacOS/**)"
     ]
   }
 }
