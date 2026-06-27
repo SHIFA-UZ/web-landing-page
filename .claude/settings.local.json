@@ -42,7 +42,24 @@
       "Bash(npx --yes esbuild js/lang/de.js --minify --outfile=js/lang/de.min.js)",
       "Bash(npx --yes esbuild js/lang/uz.js --minify --outfile=js/lang/uz.min.js)",
       "Bash(npx --yes esbuild js/lang/ru.js --minify --outfile=js/lang/ru.min.js)",
-      "Bash(npx --yes esbuild css/download.css --minify --outfile=css/download.min.css)"
+      "Bash(npx --yes esbuild css/download.css --minify --outfile=css/download.min.css)",
+      "Bash(grep -v ':0$')",
+      "Bash(grep -oE '\\(^|[},]\\)\\\\.card\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.section-\\(feature|about|infrastructure|contact\\)[^,{]*[,{][^}]{0,160}' css/styles.css)",
+      "Bash(grep -oE '@media\\\\\\(max-width:[0-9]+px\\\\\\)\\\\{[^@]*\\\\.card-grid\\\\{grid-template-columns:repeat\\\\\\(2,1fr\\\\\\)\\\\}' css/styles.css)",
+      "Bash(grep -oE '.{40}\\\\.card-grid\\\\{grid-template-columns:repeat\\\\\\(2,1fr\\\\\\)\\\\}' css/styles.css)",
+      "Bash(grep -oE 'data-scroll-to[^;]{0,120}' js/main.js)",
+      "Bash(grep -oE 'scroll-to[^\\)]{0,80}' js/main.js)",
+      "Bash(grep -oE '\\\\.tab-panel[^,{]*\\\\.feature-row[^{]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.feature-row[^{]{0,40}\\\\{background[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.contact-bottom[^{,]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.contact-form[^{,]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\*[, ]*[^{]*\\\\{[^}]*box-sizing[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.download-hero[^{,]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(npx --no-install playwright --version)",
+      "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
+      "Bash(read -r line)",
+      "Bash(grep -oE 'function initCountdown\\\\\\(\\\\\\)\\\\{.*?setInterval\\\\\\(f,1e3\\\\\\)\\\\}' js/main.js)"
     ]
   }
 }
