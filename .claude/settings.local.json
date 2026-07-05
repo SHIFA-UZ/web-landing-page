@@ -59,7 +59,11 @@
       "Bash(npx --no-install playwright --version)",
       "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
       "Bash(read -r line)",
-      "Bash(grep -oE 'function initCountdown\\\\\\(\\\\\\)\\\\{.*?setInterval\\\\\\(f,1e3\\\\\\)\\\\}' js/main.js)"
+      "Bash(grep -oE 'function initCountdown\\\\\\(\\\\\\)\\\\{.*?setInterval\\\\\\(f,1e3\\\\\\)\\\\}' js/main.js)",
+      "Bash(cwebp -version)",
+      "Bash(grep -oE '\\\\.hero-hand-img\\\\{[^}]*\\\\}|\\\\.hero-hand-img,[^{]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -oE '\\\\.two-col-img[^{,]*\\\\{[^}]*\\\\}' css/styles.css)",
+      "Bash(grep -iE '\\\\.\\(png|jpe?g\\)$')"
     ]
   }
 }
